@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LMS_Project.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,12 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LMS_Project.Models
+namespace Models.LMS
 {
     public class Course
     {
         [Key]
-        int ID { get; set; }
+        public int ID { get; set; }
         [ForeignKey("Subject")]
         public virtual int SubjectID { get; set; }
         public virtual Subject Subject { get; set; }
