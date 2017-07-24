@@ -1,4 +1,4 @@
-﻿using Models.LMS;
+﻿using LMS_Project.Models.LMS;
 using System.Data.Entity;
 
 namespace LMS_Project.DataContexts
