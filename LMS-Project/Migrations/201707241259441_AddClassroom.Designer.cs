@@ -13,7 +13,7 @@ namespace LMS_Project.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201707241247476_AddClassroom"; }
+            get { return "201707241259441_AddClassroom"; }
         }
         
         string IMigrationMetadata.Source
