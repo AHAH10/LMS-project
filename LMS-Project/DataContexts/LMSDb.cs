@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LMS_Entities;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
@@ -18,5 +19,8 @@ namespace LMS_Project.DataContexts
             modelBuilder.HasDefaultSchema("library");
             base.OnModelCreating(modelBuilder);
         }
+
+        DbSet<Subject> Subjects;
+        DbSet<Course> Courses;
     }
 }
