@@ -164,7 +164,6 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="DataContexts\IdentityDb.cs" />
     <Compile Include="DataContexts\LMSDb.cs" />
-    <Compile Include="DataContext\LMSMigrations\Configuration.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -174,11 +173,11 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\LMS\Course.cs" />
+    <Compile Include="Models\Course.cs" />
     <Compile Include="Models\LMS\Classroom.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\LMS\Subject.cs" />
+    <Compile Include="Models\Subject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClassroomsRepository.cs" />
     <Compile Include="Startup.cs" />

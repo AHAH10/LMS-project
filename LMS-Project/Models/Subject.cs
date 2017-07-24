@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Models.LMS
+namespace LMS_Project.Models
 {
     public class Subject
     {
         [Key]
-        public int ID { get; set; }
-        public string Name { get; set; }
+        int ID { get; set; }
+        string Name { get; set; }
     }
 }
