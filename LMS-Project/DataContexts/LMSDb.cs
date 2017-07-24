@@ -1,13 +1,9 @@
-﻿using LMS_Entities;
-using System;
-using System.Collections.Generic;
+﻿using Models.LMS;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
 namespace LMS_Project.DataContexts
 {
-    public class LMSDb: DbContext
+    public class LMSDb : DbContext
     {
         public LMSDb()
             : base("DefaultConnection")
@@ -20,7 +16,6 @@ namespace LMS_Project.DataContexts
             base.OnModelCreating(modelBuilder);
         }
 
-        DbSet<Subject> Subjects;
-        DbSet<Course> Courses;
+        public DbSet<Classroom> Classrooms { get; set; }
     }
 }
