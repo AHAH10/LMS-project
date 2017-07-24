@@ -9,7 +9,7 @@ using System.Web;
 
 namespace LMS_Project.Models.LMS
 {
-    public class Documents
+    public class Document
     {
         [Key]
         int ID { get; set; }
