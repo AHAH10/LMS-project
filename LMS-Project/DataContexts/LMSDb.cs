@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using LMS_Entities;
 using System.Data.Entity;
-using System.Linq;
-using System.Web;
 
 namespace LMS_Project.DataContexts
 {
-    public class LMSDb: DbContext
+    public class LMSDb : DbContext
     {
         public LMSDb()
             : base("DefaultConnection")
@@ -18,5 +15,7 @@ namespace LMS_Project.DataContexts
             modelBuilder.HasDefaultSchema("library");
             base.OnModelCreating(modelBuilder);
         }
+
+        DbSet<Classroom> Classrooms { get; set; }
     }
 }
