@@ -166,10 +166,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201707241247476_AddClassroom.cs" />
-    <Compile Include="Migrations\201707241247476_AddClassroom.Designer.cs">
-      <DependentUpon>201707241247476_AddClassroom.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -243,17 +239,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\LMS-Entities\LMS-Entities.csproj">
-      <Project>{f291e7da-2e1f-4feb-8e7d-39a6fa4c9cd5}</Project>
-      <Name>LMS-Entities</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707241247476_AddClassroom.resx">
-      <DependentUpon>201707241247476_AddClassroom.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

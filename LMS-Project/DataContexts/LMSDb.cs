@@ -1,5 +1,4 @@
-﻿using LMS_Entities;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 
 namespace LMS_Project.DataContexts
 {
@@ -16,6 +15,6 @@ namespace LMS_Project.DataContexts
             base.OnModelCreating(modelBuilder);
         }
 
-        DbSet<Classroom> Classrooms { get; set; }
+//        DbSet<Classroom> Classrooms { get; set; }
     }
 }
