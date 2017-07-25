@@ -13,15 +13,18 @@ namespace LMS_Project.Models.LMS
     {
         [Key]
         public int ID { get; set; }
+
         [ForeignKey("Uploader")]
         public string UserID { get; set; }
         public virtual ApplicationUser Uploader { get; set; }
         public string DocumentName { get; set; }
         public string DocumentContent { get; set; }
         public DateTime UploadingDate { get; set; }
+
         [ForeignKey("Course")]
         public int CourseID { get; set; }
         public virtual Course Course { get; set; }
+
         [ForeignKey("VisibleTo")]
         public string RoleID { get; set; }
         public virtual IdentityRole VisibleTo { get; set; }
