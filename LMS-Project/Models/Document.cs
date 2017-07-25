@@ -12,7 +12,7 @@ namespace LMS_Project.Models.LMS
     public class Document
     {
         [Key]
-        int ID { get; set; }
+        int ID { get; set; }  /// comets
         [ForeignKey("User")]
         public string UserID { get; set; }
         public virtual ApplicationUser Uploader { get; set; }
