@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.LMS
+namespace LMS_Project.Models.LMS
 {
     public class Course
     {

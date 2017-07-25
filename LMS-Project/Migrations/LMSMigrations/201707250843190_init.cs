@@ -8,16 +8,6 @@ namespace LMS_Project.Migrations.LMSMigrations
         public override void Up()
         {
             CreateTable(
-                "library.Classrooms",
-                c => new
-                    {
-                        ID = c.Int(nullable: false, identity: true),
-                        Name = c.String(nullable: false, maxLength: 255),
-                        Location = c.String(nullable: false, maxLength: 255),
-                    })
-                .PrimaryKey(t => t.ID);
-            
-            CreateTable(
                 "library.Courses",
                 c => new
                     {
@@ -133,7 +123,6 @@ namespace LMS_Project.Migrations.LMSMigrations
             DropTable("library.AspNetUsers");
             DropTable("library.Subjects");
             DropTable("library.Courses");
-            DropTable("library.Classrooms");
         }
     }
 }

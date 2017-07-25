@@ -1,6 +1,5 @@
 ﻿using LMS_Project.Models;
 using Microsoft.AspNet.Identity.EntityFramework;
-using Models.LMS;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
