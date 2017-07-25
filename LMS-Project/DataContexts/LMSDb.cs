@@ -20,5 +20,6 @@ namespace LMS_Project.DataContexts
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Classroom> Classrooms { get; set; }
+        public DbSet<Document> Documents { get; set; }
     }
 }

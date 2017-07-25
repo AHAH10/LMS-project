@@ -3,10 +3,20 @@ namespace LMS_Project.Migrations.LMSMigrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class init : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
+            CreateTable(
+                "library.Classrooms",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        Name = c.String(nullable: false, maxLength: 255),
+                        Location = c.String(nullable: false, maxLength: 255),
+                    })
+                .PrimaryKey(t => t.ID);
+            
             CreateTable(
                 "library.Courses",
                 c => new
@@ -89,6 +99,26 @@ namespace LMS_Project.Migrations.LMSMigrations
                 .Index(t => t.RoleId);
             
             CreateTable(
+                "library.Documents",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        UserID = c.String(maxLength: 128),
+                        DocumentName = c.String(),
+                        DocumentContent = c.String(),
+                        UploadingDate = c.DateTime(nullable: false),
+                        CourseID = c.Int(nullable: false),
+                        RoleID = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => t.ID)
+                .ForeignKey("library.Courses", t => t.CourseID, cascadeDelete: true)
+                .ForeignKey("library.AspNetUsers", t => t.UserID)
+                .ForeignKey("library.AspNetRoles", t => t.RoleID)
+                .Index(t => t.UserID)
+                .Index(t => t.CourseID)
+                .Index(t => t.RoleID);
+            
+            CreateTable(
                 "library.AspNetRoles",
                 c => new
                     {
@@ -102,13 +132,19 @@ namespace LMS_Project.Migrations.LMSMigrations
         
         public override void Down()
         {
+            DropForeignKey("library.Documents", "RoleID", "library.AspNetRoles");
             DropForeignKey("library.AspNetUserRoles", "RoleId", "library.AspNetRoles");
+            DropForeignKey("library.Documents", "UserID", "library.AspNetUsers");
+            DropForeignKey("library.Documents", "CourseID", "library.Courses");
             DropForeignKey("library.Courses", "TeacherID", "library.AspNetUsers");
             DropForeignKey("library.AspNetUserRoles", "UserId", "library.AspNetUsers");
             DropForeignKey("library.AspNetUserLogins", "UserId", "library.AspNetUsers");
             DropForeignKey("library.AspNetUserClaims", "UserId", "library.AspNetUsers");
             DropForeignKey("library.Courses", "SubjectId", "library.Subjects");
             DropIndex("library.AspNetRoles", "RoleNameIndex");
+            DropIndex("library.Documents", new[] { "RoleID" });
+            DropIndex("library.Documents", new[] { "CourseID" });
+            DropIndex("library.Documents", new[] { "UserID" });
             DropIndex("library.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("library.AspNetUserRoles", new[] { "UserId" });
             DropIndex("library.AspNetUserLogins", new[] { "UserId" });
@@ -117,12 +153,14 @@ namespace LMS_Project.Migrations.LMSMigrations
             DropIndex("library.Courses", new[] { "TeacherID" });
             DropIndex("library.Courses", new[] { "SubjectId" });
             DropTable("library.AspNetRoles");
+            DropTable("library.Documents");
             DropTable("library.AspNetUserRoles");
             DropTable("library.AspNetUserLogins");
             DropTable("library.AspNetUserClaims");
             DropTable("library.AspNetUsers");
             DropTable("library.Subjects");
             DropTable("library.Courses");
+            DropTable("library.Classrooms");
         }
     }
 }

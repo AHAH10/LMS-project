@@ -12,8 +12,8 @@ namespace LMS_Project.Models.LMS
     public class Document
     {
         [Key]
-        int ID { get; set; }  
-        [ForeignKey("User")]
+        public int ID { get; set; }
+        [ForeignKey("Uploader")]
         public string UserID { get; set; }
         public virtual ApplicationUser Uploader { get; set; }
         public string DocumentName { get; set; }
@@ -22,8 +22,8 @@ namespace LMS_Project.Models.LMS
         [ForeignKey("Course")]
         public int CourseID { get; set; }
         public virtual Course Course { get; set; }
-        [ForeignKey("Visible to")]
-        public int RoleID { get; set; }
-        public virtual IdentityRole Role { get; set; }
+        [ForeignKey("VisibleTo")]
+        public string RoleID { get; set; }
+        public virtual IdentityRole VisibleTo { get; set; }
     }
 }
