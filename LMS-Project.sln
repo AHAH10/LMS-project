@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS-Project", "LMS-Project\LMS-Project.csproj", "{47EF06F0-855F-4134-8404-A88196091F14}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LMS-Entities", "LMS-Entities\LMS-Entities.csproj", "{F291E7DA-2E1F-4FEB-8E7D-39A6FA4C9CD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{47EF06F0-855F-4134-8404-A88196091F14}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47EF06F0-855F-4134-8404-A88196091F14}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47EF06F0-855F-4134-8404-A88196091F14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F291E7DA-2E1F-4FEB-8E7D-39A6FA4C9CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F291E7DA-2E1F-4FEB-8E7D-39A6FA4C9CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F291E7DA-2E1F-4FEB-8E7D-39A6FA4C9CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F291E7DA-2E1F-4FEB-8E7D-39A6FA4C9CD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

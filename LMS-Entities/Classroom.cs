@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace LMS_Project.Models.LMS
+namespace LMS_Entities
 {
     public class Classroom
     {
