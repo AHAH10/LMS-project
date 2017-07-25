@@ -1,4 +1,4 @@
-namespace LMS_Project.Migrations
+namespace LMS_Project.Migrations.LMSMigrations
 {
     using System;
     using System.Data.Entity;
@@ -10,6 +10,7 @@ namespace LMS_Project.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
+            MigrationsDirectory = @"Migrations\LMSMigrations";
         }
 
         protected override void Seed(LMS_Project.DataContexts.LMSDb context)

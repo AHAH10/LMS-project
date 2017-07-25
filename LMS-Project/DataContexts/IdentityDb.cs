@@ -9,7 +9,7 @@ using System.Web;
 namespace LMS_Project.DataContexts
 {
     public class IdentityDb : IdentityDbContext<ApplicationUser>
-    {
+    {     
         public IdentityDb()
             : base("DefaultConnection")
         {

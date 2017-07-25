@@ -1,24 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
+﻿using LMS_Project.Models.LMS;
+using LMS_Project.Repositories;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using LMS_Project.DataContexts;
-using Models.LMS;
 
 namespace LMS_Project.Controllers
 {
     public class ClassroomsController : Controller
     {
-        private LMSDb db = new LMSDb();
+        private ClassroomsRepository repository = new ClassroomsRepository();
 
         // GET: Classrooms
         public ActionResult Index()
         {
-            return View(db.Classrooms.ToList());
+            return View(repository.Classrooms().ToList());
         }
 
         // GET: Classrooms/Details/5
@@ -28,7 +23,7 @@ namespace LMS_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Classroom classroom = db.Classrooms.Find(id);
+            Classroom classroom = repository.Classroom(id);
             if (classroom == null)
             {
                 return HttpNotFound();
@@ -51,8 +46,7 @@ namespace LMS_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Classrooms.Add(classroom);
-                db.SaveChanges();
+                repository.Add(classroom);
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +60,7 @@ namespace LMS_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Classroom classroom = db.Classrooms.Find(id);
+            Classroom classroom = repository.Classroom(id);
             if (classroom == null)
             {
                 return HttpNotFound();
@@ -83,8 +77,7 @@ namespace LMS_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(classroom).State = EntityState.Modified;
-                db.SaveChanges();
+                repository.Edit(classroom);
                 return RedirectToAction("Index");
             }
             return View(classroom);
@@ -97,7 +90,7 @@ namespace LMS_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Classroom classroom = db.Classrooms.Find(id);
+            Classroom classroom = repository.Classroom(id);
             if (classroom == null)
             {
                 return HttpNotFound();
@@ -110,9 +103,7 @@ namespace LMS_Project.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Classroom classroom = db.Classrooms.Find(id);
-            db.Classrooms.Remove(classroom);
-            db.SaveChanges();
+            repository.Delete(id);
             return RedirectToAction("Index");
         }
 
@@ -120,7 +111,7 @@ namespace LMS_Project.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                repository.Dispose();
             }
             base.Dispose(disposing);
         }
