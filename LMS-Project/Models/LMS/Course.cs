@@ -19,6 +19,5 @@ namespace LMS_Project.Models.LMS
         [ForeignKey("Teacher")]
         public virtual string TeacherID { get; set; }
         public virtual ApplicationUser Teacher { get; set; }
-
     }
 }
