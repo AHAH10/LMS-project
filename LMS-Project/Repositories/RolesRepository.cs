@@ -7,39 +7,41 @@ using System.Linq;
 
 namespace LMS_Project.Repositories
 {
-    public class ClassroomsRepository: IDisposable
+    public class RolesRepository : IDisposable
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public IEnumerable<Classroom> Classrooms()
+        public IEnumerable<Role> Roles()
         {
-            return db.Classrooms;
+            return db.LMSRoles;
         }
 
-        public Classroom Classroom(int? id)
+        public Role Role(string id)
         {
-            return Classrooms().FirstOrDefault(c => c.ID == id);
+            return Roles().FirstOrDefault(u => u.Id == id);
         }
 
-        public void Add(Classroom classroom)
+        public void Add(Role role)
         {
-            db.Classrooms.Add(classroom);
+            if (role != null)
+            {
+                db.Roles.Add(role);
+                SaveChanges();
+            }
+        }
+
+        public void Edit(Role role)
+        {
+            db.Entry(role).State = EntityState.Modified;
             SaveChanges();
         }
 
-        public void Edit(Classroom classroom)
+        public void Delete(string id)
         {
-            db.Entry(classroom).State = EntityState.Modified;
-            db.SaveChanges();
-        }
-
-        public void Delete(int? id)
-        {
-            Classroom classroom = Classroom(id);
-
-            if (classroom != null)
+            Role role = Role(id);
+            if (role != null)
             {
-                db.Classrooms.Remove(classroom);
+                db.Roles.Remove(role);
                 SaveChanges();
             }
         }
