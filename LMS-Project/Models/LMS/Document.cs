@@ -16,7 +16,7 @@ namespace LMS_Project.Models.LMS
 
         [ForeignKey("Uploader")]
         public string UserID { get; set; }
-        public virtual ApplicationUser Uploader { get; set; }
+        public virtual User Uploader { get; set; }
         public string DocumentName { get; set; }
         public string DocumentContent { get; set; }
         public DateTime UploadingDate { get; set; }
@@ -27,6 +27,6 @@ namespace LMS_Project.Models.LMS
 
         [ForeignKey("VisibleTo")]
         public string RoleID { get; set; }
-        public virtual IdentityRole VisibleTo { get; set; }
+        public virtual Role VisibleTo { get; set; }
     }
 }

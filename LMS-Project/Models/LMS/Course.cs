@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LMS_Project.Models.LMS
@@ -13,5 +14,7 @@ namespace LMS_Project.Models.LMS
         [ForeignKey("Teacher")]
         public virtual string TeacherID { get; set; }
         public virtual User Teacher { get; set; }
+
+        public virtual ICollection<Document> Documents { get; set; }
     }
 }

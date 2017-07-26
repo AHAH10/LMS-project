@@ -8,5 +8,6 @@ namespace LMS_Project.Models.LMS
 {
     public class Role : IdentityRole
     {
+        public virtual ICollection<Document> Documents { get; set; }
     }
 }
