@@ -1,19 +1,19 @@
-namespace LMS_Project.Migrations.LMSMigrations
+namespace LMS_Project.DataContexts.IdentityMigrations
 {
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<LMS_Project.DataContexts.LMSDb>
+    internal sealed class Configuration : DbMigrationsConfiguration<LMS_Project.DataContexts.IdentityDb>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
-            MigrationsDirectory = @"Migrations\LMSMigrations";
+            MigrationsDirectory = @"DataContexts\IdentityMigrations";
         }
 
-        protected override void Seed(LMS_Project.DataContexts.LMSDb context)
+        protected override void Seed(LMS_Project.DataContexts.IdentityDb context)
         {
             //  This method will be called after migrating to the latest version.
 
