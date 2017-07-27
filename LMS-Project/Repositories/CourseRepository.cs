@@ -4,53 +4,49 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Web;
 
 namespace LMS_Project.Repositories
 {
-    public class RolesRepository : IDisposable
+    public class CourseRepository : IDisposable
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public IEnumerable<Role> Roles()
+        public IEnumerable<Course> Courses()
         {
-            return db.LMSRoles;
+            return db.Courses;
         }
 
-        public Role Role(string id)
+        public Course Course(int? id)
         {
-            return Roles().FirstOrDefault(u => u.Id == id);
+            return Courses().SingleOrDefault(c => c.ID == id);
         }
 
-        public Role RoleByName(string name)
+        public void Add(Course course)
         {
-            return Roles().FirstOrDefault(r => r.Name == name);
-        }
-
-        public void Add(Role role)
-        {
-            if (role != null)
-            {
-                db.Roles.Add(role);
-                SaveChanges();
-            }
-        }
-
-        public void Edit(Role role)
-        {
-            db.Entry(role).State = EntityState.Modified;
+            db.Courses.Add(course);
             SaveChanges();
         }
 
-        public void Delete(string id)
+        public void Edit(Course course)
         {
-            Role role = Role(id);
-            if (role != null)
+            db.Entry(course).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        public void Delete(int? id)
+        {
+            Course course = Course(id);
+
+            if (course != null)
             {
-                db.Roles.Remove(role);
+                db.Subjects.Where(s => s.Courses.Remove(course));
+                db.Courses.Remove(course);
                 SaveChanges();
             }
         }
 
+        //Save changed
         private void SaveChanges()
         {
             db.SaveChanges();
