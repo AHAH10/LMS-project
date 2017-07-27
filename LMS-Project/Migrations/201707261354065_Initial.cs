@@ -32,13 +32,24 @@ namespace LMS_Project.Migrations
                 .Index(t => t.TeacherID);
             
             CreateTable(
-                "dbo.Subjects",
+                "dbo.Documents",
                 c => new
                     {
                         ID = c.Int(nullable: false, identity: true),
-                        Name = c.String(),
+                        UserID = c.String(maxLength: 128),
+                        DocumentName = c.String(),
+                        DocumentContent = c.String(),
+                        UploadingDate = c.DateTime(nullable: false),
+                        CourseID = c.Int(nullable: false),
+                        RoleID = c.String(maxLength: 128),
                     })
-                .PrimaryKey(t => t.ID);
+                .PrimaryKey(t => t.ID)
+                .ForeignKey("dbo.Courses", t => t.CourseID, cascadeDelete: true)
+                .ForeignKey("dbo.AspNetUsers", t => t.UserID)
+                .ForeignKey("dbo.AspNetRoles", t => t.RoleID)
+                .Index(t => t.UserID)
+                .Index(t => t.CourseID)
+                .Index(t => t.RoleID);
             
             CreateTable(
                 "dbo.AspNetUsers",
@@ -110,6 +121,15 @@ namespace LMS_Project.Migrations
                 .PrimaryKey(t => t.Id)
                 .Index(t => t.Name, unique: true, name: "RoleNameIndex");
             
+            CreateTable(
+                "dbo.Subjects",
+                c => new
+                    {
+                        ID = c.Int(nullable: false, identity: true),
+                        Name = c.String(),
+                    })
+                .PrimaryKey(t => t.ID);
+            
         }
         
         public override void Down()
@@ -120,20 +140,27 @@ namespace LMS_Project.Migrations
             DropForeignKey("dbo.AspNetUserRoles", "RoleId", "dbo.AspNetRoles");
             DropForeignKey("dbo.Courses", "TeacherID", "dbo.AspNetUsers");
             DropForeignKey("dbo.Courses", "SubjectID", "dbo.Subjects");
+            DropForeignKey("dbo.Documents", "RoleID", "dbo.AspNetRoles");
+            DropForeignKey("dbo.Documents", "UserID", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Documents", "CourseID", "dbo.Courses");
             DropIndex("dbo.AspNetRoles", "RoleNameIndex");
             DropIndex("dbo.AspNetUserRoles", new[] { "RoleId" });
             DropIndex("dbo.AspNetUserRoles", new[] { "UserId" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
+            DropIndex("dbo.Documents", new[] { "RoleID" });
+            DropIndex("dbo.Documents", new[] { "CourseID" });
+            DropIndex("dbo.Documents", new[] { "UserID" });
             DropIndex("dbo.Courses", new[] { "TeacherID" });
             DropIndex("dbo.Courses", new[] { "SubjectID" });
+            DropTable("dbo.Subjects");
             DropTable("dbo.AspNetRoles");
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.AspNetUserLogins");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
-            DropTable("dbo.Subjects");
+            DropTable("dbo.Documents");
             DropTable("dbo.Courses");
             DropTable("dbo.Classrooms");
         }

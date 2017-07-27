@@ -1,12 +1,18 @@
-﻿using LMS_Project.Models.LMS;
+﻿using LMS_Project.Models;
+using LMS_Project.Models.LMS;
 using LMS_Project.Repositories;
+using LMS_Project.ViewModels;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private UsersRepository repository = new UsersRepository();
@@ -14,7 +20,23 @@ namespace LMS_Project.Controllers
         // GET: Users
         public ActionResult Index()
         {
-            return View(repository.Users().ToList());
+            List<ExtendedUserVM> viewModel = new List<ExtendedUserVM>();
+
+            foreach (User user in repository.Users())
+            {
+                Role role = new UsersRepository().GetUserRole(user.Id);
+
+                string roleName = string.Empty;
+
+                if (role != null)
+                {
+                    roleName = role.Name;
+                }
+
+                viewModel.Add(new ExtendedUserVM { User = user, RoleName = roleName });
+            }
+
+            return View(viewModel);
         }
 
         // GET: Users/Details/5
@@ -32,28 +54,6 @@ namespace LMS_Project.Controllers
             return View(user);
         }
 
-        // GET: Users/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Users/Create
-        // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
-        // plus de détails, voir  https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] User user)
-        {
-            if (ModelState.IsValid)
-            {
-                repository.Add(user);
-                return RedirectToAction("Index");
-            }
-
-            return View(user);
-        }
-
         // GET: Users/Edit/5
         public ActionResult Edit(string id)
         {
@@ -66,7 +66,18 @@ namespace LMS_Project.Controllers
             {
                 return HttpNotFound();
             }
-            return View(user);
+
+            ViewBag.Roles = new RolesRepository().Roles();
+            Role role = repository.GetUserRole(id);
+
+            string roleName = string.Empty;
+
+            if (role != null)
+            {
+                roleName = role.Name;
+            }
+
+            return View(new ExtendedUserVM { User = user, RoleName = roleName });
         }
 
         // POST: Users/Edit/5
@@ -74,11 +85,34 @@ namespace LMS_Project.Controllers
         // plus de détails, voir  https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Email,EmailConfirmed,PasswordHash,SecurityStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEndDateUtc,LockoutEnabled,AccessFailedCount,UserName")] User user)
+        public ActionResult Edit([Bind(Include = "Id,Email,PhoneNumber,UserName")] User user, string roleName)
         {
             if (ModelState.IsValid)
             {
-                repository.Edit(user);
+                // The unedited fields of the 'user' variable are set to default values
+                // Therefore it's needed to replace the initial values of the only editable fields with the
+                // new values
+
+                User originalUser = repository.User(user.Id);
+
+                originalUser.Email = user.Email;
+                originalUser.PhoneNumber = user.PhoneNumber;
+                originalUser.UserName = user.UserName;
+
+                Role originalRole = repository.GetUserRole(user.Id);
+
+                if (originalRole == null || string.Compare(originalRole.Name, roleName) != 0)
+                {
+                    var store = new UserStore<User>(new ApplicationDbContext());
+                    var userManager = new UserManager<User>(store);
+
+                    if (originalRole != null)
+                        userManager.RemoveFromRole(user.Id, originalRole.Name);
+
+                    userManager.AddToRole(user.Id, roleName);
+                }
+
+                repository.Edit(originalUser);
                 return RedirectToAction("Index");
             }
             return View(user);
@@ -102,9 +136,41 @@ namespace LMS_Project.Controllers
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(string submitButton, string id)
         {
-            repository.Delete(id);
+            if (submitButton == "yes")
+            {
+                repository.Delete(id);
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        // GET: Users/Delete/5
+        public ActionResult ResetPassword(string id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            User user = repository.User(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+            return View(user);
+        }
+
+        // POST: Users/Delete/5
+        [HttpPost, ActionName("ResetPassword")]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPasswordConfirmed(string submitButton, string id)
+        {
+            if (submitButton == "yes")
+            {
+                await repository.ChangePassword(id);
+            }
+
             return RedirectToAction("Index");
         }
 
