@@ -8,49 +8,50 @@ using System.Web;
 
 namespace LMS_Project.Repositories
 {
-    public class SubjectRepository:IDisposable
+    public class CourseRepository : IDisposable
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public IEnumerable<Subject> Subjects()
+        public IEnumerable<Course> Courses()
         {
-            return db.Subjects;
+            return db.Courses;
         }
 
-        public Subject Subject(int? id)
+        public Course Course(int? id)
         {
-            return Subjects().SingleOrDefault(s => s.ID == id);
+            return Courses().SingleOrDefault(c => c.ID == id);
         }
 
-        public void Add(Subject subject)
+        public void Add(Course course)
         {
-
-            db.Subjects.Add(subject);
+            db.Courses.Add(course);
             SaveChanges();
         }
 
-        public void Edit(Subject subject)
+        public void Edit(Course course)
         {
-            db.Entry(subject).State = EntityState.Modified;
+            db.Entry(course).State = EntityState.Modified;
             db.SaveChanges();
         }
 
         public void Delete(int? id)
         {
-            Subject subject = Subject(id);
+            Course course = Course(id);
 
-            if (subject != null)
+            if (course != null)
             {
-                db.Subjects.Remove(subject);
+                db.Subjects.Where(s => s.Courses.Remove(course));
+                db.Courses.Remove(course);
                 SaveChanges();
             }
         }
 
+        //Save changed
         private void SaveChanges()
         {
             db.SaveChanges();
         }
-        
+
         #region IDisposable Support
         private bool disposedValue = false;
 
@@ -68,5 +69,5 @@ namespace LMS_Project.Repositories
             Dispose(true);
         }
         #endregion
-    }  
+    }
 }
