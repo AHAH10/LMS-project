@@ -4,49 +4,44 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Web;
 
 namespace LMS_Project.Repositories
 {
-    public class RolesRepository : IDisposable
+    public class SubjectRepository:IDisposable
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        public IEnumerable<Role> Roles()
+        public IEnumerable<Subject> Subjects()
         {
-            return db.LMSRoles;
+            return db.Subjects;
         }
 
-        public Role Role(string id)
+        public Subject Subject(int? id)
         {
-            return Roles().FirstOrDefault(u => u.Id == id);
+            return Subjects().SingleOrDefault(s => s.ID == id);
         }
 
-        public Role RoleByName(string name)
+        public void Add(Subject subject)
         {
-            return Roles().FirstOrDefault(r => r.Name == name);
-        }
 
-        public void Add(Role role)
-        {
-            if (role != null)
-            {
-                db.Roles.Add(role);
-                SaveChanges();
-            }
-        }
-
-        public void Edit(Role role)
-        {
-            db.Entry(role).State = EntityState.Modified;
+            db.Subjects.Add(subject);
             SaveChanges();
         }
 
-        public void Delete(string id)
+        public void Edit(Subject subject)
         {
-            Role role = Role(id);
-            if (role != null)
+            db.Entry(subject).State = EntityState.Modified;
+            db.SaveChanges();
+        }
+
+        public void Delete(int? id)
+        {
+            Subject subject = Subject(id);
+
+            if (subject != null)
             {
-                db.Roles.Remove(role);
+                db.Subjects.Remove(subject);
                 SaveChanges();
             }
         }
@@ -55,7 +50,7 @@ namespace LMS_Project.Repositories
         {
             db.SaveChanges();
         }
-
+        
         #region IDisposable Support
         private bool disposedValue = false;
 
@@ -73,5 +68,5 @@ namespace LMS_Project.Repositories
             Dispose(true);
         }
         #endregion
-    }
+    }  
 }

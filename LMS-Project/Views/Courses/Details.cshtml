@@ -1,0 +1,48 @@
+﻿@model LMS_Project.Models.LMS.Course
+
+<div>
+    <h4>Course</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Subject.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subject.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Teacher.Email)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacher.Email)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Teacher.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacher.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Teacher.Roles.First().RoleId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacher.Roles.First().RoleId)
+        </dd>
+        <dt>
+            Amount of Courses
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacher.Courses.Count)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
