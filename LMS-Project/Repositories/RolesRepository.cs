@@ -21,6 +21,11 @@ namespace LMS_Project.Repositories
             return Roles().FirstOrDefault(u => u.Id == id);
         }
 
+        public Role RoleByName(string name)
+        {
+            return Roles().FirstOrDefault(r => r.Name == name);
+        }
+
         public void Add(Role role)
         {
             if (role != null)

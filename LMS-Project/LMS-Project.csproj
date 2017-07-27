@@ -161,21 +161,23 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClassroomsController.cs" />
+    <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SubjectsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\RoleHelpers.cs" />
-    <Compile Include="Migrations\201707261323302_InitialCreate.cs" />
-    <Compile Include="Migrations\201707261323302_InitialCreate.Designer.cs">
-      <DependentUpon>201707261323302_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201707270844519_Init.cs" />
+    <Compile Include="Migrations\201707270844519_Init.Designer.cs">
+      <DependentUpon>201707270844519_Init.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201707270822390_Initial.cs" />
-    <Compile Include="Migrations\201707270822390_Initial.Designer.cs">
-      <DependentUpon>201707270822390_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201707271144230_t.cs" />
+    <Compile Include="Migrations\201707271144230_t.Designer.cs">
+      <DependentUpon>201707271144230_t.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -196,6 +198,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-LMS-Project-20170724014225.mdf" />
+    <Content Include="App_Data\aspnet-LMS-Project-20170724014225_log.ldf">
+      <DependentUpon>aspnet-LMS-Project-20170724014225.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -270,6 +276,11 @@
     <Content Include="Views\Roles\Details.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
+    <Content Include="Views\Courses\Index.cshtml" />
+    <Content Include="Views\Courses\Details.cshtml" />
+    <Content Include="Views\Courses\Create.cshtml" />
+    <Content Include="Views\Subjects\Index.cshtml" />
+    <Content Include="Views\Subjects\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -279,14 +290,14 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="Views\Course\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707261323302_InitialCreate.resx">
-      <DependentUpon>201707261323302_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201707270844519_Init.resx">
+      <DependentUpon>201707270844519_Init.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707270822390_Initial.resx">
-      <DependentUpon>201707270822390_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201707271144230_t.resx">
+      <DependentUpon>201707271144230_t.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
