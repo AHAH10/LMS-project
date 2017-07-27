@@ -22,11 +22,16 @@ namespace LMS_Project.Models.LMS
         public DateTime UploadingDate { get; set; }
 
         [ForeignKey("Course")]
-        public int CourseID { get; set; }
+        public int? CourseID { get; set; }
         public virtual Course Course { get; set; }
 
         [ForeignKey("VisibleTo")]
         public string RoleID { get; set; }
         public virtual Role VisibleTo { get; set; }
+
+        internal object ToList()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
