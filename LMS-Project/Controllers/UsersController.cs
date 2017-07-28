@@ -24,16 +24,7 @@ namespace LMS_Project.Controllers
 
             foreach (User user in repository.Users())
             {
-                Role role = new UsersRepository().GetUserRole(user.Id);
-
-                string roleName = string.Empty;
-
-                if (role != null)
-                {
-                    roleName = role.Name;
-                }
-
-                viewModel.Add(new ExtendedUserVM { User = user, RoleName = roleName });
+                viewModel.Add(new ExtendedUserVM { User = user, RoleName = new UsersRepository().GetUserRole(user.Id).Name });
             }
 
             return View(viewModel);
@@ -50,70 +41,6 @@ namespace LMS_Project.Controllers
             if (user == null)
             {
                 return HttpNotFound();
-            }
-            return View(user);
-        }
-
-        // GET: Users/Edit/5
-        public ActionResult Edit(string id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            User user = repository.User(id);
-            if (user == null)
-            {
-                return HttpNotFound();
-            }
-
-            ViewBag.Roles = new RolesRepository().Roles();
-            Role role = repository.GetUserRole(id);
-
-            string roleName = string.Empty;
-
-            if (role != null)
-            {
-                roleName = role.Name;
-            }
-
-            return View(new ExtendedUserVM { User = user, RoleName = roleName });
-        }
-
-        // POST: Users/Edit/5
-        // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
-        // plus de détails, voir  https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Email,PhoneNumber,UserName")] User user, string roleName)
-        {
-            if (ModelState.IsValid)
-            {
-                // The unedited fields of the 'user' variable are set to default values
-                // Therefore it's needed to replace the initial values of the only editable fields with the
-                // new values
-
-                User originalUser = repository.User(user.Id);
-
-                originalUser.Email = user.Email;
-                originalUser.PhoneNumber = user.PhoneNumber;
-                originalUser.UserName = user.UserName;
-
-                Role originalRole = repository.GetUserRole(user.Id);
-
-                if (originalRole == null || string.Compare(originalRole.Name, roleName) != 0)
-                {
-                    var store = new UserStore<User>(new ApplicationDbContext());
-                    var userManager = new UserManager<User>(store);
-
-                    if (originalRole != null)
-                        userManager.RemoveFromRole(user.Id, originalRole.Name);
-
-                    userManager.AddToRole(user.Id, roleName);
-                }
-
-                repository.Edit(originalUser);
-                return RedirectToAction("Index");
             }
             return View(user);
         }

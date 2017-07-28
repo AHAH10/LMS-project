@@ -15,10 +15,16 @@
             @Html.DisplayNameFor(model => model.User.UserName)
         </th>
         <th>
+            @Html.DisplayName("First Name")
+        </th>
+        <th>
+            @Html.DisplayName("Last Name")
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.User.Email)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User.PhoneNumber)
+            @Html.DisplayName("Phone Number")
         </th>
         <th>
             @Html.DisplayName("Role")
@@ -33,6 +39,12 @@
                 @Html.DisplayFor(modelItem => item.User.UserName)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.User.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.LastName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.User.Email)
             </td>
             <td>
@@ -42,7 +54,7 @@
                 @Html.DisplayFor(modelItem => item.RoleName)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.User.Id }) |
+                @Html.ActionLink("Edit", "Edit","Account", new { id = item.User.Id }, null) |
                 @Html.ActionLink("Details", "Details", new { id = item.User.Id }) |
                 @Html.ActionLink("Reset password", "ResetPassword", new { id = item.User.Id }) |
                 @Html.ActionLink("Delete", "Delete", new { id = item.User.Id })

@@ -18,7 +18,7 @@ namespace LMS_Project.Migrations
         protected override void Seed(ApplicationDbContext context)
         {
             #region Roles
-            if (!context.Roles.Any(r => r.Name == "Admin"))
+            if (!context.LMSRoles.Any(r => r.Name == "Admin"))
             {
                 var store = new RoleStore<Role>(context);
                 var roleManager = new RoleManager<Role>(store);
@@ -26,7 +26,7 @@ namespace LMS_Project.Migrations
                 roleManager.Create(new Role("Admin"));
             }
 
-            if (!context.Roles.Any(r => r.Name == "Teacher"))
+            if (!context.LMSRoles.Any(r => r.Name == "Teacher"))
             {
                 var store = new RoleStore<Role>(context);
                 var roleManager = new RoleManager<Role>(store);
@@ -34,7 +34,7 @@ namespace LMS_Project.Migrations
                 roleManager.Create(new Role("Teacher"));
             }
 
-            if (!context.Roles.Any(r => r.Name == "Student"))
+            if (!context.LMSRoles.Any(r => r.Name == "Student"))
             {
                 var store = new RoleStore<Role>(context);
                 var roleManager = new RoleManager<Role>(store);
@@ -52,21 +52,21 @@ namespace LMS_Project.Migrations
             #endregion
 
             #region Users
-            if (!context.Users.Any(u => u.UserName == "Admin"))
+            if (!context.LMSUsers.Any(u => u.UserName == "Admin"))
             {
                 var store = new UserStore<User>(context);
                 var userManager = new UserManager<User>(store);
-                var newuser = new User { UserName = "Admin", Email = "admin@mail.nu" };
+                var newuser = new User { UserName = "Admin", Email = "admin@mail.nu"};
 
                 userManager.Create(newuser, "Admin-Password1");
                 userManager.AddToRole(newuser.Id, "Admin");
             }
 
-            if (!context.Users.Any(u => u.UserName == "Liam"))
+            if (!context.LMSUsers.Any(u => u.UserName == "Liam"))
             {
                 var store = new UserStore<User>(context);
                 var userManager = new UserManager<User>(store);
-                var newuser = new User { UserName = "Liam", Email = "liam@mail.nu" };
+                var newuser = new User { UserName = "Liam", Email = "liam@mail.nu", FirstName = "Liam", LastName = "B" };
 
                 userManager.Create(newuser, "Teacher-Password1");
                 userManager.AddToRole(newuser.Id, "Teacher");
@@ -76,7 +76,7 @@ namespace LMS_Project.Migrations
             course.Teacher = user;
             user.Courses = new List<Course> { course };
 
-            context.LMSUsers.AddOrUpdate(u => u.Id, user);
+            context.Users.AddOrUpdate(u => u.Id, user);
             #endregion
 
             #region Classrooms
