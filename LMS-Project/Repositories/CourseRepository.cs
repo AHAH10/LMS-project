@@ -22,16 +22,29 @@ namespace LMS_Project.Repositories
             return Courses().SingleOrDefault(c => c.ID == id);
         }
 
-        public void Add(Course course)
+        public bool Add(Course course)
         {
+            var _courses = this.Courses().Where(c=>c.TeacherID==course.TeacherID && c.SubjectID==course.SubjectID);
+            if(_courses.Count()!=0)
+            {
+                _courses = null;
+                return false;
+            }
             db.Courses.Add(course);
             SaveChanges();
+            return true;
         }
 
-        public void Edit(Course course)
+        public bool Edit(Course course)
         {
-            db.Entry(course).State = EntityState.Modified;
-            db.SaveChanges();
+           
+            if (this.db.Courses.Where(_cRel => _cRel.ID != course.ID && _cRel.SubjectID == course.SubjectID&&_cRel.TeacherID == course.TeacherID).Count() ==0)
+            {
+                db.Entry(course).State = EntityState.Modified;
+                db.SaveChanges();
+                return true;
+            }
+            return false;
         }
 
         public void Delete(int? id)

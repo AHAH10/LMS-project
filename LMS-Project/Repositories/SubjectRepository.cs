@@ -22,17 +22,30 @@ namespace LMS_Project.Repositories
             return Subjects().SingleOrDefault(s => s.ID == id);
         }
 
-        public void Add(Subject subject)
+        public bool Add(Subject subject)
         {
-
+            var _subjects = this.Subjects().Where(s => s.Name == subject.Name);
+            if(_subjects.Count()!=0)
+            {
+                _subjects = null;
+                return false;
+            }
             db.Subjects.Add(subject);
             SaveChanges();
+            return true;
         }
 
-        public void Edit(Subject subject)
+        public bool Edit(Subject subject)
         {
+            var _subjects = this.Subjects().Where(s => s.Name == subject.Name &&subject.ID!=s.ID);
+            if(_subjects.Count()!=0)
+            {
+                _subjects = null;
+                return false;
+            }
             db.Entry(subject).State = EntityState.Modified;
             db.SaveChanges();
+            return true;
         }
 
         public void Delete(int? id)
