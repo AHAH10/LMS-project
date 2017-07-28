@@ -38,61 +38,26 @@ namespace LMS_Project.Controllers
             return View(document);
         }
 
-        // GET: Documents/Create
-        public ActionResult Create()
-        {
-            ViewBag.CourseID = new SelectList(new ApplicationDbContext().Courses, "ID", "Name");
-            ViewBag.RoleID = new SelectList(new ApplicationDbContext().Roles, "Id", "Name");
-            return View();
-        }
-
-        // POST: Documents/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,UserID,DocumentName,UploadingDate,RoleID")] Document document)
-        {
-            if (ModelState.IsValid)
-            {
-                repository.Add(document);
-                return RedirectToAction("Index");
-            }
-
-            return View(document);
-        }
-
-        //// GET: Documents/Edit/5
-        //public ActionResult Edit(int? id)
+        //// GET: Documents/Create
+        //public ActionResult Create()
         //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Document document = repository.Document(id);
-        //    if (document == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.CourseID = new SelectList(new ApplicationDbContext().Courses, "ID", "TeacherID", document.CourseID);
-        //    ViewBag.RoleID = new SelectList(new ApplicationDbContext().Roles, "Id", "Name", document.RoleID);
-        //    return View(document);
+        //    ViewBag.CourseID = new SelectList(new ApplicationDbContext().Courses, "ID", "Name");
+        //    ViewBag.RoleID = new SelectList(new ApplicationDbContext().Roles, "Id", "Name");
+        //    return View();
         //}
 
-        // POST: Documents/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //// POST: Documents/Create
+        //// To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        //// more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         //[HttpPost]
         //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "ID,UserID,DocumentName,UploadingDate,CourseID,RoleID")] Document document)
+        //public ActionResult Create([Bind(Include = "ID,UserID,DocumentName,UploadingDate,RoleID")] Document document)
         //{
         //    if (ModelState.IsValid)
         //    {
-        //        repository.Edit(document);
+        //        repository.Add(document);
         //        return RedirectToAction("Index");
         //    }
-        //    ViewBag.CourseID = new SelectList(new ApplicationDbContext().Courses, "ID", "TeacherID", document.CourseID);
-        //    ViewBag.RoleID = new SelectList(new ApplicationDbContext().Roles, "Id", "Name", document.RoleID);
 
         //    return View(document);
         //}
@@ -121,6 +86,53 @@ namespace LMS_Project.Controllers
             return RedirectToAction("Index");
         }
 
+        // UploadDocument Methods
+
+        // Get  Teacher
+        public ActionResult UploadDocumentForMyself()
+        {     
+            return View();
+        }
+        // POST  Teacher
+        private ActionResult UploadDocumentForMyselfConfirmed([Bind(Include = "ID,DocumentName,Content,UploadingDate,UserID,RoleID")] Document document)
+        {
+            repository.Add(document);
+            return RedirectToAction("Index");
+        }
+        // Get  Specific Course/ Student
+        public ActionResult UploadDocumentForSpecificCourse()
+        {
+            return View();
+        }
+        // POST  Specific Course/ Student
+        private ActionResult UploadDocumentForSpecificCourseConfirmed([Bind(Include = "ID,DocumentName,Content,UploadingDate,UserID,RoleID,CourseID")] Document document)
+        {
+            repository.Add(document);
+            return RedirectToAction("Index");
+        }
+        // Get For Assignments 
+         public ActionResult UploadDocumentForAssignments()
+        {
+            return View();
+        }
+         // POST  For Assignments 
+         public ActionResult UploadDocumentForAssignmentsConfirmed([Bind(Include = "ID,DocumentName,Content,UploadingDate,UserID,RoleID,CourseID")] Document document)
+         {
+             repository.Add(document);
+             return RedirectToAction("Index");
+         }
+         // Get  Classroom
+           public ActionResult UploadDocumentForClassroom()
+         {
+             return View();
+         }
+           // POST Classroom
+           public ActionResult UploadDocumentForClassroomConfirmed([Bind(Include = "ID,DocumentName,Content,UploadingDate,UserID,RoleID,CourseID")] Document document)
+           {
+               repository.Add(document);
+               return RedirectToAction("Index");
+           }
+       
         protected override void Dispose(bool disposing)
         {
             if (disposing)

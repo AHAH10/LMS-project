@@ -18,11 +18,11 @@ namespace LMS_Project.Models.LMS
         public string UserID { get; set; }
         public virtual User Uploader { get; set; }
         public string DocumentName { get; set; }
-        public string DocumentContent { get; set; }
+        public byte[] DocumentContent { get; set; }
         public DateTime UploadingDate { get; set; }
 
         [ForeignKey("Course")]
-        public int? CourseID { get; set; }
+        public int CourseID { get; set; }
         public virtual Course Course { get; set; }
 
         [ForeignKey("VisibleTo")]
