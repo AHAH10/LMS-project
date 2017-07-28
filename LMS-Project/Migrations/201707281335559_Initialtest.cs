@@ -3,7 +3,7 @@ namespace LMS_Project.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Initial : DbMigration
+    public partial class Initialtest : DbMigration
     {
         public override void Up()
         {
@@ -38,7 +38,7 @@ namespace LMS_Project.Migrations
                         ID = c.Int(nullable: false, identity: true),
                         UserID = c.String(maxLength: 128),
                         DocumentName = c.String(),
-                        DocumentContent = c.String(),
+                        DocumentContent = c.Binary(),
                         UploadingDate = c.DateTime(nullable: false),
                         CourseID = c.Int(nullable: false),
                         RoleID = c.String(maxLength: 128),
@@ -67,6 +67,8 @@ namespace LMS_Project.Migrations
                         LockoutEnabled = c.Boolean(nullable: false),
                         AccessFailedCount = c.Int(nullable: false),
                         UserName = c.String(nullable: false, maxLength: 256),
+                        FirstName = c.String(),
+                        LastName = c.String(),
                         Discriminator = c.String(nullable: false, maxLength: 128),
                     })
                 .PrimaryKey(t => t.Id)
