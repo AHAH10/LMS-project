@@ -172,13 +172,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\RoleHelpers.cs" />
-    <Compile Include="Migrations\201707261156550_Initial.cs" />
-    <Compile Include="Migrations\201707261156550_Initial.Designer.cs">
-      <DependentUpon>201707261156550_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201707261200233_AddDocuments.cs" />
-    <Compile Include="Migrations\201707261200233_AddDocuments.Designer.cs">
-      <DependentUpon>201707261200233_AddDocuments.cs</DependentUpon>
+    <Compile Include="Migrations\201707261354065_Initial.cs" />
+    <Compile Include="Migrations\201707261354065_Initial.Designer.cs">
+      <DependentUpon>201707261354065_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\201707271153504_Test.cs" />
     <Compile Include="Migrations\201707271153504_Test.Designer.cs">
@@ -301,6 +297,7 @@
     <Content Include="Views\Courses\Index.cshtml" />
     <Content Include="Views\Subjects\Create.cshtml" />
     <Content Include="Views\Subjects\Index.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -310,11 +307,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707261156550_Initial.resx">
-      <DependentUpon>201707261156550_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707261200233_AddDocuments.resx">
-      <DependentUpon>201707261200233_AddDocuments.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201707261354065_Initial.resx">
+      <DependentUpon>201707261354065_Initial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201707271153504_Test.resx">
       <DependentUpon>201707271153504_Test.cs</DependentUpon>

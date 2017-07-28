@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using LMS_Project.Models.LMS;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace LMS_Project.Models
@@ -49,9 +50,8 @@ namespace LMS_Project.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "User name")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -70,6 +70,18 @@ namespace LMS_Project.Models
         public string Email { get; set; }
 
         [Required]
+        [Display(Name = "User name")]
+        public string UserName { get; set; }
+
+        [Display(Name = "First name")]
+        [CustomValidation(typeof(User), "ValidateFirstName")]
+        public string FirstName { get; set; }
+
+        [Display(Name = "Last name")]
+        [CustomValidation(typeof(User), "ValidateLastName")]
+        public string LastName { get; set; }
+
+        [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -79,6 +91,12 @@ namespace LMS_Project.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Select a role")]
+        public string RoleName { get; set; }
+
+        public List<Role> Roles { get; set; }
     }
 
     public class ResetPasswordViewModel

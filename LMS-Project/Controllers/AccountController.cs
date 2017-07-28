@@ -9,6 +9,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using LMS_Project.Models;
+using LMS_Project.Repositories;
+using LMS_Project.Models.LMS;
+using System.Collections.Generic;
+using LMS_Project.ViewModels;
 
 namespace LMS_Project.Controllers
 {
@@ -22,7 +26,7 @@ namespace LMS_Project.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -34,9 +38,9 @@ namespace LMS_Project.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -75,7 +79,7 @@ namespace LMS_Project.Controllers
 
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+            var result = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -120,7 +124,7 @@ namespace LMS_Project.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -136,40 +140,114 @@ namespace LMS_Project.Controllers
 
         //
         // GET: /Account/Register
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
-            return View();
+            return View(new RegisterViewModel { Roles = new RolesRepository().Roles().ToList() });
         }
 
         //
         // POST: /Account/Register
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new User
+                {
+                    UserName = model.UserName,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Email = model.Email
+                };
+
+                // By default, the user's firstname is equal to the username
+                if (user.FirstName.Length == 0)
+                    user.FirstName = user.UserName;
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    await UserManager.AddToRoleAsync(user.Id, model.RoleName);
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Users");
                 }
                 AddErrors(result);
             }
 
             // If we got this far, something failed, redisplay form
+            model.Roles = new RolesRepository().Roles().ToList();
             return View(model);
+        }
+
+        // GET: Account/Edit/5
+        public ActionResult Edit(string id)
+        {
+            if (id == null)
+            {
+                return RedirectToAction("Index", "Users");
+            }
+            User user = new UsersRepository().User(id);
+            if (user == null)
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.Roles = new RolesRepository().Roles();
+
+            string roleName = string.Empty;
+
+            // The user's role can't be edited if:
+            // - the edited user actually is the current user (can't modify oneself's role)
+            // - the user is responsible for some courses
+            // - the user has uploaded some documents (whatever purpose they have)
+            // - the user has published some news
+            if (User.Identity.GetUserId() != id && user.Courses.Count == 0 && user.Documents.Count == 0) // && user.News.Count == 0)
+            {
+                roleName = new UsersRepository().GetUserRole(user.Id).Name;
+            }
+
+            return View(new ExtendedUserVM { User = user, RoleName = roleName });
+        }
+
+        // POST: Account/Edit/5
+        // Afin de déjouer les attaques par sur-validation, activez les propriétés spécifiques que vous voulez lier. Pour 
+        // plus de détails, voir  https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,UserName,FirstName,LastName,Email,PhoneNumber")] User user, string roleName)
+        {
+            if (ModelState.IsValid)
+            {
+                // The unedited fields of the 'user' variable are set to default values
+                // Therefore it's needed to replace the initial values of the only editable fields with the
+                // new values
+                UsersRepository repository = new UsersRepository();
+                User originalUser = repository.User(user.Id);
+
+                originalUser.Email = user.Email;
+                originalUser.PhoneNumber = user.PhoneNumber;
+                originalUser.UserName = user.UserName;
+                originalUser.FirstName = user.FirstName;
+                originalUser.LastName = user.LastName;
+
+                Role originalRole = repository.GetUserRole(user.Id);
+
+                if (roleName != null && string.Compare(originalRole.Name, roleName) != 0)
+                {
+                    UserManager.RemoveFromRole(user.Id, originalRole.Name);
+
+                    UserManager.AddToRole(user.Id, roleName);
+                }
+
+                repository.Edit(originalUser);
+                return RedirectToAction("Index", "Users");
+            }
+
+            ViewBag.Roles = new RolesRepository().Roles();
+            return View(new ExtendedUserVM { User = user, RoleName = roleName });
         }
 
         //

@@ -1,9 +1,12 @@
 ﻿using LMS_Project.Models;
 using LMS_Project.Models.LMS;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace LMS_Project.Repositories
 {
@@ -44,6 +47,34 @@ namespace LMS_Project.Repositories
                 db.Users.Remove(user);
                 SaveChanges();
             }
+        }
+
+        public async Task ChangePassword(string id, string newPassword = "Default-Password1")
+        {
+            User user = User(id);
+            if (user != null)
+            {
+                UserStore<User> store = new UserStore<User>(db);
+                UserManager<User> UserManager = new UserManager<User>(store);
+                string hashedNewPassword = UserManager.PasswordHasher.HashPassword(newPassword);
+                await store.SetPasswordHashAsync(user, hashedNewPassword);
+                await store.UpdateAsync(user);
+            }
+        }
+
+        public Role GetUserRole(string userId)
+        {
+            User user = User(userId);
+            Role role = null;
+
+            List<Role> roles = db.LMSRoles.ToList();
+
+            foreach (IdentityUserRole userRole in user.Roles)
+            {
+                role = db.LMSRoles.FirstOrDefault(r => r.Id == userRole.RoleId);
+            }
+
+            return role;
         }
 
         private void SaveChanges()
