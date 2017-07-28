@@ -172,21 +172,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\RoleHelpers.cs" />
-    <Compile Include="Migrations\201707261354065_Initial.cs" />
-    <Compile Include="Migrations\201707261354065_Initial.Designer.cs">
-      <DependentUpon>201707261354065_Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201707271153504_Test.cs" />
-    <Compile Include="Migrations\201707271153504_Test.Designer.cs">
-      <DependentUpon>201707271153504_Test.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201707271205279_Documents.cs" />
-    <Compile Include="Migrations\201707271205279_Documents.Designer.cs">
-      <DependentUpon>201707271205279_Documents.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201707280723114_document.cs" />
-    <Compile Include="Migrations\201707280723114_document.Designer.cs">
-      <DependentUpon>201707280723114_document.cs</DependentUpon>
+    <Compile Include="Migrations\201707281117414_Initial.cs" />
+    <Compile Include="Migrations\201707281117414_Initial.Designer.cs">
+      <DependentUpon>201707281117414_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -207,6 +195,9 @@
     <Compile Include="Repositories\SubjectRepository.cs" />
     <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\ChangePasswordVM.cs" />
+    <Compile Include="ViewModels\ExtendedUserVM.cs" />
+    <Compile Include="ViewModels\UploadDocumentVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\aspnet-LMS-Project-20170724014225.mdf" />
@@ -298,6 +289,7 @@
     <Content Include="Views\Subjects\Create.cshtml" />
     <Content Include="Views\Subjects\Index.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Documents\UploadDocumentForMyself.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -307,17 +299,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707261354065_Initial.resx">
-      <DependentUpon>201707261354065_Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707271153504_Test.resx">
-      <DependentUpon>201707271153504_Test.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707271205279_Documents.resx">
-      <DependentUpon>201707271205279_Documents.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201707280723114_document.resx">
-      <DependentUpon>201707280723114_document.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201707281117414_Initial.resx">
+      <DependentUpon>201707281117414_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
