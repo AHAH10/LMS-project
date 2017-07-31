@@ -52,16 +52,21 @@ namespace LMS_Project.Repositories
             return false;
         }
 
-        public void Delete(int? id)
+        public bool Delete(int? id)
         {
             Course course = Course(id);
 
             if (course != null)
             {
-                db.Subjects.Where(s => s.Courses.Remove(course));
-                db.Courses.Remove(course);
-                SaveChanges();
+                if(course.Documents.Count()==0 && course.Schedules.Count()==0)
+                {
+                    db.Subjects.Where(s => s.Courses.Remove(course));
+                    db.Courses.Remove(course);
+                    SaveChanges();
+                    return true;
+                }
             }
+            return false;
         }
 
         //Save changed
