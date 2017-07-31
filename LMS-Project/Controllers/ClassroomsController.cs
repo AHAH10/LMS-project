@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class ClassroomsController : Controller
     {
         private ClassroomsRepository repository = new ClassroomsRepository();
@@ -21,12 +22,12 @@ namespace LMS_Project.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
             Classroom classroom = repository.Classroom(id);
             if (classroom == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index");
             }
             return View(classroom);
         }
@@ -42,7 +43,7 @@ namespace LMS_Project.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Location")] Classroom classroom)
+        public ActionResult Create([Bind(Include = "ID,Name,Location,AmountStudentsMax,Remarks")] Classroom classroom)
         {
             if (ModelState.IsValid)
             {
@@ -58,12 +59,12 @@ namespace LMS_Project.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
             Classroom classroom = repository.Classroom(id);
             if (classroom == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index");
             }
             return View(classroom);
         }
@@ -73,7 +74,7 @@ namespace LMS_Project.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Location")] Classroom classroom)
+        public ActionResult Edit([Bind(Include = "ID,Name,Location,AmountStudentsMax,Remarks")] Classroom classroom)
         {
             if (ModelState.IsValid)
             {
@@ -88,12 +89,12 @@ namespace LMS_Project.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
             Classroom classroom = repository.Classroom(id);
             if (classroom == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index");
             }
             return View(classroom);
         }

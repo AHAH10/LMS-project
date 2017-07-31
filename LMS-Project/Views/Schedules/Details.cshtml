@@ -1,0 +1,66 @@
+﻿@model LMS_Project.Models.LMS.Schedule
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Schedule</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Classroom)
+        </dt>
+
+        <dd>
+            @Html.DisplayName(Model.Classroom.Name + " (" + Model.Classroom.Location + ")")
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Course)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model=> model.Course.Subject.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Course.Teacher)
+        </dt>
+
+        <dd>
+            @Html.DisplayName(Model.Course.Teacher.ToString())
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.WeekDay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WeekDay)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BeginningTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BeginningTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndingTime)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndingTime)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

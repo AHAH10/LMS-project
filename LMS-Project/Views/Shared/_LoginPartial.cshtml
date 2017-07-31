@@ -1,4 +1,8 @@
 ﻿@using Microsoft.AspNet.Identity
+@using LMS_Project.Models
+@using LMS_Project.Models.LMS
+@using Microsoft.AspNet.Identity.EntityFramework
+
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -6,7 +10,17 @@
         @Html.AntiForgeryToken()
 
         <ul class="nav navbar-nav navbar-right">
-            <li>@Html.ActionLink("Change password for " + User.Identity.GetUserName(), "ChangePassword", "Manage", null, null)</li>
+            <li>
+                @{var manager = new UserManager<User>(new UserStore<User>(new ApplicationDbContext()));
+                var currentUser = manager.FindById(User.Identity.GetUserId());
+                string userName = currentUser.FirstName;
+                if (userName == null || userName.Length == 0)
+                {
+                    userName = currentUser.UserName;
+                }
+                }
+                @Html.ActionLink("Hello " + userName + "!", "ChangePassword", "Manage", null, null)
+            </li>
             <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         </ul>
     }

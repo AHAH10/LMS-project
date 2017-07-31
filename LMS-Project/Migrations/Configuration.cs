@@ -12,7 +12,7 @@ namespace LMS_Project.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
         protected override void Seed(ApplicationDbContext context)
@@ -56,7 +56,7 @@ namespace LMS_Project.Migrations
             {
                 var store = new UserStore<User>(context);
                 var userManager = new UserManager<User>(store);
-                var newuser = new User { UserName = "Admin", Email = "admin@mail.nu"};
+                var newuser = new User { UserName = "Admin", Email = "admin@mail.nu" };
 
                 userManager.Create(newuser, "Admin-Password1");
                 userManager.AddToRole(newuser.Id, "Admin");
@@ -82,30 +82,182 @@ namespace LMS_Project.Migrations
             #region Classrooms
             context.Classrooms.AddOrUpdate(
                 c => c.ID,
-                new Classroom { ID = 1, Name = "A001", Location = "Building A, ground floor, first on the right" },
-                new Classroom { ID = 2, Name = "A002", Location = "Building A, ground floor, first on the left" },
-                new Classroom { ID = 3, Name = "A003", Location = "Building A, ground floor, second on the right" },
-                new Classroom { ID = 4, Name = "A004", Location = "Building A, ground floor, second on the left" },
-                new Classroom { ID = 5, Name = "A011", Location = "Building A, first floor, first on the right" },
-                new Classroom { ID = 6, Name = "A012", Location = "Building A, first floor, first on the left" },
-                new Classroom { ID = 7, Name = "A013", Location = "Building A, first floor, second on the right" },
-                new Classroom { ID = 8, Name = "A014", Location = "Building A, first floor, second on the left" },
-                new Classroom { ID = 9, Name = "A021", Location = "Building A, second floor, first on the right" },
-                new Classroom { ID = 10, Name = "A022", Location = "Building A, second floor, first on the left" },
-                new Classroom { ID = 11, Name = "A023", Location = "Building A, second floor, second on the right" },
-                new Classroom { ID = 12, Name = "A024", Location = "Building A, second floor, second on the left" },
-                new Classroom { ID = 13, Name = "B001", Location = "Building B, ground floor, first on the right" },
-                new Classroom { ID = 14, Name = "B002", Location = "Building B, ground floor, first on the left" },
-                new Classroom { ID = 15, Name = "B003", Location = "Building B, ground floor, second on the right" },
-                new Classroom { ID = 16, Name = "B004", Location = "Building B, ground floor, second on the left" },
-                new Classroom { ID = 17, Name = "B011", Location = "Building B, first floor, first on the right" },
-                new Classroom { ID = 18, Name = "B012", Location = "Building B, first floor, first on the left" },
-                new Classroom { ID = 19, Name = "B013", Location = "Building B, first floor, second on the right" },
-                new Classroom { ID = 20, Name = "B014", Location = "Building B, first floor, second on the left" },
-                new Classroom { ID = 21, Name = "B021", Location = "Building B, second floor, first on the right" },
-                new Classroom { ID = 22, Name = "B022", Location = "Building B, second floor, first on the left" },
-                new Classroom { ID = 23, Name = "B023", Location = "Building B, second floor, second on the right" },
-                new Classroom { ID = 24, Name = "B024", Location = "Building B, second floor, second on the left" }
+                new Classroom
+                {
+                    ID = 1,
+                    Name = "A001",
+                    Location = "Building A, ground floor, first on the right",
+                    Remarks = "Lecture hall",
+                    AmountStudentsMax = 354
+                },
+                new Classroom
+                {
+                    ID = 2,
+                    Name = "A002",
+                    Location = "Building A, ground floor, first on the left",
+                    Remarks = "Chemistry classroom",
+                    AmountStudentsMax = 18
+                },
+                new Classroom
+                {
+                    ID = 3,
+                    Name = "A003",
+                    Location = "Building A, ground floor, second on the right",
+                    AmountStudentsMax = 32
+                },
+                new Classroom
+                {
+                    ID = 4,
+                    Name = "A004",
+                    Location = "Building A, ground floor, second on the left",
+                    AmountStudentsMax = 28
+                },
+                new Classroom
+                {
+                    ID = 5,
+                    Name = "A011",
+                    Location = "Building A, first floor, first on the right",
+                    Remarks = "Computer classroom",
+                    AmountStudentsMax = 22
+                },
+                new Classroom
+                {
+                    ID = 6,
+                    Name = "A012",
+                    Location = "Building A, first floor, first on the left",
+                    Remarks = "Computer classroom",
+                    AmountStudentsMax = 12
+                },
+                new Classroom
+                {
+                    ID = 7,
+                    Name = "A013",
+                    Location = "Building A, first floor, second on the right",
+                    Remarks = "Computer classroom",
+                    AmountStudentsMax = 18
+                },
+                new Classroom
+                {
+                    ID = 8,
+                    Name = "A014",
+                    Location = "Building A, first floor, second on the left",
+                    AmountStudentsMax = 35
+                },
+                new Classroom
+                {
+                    ID = 9,
+                    Name = "A021",
+                    Location = "Building A, second floor, first on the right",
+                    AmountStudentsMax = 48
+                },
+                new Classroom
+                {
+                    ID = 10,
+                    Name = "A022",
+                    Location = "Building A, second floor, first on the left",
+                    Remarks = "Physics classroom",
+                    AmountStudentsMax = 16
+                },
+                new Classroom
+                {
+                    ID = 11,
+                    Name = "A023",
+                    Location = "Building A, second floor, second on the right",
+                    AmountStudentsMax = 12
+                },
+                new Classroom
+                {
+                    ID = 12,
+                    Name = "A024",
+                    Location = "Building A, second floor, second on the left",
+                    AmountStudentsMax = 12
+                },
+                new Classroom
+                {
+                    ID = 13,
+                    Name = "B001",
+                    Location = "Building B, ground floor, first on the right",
+                    Remarks = "Lecture hall",
+                    AmountStudentsMax = 358
+                },
+                new Classroom
+                {
+                    ID = 14,
+                    Name = "B002",
+                    Location = "Building B, ground floor, first on the left",
+                    Remarks = "Lecture hall",
+                    AmountStudentsMax = 215
+                },
+                new Classroom
+                {
+                    ID = 15,
+                    Name = "B003",
+                    Location = "Building B, ground floor, second on the right",
+                    AmountStudentsMax = 12
+                },
+                new Classroom
+                {
+                    ID = 16,
+                    Name = "B004",
+                    Location = "Building B, ground floor, second on the left",
+                    AmountStudentsMax = 12
+                },
+                new Classroom
+                {
+                    ID = 17,
+                    Name = "B011",
+                    Location = "Building B, first floor, first on the right",
+                    AmountStudentsMax = 12
+                },
+                new Classroom
+                {
+                    ID = 18,
+                    Name = "B012",
+                    Location = "Building B, first floor, first on the left",
+                    AmountStudentsMax = 12
+                },
+                new Classroom
+                {
+                    ID = 19,
+                    Name = "B013",
+                    Location = "Building B, first floor, second on the right",
+                    AmountStudentsMax = 12
+                },
+                new Classroom
+                {
+                    ID = 20,
+                    Name = "B014",
+                    Location = "Building B, first floor, second on the left",
+                    AmountStudentsMax = 12
+                },
+                new Classroom
+                {
+                    ID = 21,
+                    Name = "B021",
+                    Location = "Building B, second floor, first on the right",
+                    AmountStudentsMax = 12
+                },
+                new Classroom
+                {
+                    ID = 22,
+                    Name = "B022",
+                    Location = "Building B, second floor, first on the left",
+                    AmountStudentsMax = 12
+                },
+                new Classroom
+                {
+                    ID = 23,
+                    Name = "B023",
+                    Location = "Building B, second floor, second on the right",
+                    AmountStudentsMax = 12
+                },
+                new Classroom
+                {
+                    ID = 24,
+                    Name = "B024",
+                    Location = "Building B, second floor, second on the left",
+                    AmountStudentsMax = 12
+                }
                 );
             #endregion
         }
