@@ -166,6 +166,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="Controllers\SubjectsController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
@@ -180,6 +181,7 @@
     <Compile Include="Models\LMS\Document.cs" />
     <Compile Include="Models\LMS\News.cs" />
     <Compile Include="Models\LMS\Role.cs" />
+    <Compile Include="Models\LMS\Schedule.cs" />
     <Compile Include="Models\LMS\User.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\LMS\Subject.cs" />
@@ -188,6 +190,7 @@
     <Compile Include="Repositories\CourseRepository.cs" />
     <Compile Include="Repositories\DocumentsRepository.cs" />
     <Compile Include="Repositories\RolesRepository.cs" />
+    <Compile Include="Repositories\SchedulesRepository.cs" />
     <Compile Include="Repositories\SubjectRepository.cs" />
     <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="Startup.cs" />
@@ -283,6 +286,11 @@
     <Content Include="Views\Documents\Index.cshtml" />
     <Content Include="Views\Subjects\Create.cshtml" />
     <Content Include="Views\Subjects\Index.cshtml" />
+    <Content Include="Views\Schedules\Create.cshtml" />
+    <Content Include="Views\Schedules\Delete.cshtml" />
+    <Content Include="Views\Schedules\Details.cshtml" />
+    <Content Include="Views\Schedules\Edit.cshtml" />
+    <Content Include="Views\Schedules\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

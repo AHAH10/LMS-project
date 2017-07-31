@@ -16,6 +16,25 @@ namespace LMS_Project.Models.LMS
 
         public virtual ICollection<Course> Courses { get; set; }
         public virtual ICollection<Document> Documents { get; set; }
+        public virtual ICollection<Schedule> Schedules { get; set; }
+
+        public override string ToString()
+        {
+            string result = string.Empty;
+
+            if (FirstName != null)
+                result = FirstName;
+
+            if (LastName != null)
+            {
+                if (result.Length > 0)
+                    result += " ";
+
+                result += LastName;
+            }
+
+            return result;
+        }
 
         public static ValidationResult ValidateFirstName(string name, ValidationContext context)
         {
