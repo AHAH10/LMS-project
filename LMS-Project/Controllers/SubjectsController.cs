@@ -18,9 +18,14 @@ namespace LMS_Project.Controllers
         }
 
         // GET: Subjects/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+            Subject s = sRepo.Subject(id) as Subject;
+            if (s != null)
+            {
+                return View(s);
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Subjects/Create
@@ -47,19 +52,24 @@ namespace LMS_Project.Controllers
         }
 
         // GET: Subjects/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            Subject s = sRepo.Subject(id) as Subject;
+            if (s != null)
+            {
+                return View(s);
+            }
+            return RedirectToAction("Index");
         }
 
         // POST: Subjects/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id,  Subject subject)
         {
             try
             {
                 // TODO: Add update logic here
-
+                sRepo.Edit(subject);
                 return RedirectToAction("Index");
             }
             catch
@@ -69,9 +79,14 @@ namespace LMS_Project.Controllers
         }
 
         // GET: Subjects/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
-            return View();
+            Subject s = sRepo.Subject(id) as Subject;
+            if (s != null)
+            {
+                return View(s);
+            }
+            return RedirectToAction("Index");
         }
 
         // POST: Subjects/Delete/5
@@ -80,6 +95,7 @@ namespace LMS_Project.Controllers
         {
             try
             {
+                sRepo.Delete(id);
                 // TODO: Add delete logic here
 
                 return RedirectToAction("Index");
