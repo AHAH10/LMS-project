@@ -74,31 +74,19 @@ namespace LMS_Project.Repositories
         {
             db.SaveChanges();
         }
-        //Get All Teachers - Remove if we don't need
-        public List<User> GetTeachers()
-        {
-            string roleID = db.Roles.Where(ro => ro.Name == "Teacher").FirstOrDefault().Id;
-
-            List<User> _teachers = new List<User>();
-            foreach (var u in db.LMSUsers)
-            {
-                IEnumerable<IdentityUserRole> roles = u.Roles.Where(r => r.RoleId == roleID);
-                if (roles.Count() != 0)
-                {
-                    _teachers.Add(u);
-                }
-            }
-            roleID = null;
-            return _teachers;
-        }
-        //AvaibleTeachers
+        /// <summary>
+        /// Returns all avaible teachers for a specific subject
+        /// </summary>
+        /// <param name="subject"></param>
+        /// <returns></returns>
         public List<User> AvaibleTeachers(Subject subject)
         {
             List<User> _result = new List<User>();
 
             if (subject != null)
             {
-                foreach (User t in GetTeachers())
+
+                foreach (User t in new UsersRepository().Users())
                 {
                     if (t.Courses.Where(c => c.Subject.Name == subject.Name).Count() == 0)
                     {
@@ -108,6 +96,11 @@ namespace LMS_Project.Repositories
             }
             return _result;
         }
+        /// <summary>
+        /// Returns all avaible teachers for a specific subject
+        /// </summary>
+        /// <param name="subjectName"></param>
+        /// <returns></returns>
         public List<User> AvaibleTeachers(string subjectName)
         {
             List<User> _result = new List<User>();
@@ -121,6 +114,23 @@ namespace LMS_Project.Repositories
                 }
 
             return _result;
+        }
+        /// <summary>
+        /// Returns all teachers
+        /// </summary>
+        /// <returns></returns>
+        public List<User> GetTeachers()
+        {
+            List<User> _teachers = new List<User>();
+
+            foreach(User u in new UsersRepository().Users())
+            {
+                if (new UsersRepository().GetUserRole(u.Id).Name.ToLower() == "teacher")
+                {
+                    _teachers.Add(u);
+                }
+            }
+            return _teachers;
         }
         #region IDisposable Support
         private bool disposedValue = false;
