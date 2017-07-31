@@ -12,11 +12,16 @@ namespace LMS_Project.Models.LMS
         [Key]
         public int ID { get; set; }
         public DateTime PublishingDate { get; set; }
+        public DateTime LastEditedDate { get; set; }
         public string Title { get; set; }
         public string NewsContent { get; set; }
 
-        [ForeignKey("Uploader")]
-        public int PublisherID { get; set; }
-        public virtual User Uploader { get; set; }
+        [ForeignKey("Publisher")]
+        public virtual string PublisherID { get; set; }
+        public virtual User Publisher { get; set; }
+
+        [ForeignKey("EditedBy")]
+        public virtual string EditedByID { get; set; }
+        public virtual User EditedBy { get; set; }
     }
 }

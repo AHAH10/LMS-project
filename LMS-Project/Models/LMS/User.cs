@@ -13,7 +13,8 @@ namespace LMS_Project.Models.LMS
         [Display(Name = "Last name")]
         [CustomValidation(typeof(User), "ValidateLastName")]
         public string LastName { get; set; }
-
+        public virtual ICollection<Grade> Grades { get; set; }
+        public virtual ICollection<News> News { get; set; }
         public virtual ICollection<Course> Courses { get; set; }
         public virtual ICollection<Document> Documents { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }

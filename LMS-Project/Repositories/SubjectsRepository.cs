@@ -8,7 +8,7 @@ using System.Web;
 
 namespace LMS_Project.Repositories
 {
-    public class SubjectRepository:IDisposable
+    public class SubjectsRepository:IDisposable
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 

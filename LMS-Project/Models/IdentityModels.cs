@@ -33,6 +33,8 @@ namespace LMS_Project.Models
 
         public DbSet<Subject> Subjects { get; set; }
         public DbSet<Course> Courses { get; set; }
+        public DbSet<Grade> Grades { get; set; }
+        public DbSet<News> News { get; set; }
         public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Schedule> Schedules { get; set; }

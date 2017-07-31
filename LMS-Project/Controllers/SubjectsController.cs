@@ -10,7 +10,7 @@ namespace LMS_Project.Controllers
 {
     public class SubjectsController : Controller
     {
-        SubjectRepository sRepo = new SubjectRepository();
+        SubjectsRepository sRepo = new SubjectsRepository();
         // GET: Subjects
         public ActionResult Index()
         {

@@ -58,7 +58,7 @@ namespace LMS_Project.Controllers
         public ActionResult Create()
         {
             ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View();
         }
 
@@ -76,7 +76,7 @@ namespace LMS_Project.Controllers
             }
 
             ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View(schedule);
         }
 
@@ -94,7 +94,7 @@ namespace LMS_Project.Controllers
             }
 
             ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View(schedule);
         }
 
@@ -112,7 +112,7 @@ namespace LMS_Project.Controllers
             }
 
             ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View(schedule);
         }
 

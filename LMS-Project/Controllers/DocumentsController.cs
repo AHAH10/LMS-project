@@ -73,7 +73,7 @@ namespace LMS_Project.Controllers
         [HttpGet]
         public ActionResult UploadDocumentForMyself()
         {
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View();
         }
         // POST  Teacher
@@ -99,7 +99,7 @@ namespace LMS_Project.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
 
             return View(viewModel);
         }
@@ -131,7 +131,7 @@ namespace LMS_Project.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View(viewModel);
         }
         // Get For Assignments 
@@ -162,7 +162,7 @@ namespace LMS_Project.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View(viewModel);
         }
         // Get  Classroom
@@ -193,7 +193,7 @@ namespace LMS_Project.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View(viewModel);
         }
 

@@ -13,7 +13,7 @@ namespace LMS_Project.Controllers
     [Authorize(Roles="Admin")]
     public class CoursesController : Controller
     {
-        private CourseRepository cRepo = new CourseRepository();
+        private CoursesRepository cRepo = new CoursesRepository();
         // GET: Course
         public ActionResult Index()
         {
@@ -34,8 +34,9 @@ namespace LMS_Project.Controllers
         // GET: Course/Create
         public ActionResult Create()
         {
-            ViewBag.Teachers = cRepo.AvaibleTeachers("french");
-            ViewBag.Subjects = new SubjectRepository().Subjects().ToList();
+            //ViewBag.Teachers = cRepo.AvaibleTeachers("french"); - Get AviableTeachers for a specific Subject
+            ViewBag.Teachers = cRepo.GetTeachers(); // - Get All Teachers
+            ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
            
             return View();
         }
@@ -52,7 +53,7 @@ namespace LMS_Project.Controllers
                     return RedirectToAction("Index");
                 }
                 ViewBag.Teachers = cRepo.GetTeachers();
-                ViewBag.Subjects = new SubjectRepository().Subjects().ToList();
+                ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 ViewBag.EMessage = "The Course You want to add already exists";
                 return View();
             }
@@ -66,7 +67,7 @@ namespace LMS_Project.Controllers
         public ActionResult Edit(int? id)
         {
             ViewBag.Teachers = cRepo.GetTeachers();
-            ViewBag.Subjects = new SubjectRepository().Subjects().ToList();
+            ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
             Course c=cRepo.Course(id) as Course;
             if (c != null)
             {
@@ -82,7 +83,7 @@ namespace LMS_Project.Controllers
             try
             {
                 ViewBag.Teachers = cRepo.GetTeachers();
-                ViewBag.Subjects = new SubjectRepository().Subjects().ToList();
+                ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 // TODO: Add update logic here
                 bool success=cRepo.Edit(course);
                 if (success)

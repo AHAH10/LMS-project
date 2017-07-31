@@ -9,7 +9,7 @@ using System.Web;
 
 namespace LMS_Project.Repositories
 {
-    public class CourseRepository : IDisposable
+    public class CoursesRepository : IDisposable
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -80,7 +80,7 @@ namespace LMS_Project.Repositories
             string roleID = db.Roles.Where(ro => ro.Name == "Teacher").FirstOrDefault().Id;
 
             List<User> _teachers = new List<User>();
-            foreach (var u in db.LMSUsers.ToList())
+            foreach (var u in db.LMSUsers)
             {
                 IEnumerable<IdentityUserRole> roles = u.Roles.Where(r => r.RoleId == roleID);
                 if (roles.Count() != 0)
