@@ -40,6 +40,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -107,12 +113,6 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Core">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
     </Reference>
@@ -163,8 +163,10 @@
     <Compile Include="Controllers\ClassroomsController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
     <Compile Include="Controllers\DocumentsController.cs" />
+    <Compile Include="Controllers\GradesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="Controllers\SubjectsController.cs" />
@@ -173,12 +175,17 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\RoleHelpers.cs" />
+    <Compile Include="Migrations\201707311319212_init.cs" />
+    <Compile Include="Migrations\201707311319212_init.Designer.cs">
+      <DependentUpon>201707311319212_init.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LMS\Course.cs" />
     <Compile Include="Models\LMS\Classroom.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\LMS\Document.cs" />
+    <Compile Include="Models\LMS\Grade.cs" />
     <Compile Include="Models\LMS\News.cs" />
     <Compile Include="Models\LMS\Role.cs" />
     <Compile Include="Models\LMS\Schedule.cs" />
@@ -187,11 +194,13 @@
     <Compile Include="Models\LMS\Subject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClassroomsRepository.cs" />
-    <Compile Include="Repositories\CourseRepository.cs" />
+    <Compile Include="Repositories\CoursesRepository.cs" />
     <Compile Include="Repositories\DocumentsRepository.cs" />
+    <Compile Include="Repositories\GradesRepository.cs" />
+    <Compile Include="Repositories\NewsRepository.cs" />
     <Compile Include="Repositories\RolesRepository.cs" />
     <Compile Include="Repositories\SchedulesRepository.cs" />
-    <Compile Include="Repositories\SubjectRepository.cs" />
+    <Compile Include="Repositories\SubjectsRepository.cs" />
     <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ChangePasswordVM.cs" />
@@ -298,6 +307,11 @@
     <Content Include="Views\Subjects\Delete.cshtml" />
     <Content Include="Views\Subjects\Details.cshtml" />
     <Content Include="Views\Subjects\Edit.cshtml" />
+    <Content Include="Views\News\Index.cshtml" />
+    <Content Include="Views\News\Details.cshtml" />
+    <Content Include="Views\News\Create.cshtml" />
+    <Content Include="Views\News\Delete.cshtml" />
+    <Content Include="Views\News\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -305,6 +319,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Grades\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201707311319212_init.resx">
+      <DependentUpon>201707311319212_init.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -34,8 +34,8 @@ namespace LMS_Project.Controllers
         // GET: Course/Create
         public ActionResult Create()
         {
-            //ViewBag.Teachers = cRepo.AvaibleTeachers("french"); - Get AviableTeachers for a specific Subject
-            ViewBag.Teachers = cRepo.GetTeachers(); // - Get All Teachers
+            ViewBag.Teachers = cRepo.AvaibleTeachers("french"); //- Get AviableTeachers for a specific Subject
+            //ViewBag.Teachers = cRepo.GetTeachers(); // - Get All Teachers
             ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
            
             return View();
