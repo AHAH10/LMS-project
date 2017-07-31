@@ -34,7 +34,7 @@ namespace LMS_Project.Controllers
         // GET: Course/Create
         public ActionResult Create()
         {
-            ViewBag.Teachers = GetTeachers();
+            ViewBag.Teachers = cRepo.AvaibleTeachers("french");
             ViewBag.Subjects = new SubjectRepository().Subjects().ToList();
            
             return View();
@@ -51,9 +51,9 @@ namespace LMS_Project.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                ViewBag.Teachers = GetTeachers();
+                ViewBag.Teachers = cRepo.GetTeachers();
                 ViewBag.Subjects = new SubjectRepository().Subjects().ToList();
-                ViewBag.Success = "The Course You want to add already exists";
+                ViewBag.EMessage = "The Course You want to add already exists";
                 return View();
             }
             catch
@@ -65,7 +65,7 @@ namespace LMS_Project.Controllers
         // GET: Course/Edit/5
         public ActionResult Edit(int? id)
         {
-            ViewBag.Teachers = GetTeachers();
+            ViewBag.Teachers = cRepo.GetTeachers();
             ViewBag.Subjects = new SubjectRepository().Subjects().ToList();
             Course c=cRepo.Course(id) as Course;
             if (c != null)
@@ -81,7 +81,7 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                ViewBag.Teachers = GetTeachers();
+                ViewBag.Teachers = cRepo.GetTeachers();
                 ViewBag.Subjects = new SubjectRepository().Subjects().ToList();
                 // TODO: Add update logic here
                 bool success=cRepo.Edit(course);
@@ -89,7 +89,7 @@ namespace LMS_Project.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                ViewBag.Failure = "Error 203: The teacher already have that subject";
+                ViewBag.EMessage = "Error 203: The teacher already have that subject";
                 return View();
             }
             catch
@@ -123,26 +123,6 @@ namespace LMS_Project.Controllers
             {
                 return View();
             }
-        }
-        //private methods
-        private List<ApplicationUser> GetTeachers()
-        {
-            ApplicationDbContext db = new ApplicationDbContext();
-            string roleID = db.Roles.Where(ro => ro.Name == "Teacher").FirstOrDefault().Id;
-
-            List<ApplicationUser> _teachers = new List<ApplicationUser>();
-            foreach (var u in db.Users.ToList())
-            {
-                IEnumerable<IdentityUserRole> roles = u.Roles.Where(r => r.RoleId == roleID);
-                if (roles.Count() != 0)
-                {
-                    _teachers.Add(u);
-                }
-            }
-            roleID = null;
-            db.Dispose();
-            db = null;
-            return _teachers;
         }
     }
 }
