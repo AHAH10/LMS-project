@@ -21,33 +21,21 @@ namespace LMS_Project.Controllers
         }
 
         // GET: Course/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View(cRepo.Course(id));
+            Course c= cRepo.Course(id) as Course;
+            if (c != null)
+            {
+                return View(c);
+            }
+            return RedirectToAction("Index");
         }
 
         // GET: Course/Create
         public ActionResult Create()
         {
-            ApplicationDbContext db = new ApplicationDbContext();
-            string roleID = db.Roles.Where(ro => ro.Name == "Teacher").FirstOrDefault().Id;
-
-            List<ApplicationUser> _teachers=new List<ApplicationUser>();
-            foreach (var u in db.Users.ToList())
-            {
-                IEnumerable<IdentityUserRole> roles = u.Roles.Where(r => r.RoleId == roleID);
-                if(roles.Count()!=0)
-                {
-                    _teachers.Add(u);
-                }
-            }
-            ViewBag.Teachers = _teachers;
-            //ViewBag.Teachers = db.Users.Where(u=>u.Roles.Where(r=>r.RoleId==roleID)).ToList();
+            ViewBag.Teachers = GetTeachers();
             ViewBag.Subjects = new SubjectRepository().Subjects().ToList();
-            roleID = null;
-            _teachers = null;
-            db.Dispose();
-            db = null;
            
             return View();
         }
@@ -58,8 +46,15 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                cRepo.Add(course);
-                return RedirectToAction("Index");
+                bool success=cRepo.Add(course);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
+                ViewBag.Teachers = GetTeachers();
+                ViewBag.Subjects = new SubjectRepository().Subjects().ToList();
+                ViewBag.Success = "The Course You want to add already exists";
+                return View();
             }
             catch
             {
@@ -68,20 +63,34 @@ namespace LMS_Project.Controllers
         }
 
         // GET: Course/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            ViewBag.Teachers = GetTeachers();
+            ViewBag.Subjects = new SubjectRepository().Subjects().ToList();
+            Course c=cRepo.Course(id) as Course;
+            if (c != null)
+            {
+                return View(cRepo.Course(id));
+            }
+                return RedirectToAction("Index");
         }
 
         // POST: Course/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, Course course)
         {
             try
             {
+                ViewBag.Teachers = GetTeachers();
+                ViewBag.Subjects = new SubjectRepository().Subjects().ToList();
                 // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                bool success=cRepo.Edit(course);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
+                ViewBag.Failure = "Error 203: The teacher already have that subject";
+                return View();
             }
             catch
             {
@@ -90,9 +99,14 @@ namespace LMS_Project.Controllers
         }
 
         // GET: Course/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult Delete(int? id)
         {
-            return View();
+            Course c=cRepo.Course(id) as Course;
+            if (c != null)
+            {
+                return View(cRepo.Course(id));
+            }
+            return RedirectToAction("Index");
         }
 
         // POST: Course/Delete/5
@@ -102,13 +116,33 @@ namespace LMS_Project.Controllers
             try
             {
                 // TODO: Add delete logic here
-
+                cRepo.Delete(id);
                 return RedirectToAction("Index");
             }
             catch
             {
                 return View();
             }
+        }
+        //private methods
+        private List<ApplicationUser> GetTeachers()
+        {
+            ApplicationDbContext db = new ApplicationDbContext();
+            string roleID = db.Roles.Where(ro => ro.Name == "Teacher").FirstOrDefault().Id;
+
+            List<ApplicationUser> _teachers = new List<ApplicationUser>();
+            foreach (var u in db.Users.ToList())
+            {
+                IEnumerable<IdentityUserRole> roles = u.Roles.Where(r => r.RoleId == roleID);
+                if (roles.Count() != 0)
+                {
+                    _teachers.Add(u);
+                }
+            }
+            roleID = null;
+            db.Dispose();
+            db = null;
+            return _teachers;
         }
     }
 }

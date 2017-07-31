@@ -9,12 +9,17 @@ using System.Web.Mvc;
 using LMS_Project.Models;
 using LMS_Project.Models.LMS;
 using LMS_Project.Repositories;
+using Microsoft.AspNet.Identity;
+using LMS_Project.ViewModels;
+using System.IO;
 
 namespace LMS_Project.Controllers
 {
     public class DocumentsController : Controller
     {
         private DocumentsRepository repository = new DocumentsRepository();
+
+
 
         // GET: Documents
         public ActionResult Index()
@@ -38,65 +43,6 @@ namespace LMS_Project.Controllers
             return View(document);
         }
 
-        // GET: Documents/Create
-        public ActionResult Create()
-        {
-            ViewBag.CourseID = new SelectList(new ApplicationDbContext().Courses, "ID", "Name");
-            ViewBag.RoleID = new SelectList(new ApplicationDbContext().Roles, "Id", "Name");
-            return View();
-        }
-
-        // POST: Documents/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,UserID,DocumentName,UploadingDate,RoleID")] Document document)
-        {
-            if (ModelState.IsValid)
-            {
-                repository.Add(document);
-                return RedirectToAction("Index");
-            }
-
-            return View(document);
-        }
-
-        //// GET: Documents/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Document document = repository.Document(id);
-        //    if (document == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.CourseID = new SelectList(new ApplicationDbContext().Courses, "ID", "TeacherID", document.CourseID);
-        //    ViewBag.RoleID = new SelectList(new ApplicationDbContext().Roles, "Id", "Name", document.RoleID);
-        //    return View(document);
-        //}
-
-        // POST: Documents/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "ID,UserID,DocumentName,UploadingDate,CourseID,RoleID")] Document document)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        repository.Edit(document);
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.CourseID = new SelectList(new ApplicationDbContext().Courses, "ID", "TeacherID", document.CourseID);
-        //    ViewBag.RoleID = new SelectList(new ApplicationDbContext().Roles, "Id", "Name", document.RoleID);
-
-        //    return View(document);
-        //}
-
         // GET: Documents/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -119,6 +65,135 @@ namespace LMS_Project.Controllers
         {
             repository.Delete(id);
             return RedirectToAction("Index");
+        }
+
+        // UploadDocument Methods
+
+        // Get  Teacher
+        [HttpGet]
+        public ActionResult UploadDocumentForMyself()
+        {
+            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            return View();
+        }
+        // POST  Teacher
+        [HttpPost]
+        private ActionResult UploadDocumentForMyself(UploadDocumentVM viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Document document = new Document
+                {
+                    DocumentName = viewModel.DocumentName,
+                    UserID = User.Identity.GetUserId(),
+                    RoleID = new RolesRepository().RoleByName("Teacher").Id,  //
+                    UploadingDate = DateTime.Now,
+                    CourseID = viewModel.CourseID
+                };
+                // Use your file here
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    viewModel.File.InputStream.CopyTo(memoryStream);
+                }
+                repository.Add(document);
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            return View(viewModel);
+        }
+        // Get  Specific Course/ Student
+        public ActionResult UploadDocumentForSpecificCourse()
+        {
+            return View();
+        }
+        // POST  Specific Course/ Student
+        [HttpPost]
+        private ActionResult UploadDocumentForSpecificCourse(UploadDocumentVM viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Document document = new Document
+                {
+                    DocumentName = viewModel.DocumentName,
+                    UserID = User.Identity.GetUserId(),
+                    RoleID = new RolesRepository().RoleByName("Teacher").Id,  //
+                    UploadingDate = DateTime.Now,
+                    CourseID = viewModel.CourseID
+                };
+                // Use your file here
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    viewModel.File.InputStream.CopyTo(memoryStream);
+                }
+                repository.Add(document);
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            return View(viewModel);
+        }
+        // Get For Assignments 
+        public ActionResult UploadDocumentForAssignments()
+        {
+            return View();
+        }
+        // POST  For Assignments 
+        [HttpPost]
+        private ActionResult UploadDocumentForAssignments(UploadDocumentVM viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Document document = new Document
+                {
+                    DocumentName = viewModel.DocumentName,
+                    UserID = User.Identity.GetUserId(),
+                    RoleID = new RolesRepository().RoleByName("Student").Id,  //
+                    UploadingDate = DateTime.Now,
+                    CourseID = viewModel.CourseID
+                };
+                // Use your file here
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    viewModel.File.InputStream.CopyTo(memoryStream);
+                }
+                repository.Add(document);
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            return View(viewModel);
+        }
+        // Get  Classroom
+        public ActionResult UploadDocumentForClassroom()
+        {
+            return View();
+        }
+        // POST Classroom
+        [HttpPost]
+        private ActionResult UploadDocumentForClassroom(UploadDocumentVM viewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Document document = new Document
+                {
+                    DocumentName = viewModel.DocumentName,
+                    UserID = User.Identity.GetUserId(),
+                    RoleID = new RolesRepository().RoleByName("Teacher").Id,  
+                    UploadingDate = DateTime.Now,
+                    CourseID = viewModel.CourseID
+                };
+                // Use your file here
+                using (MemoryStream memoryStream = new MemoryStream())
+                {
+                    viewModel.File.InputStream.CopyTo(memoryStream);
+                }
+                repository.Add(document);
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            return View(viewModel);
         }
 
         protected override void Dispose(bool disposing)
