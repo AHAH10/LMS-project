@@ -100,6 +100,7 @@ namespace LMS_Project.Controllers
             }
 
             ViewBag.Courses = new CourseRepository().Courses().ToList();
+
             return View(viewModel);
         }
         // Get  Specific Course/ Student

@@ -193,6 +193,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ChangePasswordVM.cs" />
     <Compile Include="ViewModels\ExtendedUserVM.cs" />
+    <Compile Include="ViewModels\UploadDocumentVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
