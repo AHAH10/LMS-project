@@ -298,6 +298,10 @@
     <Content Include="Views\Subjects\Delete.cshtml" />
     <Content Include="Views\Subjects\Details.cshtml" />
     <Content Include="Views\Subjects\Edit.cshtml" />
+    <Content Include="Views\Documents\_UploadDocument.cshtml" />
+    <Content Include="Views\Documents\UploadDocumentForSpecificCourse.cshtml" />
+    <Content Include="Views\Documents\UploadDocumentForAssignments.cshtml" />
+    <Content Include="Views\Documents\UploadDocumentForClassroom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

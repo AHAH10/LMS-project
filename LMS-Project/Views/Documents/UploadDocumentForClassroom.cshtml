@@ -1,0 +1,17 @@
+﻿@model LMS_Project.ViewModels.UploadDocumentVM
+
+@{
+    ViewBag.Title = "UploadDocumentForClassroom";
+}
+
+@using (Html.BeginForm("UploadDocumentForClassroom", "Documents", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+
+    @Html.ValidationSummary(true)
+
+    @Html.Partial("_UploadDocument", Model)
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

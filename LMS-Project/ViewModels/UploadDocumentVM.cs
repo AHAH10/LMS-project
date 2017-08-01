@@ -10,18 +10,5 @@ namespace LMS_Project.ViewModels
     {
         public HttpPostedFileBase File { get; set; }
         public int CourseID { get; set; }
-
-        public string DocumentName
-        {
-            get
-            {
-                if (File != null)
-                    return File.FileName;
-                else
-                    return String.Empty;
-            }
-            private set { }
-        }
-
     }
 }
