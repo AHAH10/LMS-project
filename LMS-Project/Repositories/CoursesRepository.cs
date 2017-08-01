@@ -81,17 +81,17 @@ namespace LMS_Project.Repositories
         /// <returns></returns>
         public List<Subject> AvaibleSubjects(string teacherID)
         {
-            List<Subject> _result = new List<Subject>();
+            List<Subject> Subject_result = new List<Subject>();
             
-            foreach(Subject s in new SubjectsRepository().Subjects())
+            foreach(Course co in db.Courses)
             {
-                if(s.Courses.Where(c=>c.TeacherID==teacherID).Count()==0)
+                if(co.TeacherID!=teacherID)
                 {
-                    _result.Add(s);
+                    Subject_result.Add(new SubjectsRepository().Subject(co.SubjectID));
                 }
             }
 
-            return _result;
+            return Subject_result;
         }
         /// <summary>
         /// Returns all avaible teachers for a specific subject
@@ -109,6 +109,20 @@ namespace LMS_Project.Repositories
                         _result.Add(t);
                     }
                 }
+
+            return _result;
+        }
+        public List<User> AvaibleTeachers(int subjectID)
+        {
+            List<User> _result = new List<User>();
+
+            foreach (User t in GetTeachers())
+            {
+                if (t.Courses.Where(c => c.Subject.ID == subjectID).Count() == 0)
+                {
+                    _result.Add(t);
+                }
+            }
 
             return _result;
         }
