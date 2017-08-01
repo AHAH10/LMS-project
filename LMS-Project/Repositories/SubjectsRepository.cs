@@ -8,7 +8,7 @@ using System.Web;
 
 namespace LMS_Project.Repositories
 {
-    public class SubjectRepository:IDisposable
+    public class SubjectsRepository:IDisposable
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -22,9 +22,14 @@ namespace LMS_Project.Repositories
             return Subjects().SingleOrDefault(s => s.ID == id);
         }
 
+        public Subject Subject(string name)
+        {
+            return Subjects().SingleOrDefault(s => s.Name == name);
+        }
+
         public bool Add(Subject subject)
         {
-            var _subjects = this.Subjects().Where(s => s.Name == subject.Name);
+            var _subjects = this.Subjects().Where(s => s.Name.ToLower() == subject.Name.ToLower());
             if(_subjects.Count()!=0)
             {
                 _subjects = null;
@@ -37,7 +42,7 @@ namespace LMS_Project.Repositories
 
         public bool Edit(Subject subject)
         {
-            var _subjects = this.Subjects().Where(s => s.Name == subject.Name &&subject.ID!=s.ID);
+            var _subjects = this.Subjects().Where(s => s.Name.ToLower() == subject.Name.ToLower() &&subject.ID!=s.ID);
             if(_subjects.Count()!=0)
             {
                 _subjects = null;

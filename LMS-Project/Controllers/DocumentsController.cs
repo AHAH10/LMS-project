@@ -19,13 +19,10 @@ namespace LMS_Project.Controllers
     {
         private DocumentsRepository repository = new DocumentsRepository();
 
-
-
         // GET: Documents
         public ActionResult Index()
         {
-            var documents = repository.Documents();//.Include(d => d.Course).Include(d => d.Uploader).Include(d => d.VisibleTo);
-            return View(repository.document.ToList());   // check if works
+            return View(repository.Documents().ToList());   // check if works
         }
 
         // GET: Documents/Details/5
@@ -73,7 +70,7 @@ namespace LMS_Project.Controllers
         [HttpGet]
         public ActionResult UploadDocumentForMyself()
         {
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View();
         }
         // POST  Teacher
@@ -99,7 +96,8 @@ namespace LMS_Project.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
+
             return View(viewModel);
         }
         // Get  Specific Course/ Student
@@ -130,7 +128,7 @@ namespace LMS_Project.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View(viewModel);
         }
         // Get For Assignments 
@@ -161,7 +159,7 @@ namespace LMS_Project.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View(viewModel);
         }
         // Get  Classroom
@@ -192,7 +190,7 @@ namespace LMS_Project.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Courses = new CourseRepository().Courses().ToList();
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View(viewModel);
         }
 

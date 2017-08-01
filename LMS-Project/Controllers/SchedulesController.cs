@@ -75,7 +75,7 @@ namespace LMS_Project.Controllers
             if (ModelState.IsValid)
             {
                 // Let's check if all data are available at the given day and times, starting with the teacher
-                Course course = new CourseRepository().Course(viewModel.CourseID);
+                Course course = new CoursesRepository().Course(viewModel.CourseID);
 
                 Schedule availability = repository.TeacherAvailability(course.TeacherID,
                                                                        viewModel.WeekDay,
@@ -180,7 +180,7 @@ namespace LMS_Project.Controllers
             if (ModelState.IsValid)
             {
                 // Let's check if all data are available at the given day and times, starting with the teacher
-                Course course = new CourseRepository().Course(schedule.CourseID);
+                Course course = new CoursesRepository().Course(schedule.CourseID);
 
                 Schedule availability = repository.TeacherAvailability(course.TeacherID,
                                                                        schedule.WeekDay,
@@ -288,7 +288,7 @@ namespace LMS_Project.Controllers
 
         private List<SelectListItem> Courses()
         {
-            return new CourseRepository().Courses().Select(c => new SelectListItem
+            return new CoursesRepository().Courses().Select(c => new SelectListItem
             {
                 Text = c.Subject.Name + " (" + c.Teacher.ToString() + ")",
                 Value = c.ID.ToString()
