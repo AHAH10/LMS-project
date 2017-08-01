@@ -18,27 +18,20 @@ namespace LMS_Project.Models.LMS
         Sunday
     }
 
-    public class Schedule : IValidatableObject
+    public class Schedule
     {
         [Key]
         public int ID { get; set; }
 
-        [Required]
         [Display(Name = "Week day")]
-        [Range(0, 6, ErrorMessage = "Value for {0} must be between {1} and {2}.")]
         public WeekDays WeekDay { get; set; }
 
-        [Required]
         [Display(Name = "Beginning time")]
-        [DataType(DataType.Time)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
-        public DateTime BeginningTime { get; set; }
+        public string BeginningTime { get; set; }
 
         [Required]
         [Display(Name = "Ending time")]
-        [DataType(DataType.Time)]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:HH:mm}")]
-        public DateTime EndingTime { get; set; }
+        public string EndingTime { get; set; }
 
         [ForeignKey("Course")]
         public int CourseID { get; set; }
@@ -50,16 +43,14 @@ namespace LMS_Project.Models.LMS
 
         public virtual ICollection<User> Students { get; set; }
 
-        IEnumerable<ValidationResult> IValidatableObject.Validate(ValidationContext validationContext)
+        public override string ToString()
         {
-            List<ValidationResult> res = new List<ValidationResult>();
-            if (EndingTime < BeginningTime)
-            {
-                ValidationResult mss = new ValidationResult("The ending time must be greater than the beginning date");
-                res.Add(mss);
-
-            }
-            return res;
+            return string.Join(" ",
+                               new List<string> { WeekDay.ToString(), 
+                                                  BeginningTime + "-" + EndingTime,
+                                                  Course.Subject.Name,
+                                                  Course.Teacher.ToString(),
+                                                  Classroom.Name});
         }
     }
 }

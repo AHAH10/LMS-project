@@ -24,8 +24,8 @@ namespace LMS_Project.Repositories
 
         public bool Add(Course course)
         {
-            var _courses = this.Courses().Where(c=>c.TeacherID==course.TeacherID && c.SubjectID==course.SubjectID);
-            if(_courses.Count()!=0)
+            var _courses = this.Courses().Where(c => c.TeacherID == course.TeacherID && c.SubjectID == course.SubjectID);
+            if (_courses.Count() != 0)
             {
                 _courses = null;
                 return false;
@@ -37,8 +37,8 @@ namespace LMS_Project.Repositories
 
         public bool Edit(Course course)
         {
-           
-            if (this.db.Courses.Where(_cRel => _cRel.ID != course.ID && _cRel.SubjectID == course.SubjectID&&_cRel.TeacherID == course.TeacherID).Count() ==0)
+
+            if (this.db.Courses.Where(_cRel => _cRel.ID != course.ID && _cRel.SubjectID == course.SubjectID && _cRel.TeacherID == course.TeacherID).Count() == 0)
             {
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();

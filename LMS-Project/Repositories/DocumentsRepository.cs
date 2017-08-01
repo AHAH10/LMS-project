@@ -2,17 +2,13 @@
 using LMS_Project.Models.LMS;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 namespace LMS_Project.Repositories
 {
-    public class DocumentsRepository : IDisposable 
+    public class DocumentsRepository : IDisposable
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
-        public Document document { get; set; }
 
         public IEnumerable<Document> Documents()
         {
@@ -41,17 +37,12 @@ namespace LMS_Project.Repositories
                 SaveChanges();
             }
         }
-        ////Edit
-        //public void Edit(Document document)
-        //{
-        //    db.Entry(document).State = EntityState.Modified;
-        //    SaveChanges();
-        //}
 
         private void SaveChanges()
         {
-            SaveChanges();
+            db.SaveChanges();
         }
+
         #region IDisposable
         private bool disposedValue = false;
 

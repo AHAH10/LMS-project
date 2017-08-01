@@ -11,11 +11,19 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Classroom)
+            @Html.DisplayNameFor(model => model.WeekDay)
         </dt>
 
         <dd>
-            @Html.DisplayName(Model.Classroom.Name + " (" + Model.Classroom.Location + ")")
+            @Html.DisplayFor(model => model.WeekDay)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Time")
+        </dt>
+
+        <dd>
+            @Html.DisplayName(Model.BeginningTime + "-" + Model.EndingTime)
         </dd>
 
         <dt>
@@ -23,7 +31,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model=> model.Course.Subject.Name)
+            @Html.DisplayFor(model => model.Course.Subject.Name)
         </dd>
 
         <dt>
@@ -35,32 +43,43 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.WeekDay)
+            @Html.DisplayNameFor(model => model.Classroom)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.WeekDay)
+            @{string remarks = Model.Classroom.Remarks;
+            if (remarks.Length > 0)
+            {
+                remarks = " - " + remarks;
+            }
+            }
+            @Html.DisplayName(Model.Classroom.Name + " (" + Model.Classroom.Location + ")" + remarks)
         </dd>
+
 
         <dt>
-            @Html.DisplayNameFor(model => model.BeginningTime)
+            @Html.DisplayNameFor(model => model.Students)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.BeginningTime)
+            <div class="container" style="padding:0">
+                <ul class="list-group list-unstyled">
+                    @foreach (LMS_Project.Models.LMS.User student in Model.Students)
+                    {
+                        <li>
+                            @Html.DisplayName(student.ToString())
+                        </li>
+                    }
+                </ul>
+            </div>
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EndingTime)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EndingTime)
-        </dd>
-
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @{if (this.User.IsInRole("Admin"))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) <text>|</text>
+    }
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>

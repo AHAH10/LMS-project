@@ -19,6 +19,15 @@ namespace LMS_Project.Repositories
             return db.LMSUsers;
         }
 
+        public IEnumerable<User> Students()
+        {
+            return Users().Where(u => u.Roles.Join(db.LMSRoles, 
+                                                   usrRole => usrRole.RoleId,
+                                                   role => role.Id,
+                                                   (usrRole, role) => role)
+                          .Any(r => r.Name.Equals("Student")));
+        }
+
         public User User(string id)
         {
             return Users().FirstOrDefault(u => u.Id == id);
@@ -49,14 +58,15 @@ namespace LMS_Project.Repositories
             }
         }
 
-        public async Task ChangePassword(string id, string newPassword = "Default-Password1")
+        public async Task ChangePassword(string userId)
         {
-            User user = User(id);
+            User user = User(userId);
             if (user != null)
             {
                 UserStore<User> store = new UserStore<User>(db);
-                UserManager<User> UserManager = new UserManager<User>(store);
-                string hashedNewPassword = UserManager.PasswordHasher.HashPassword(newPassword);
+                UserManager<User> userManager = new UserManager<User>(store);
+                string defaultPassord = DefaultPassword.Password(userManager.GetRoles(userId).First());
+                string hashedNewPassword = userManager.PasswordHasher.HashPassword(defaultPassord);
                 await store.SetPasswordHashAsync(user, hashedNewPassword);
                 await store.UpdateAsync(user);
             }
@@ -66,8 +76,6 @@ namespace LMS_Project.Repositories
         {
             User user = User(userId);
             Role role = null;
-
-            List<Role> roles = db.LMSRoles.ToList();
 
             foreach (IdentityUserRole userRole in user.Roles)
             {

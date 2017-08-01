@@ -195,6 +195,7 @@
     <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ChangePasswordVM.cs" />
+    <Compile Include="ViewModels\CreateScheduleVM.cs" />
     <Compile Include="ViewModels\ExtendedUserVM.cs" />
     <Compile Include="ViewModels\UploadDocumentVM.cs" />
   </ItemGroup>
@@ -298,6 +299,9 @@
     <Content Include="Views\Subjects\Delete.cshtml" />
     <Content Include="Views\Subjects\Details.cshtml" />
     <Content Include="Views\Subjects\Edit.cshtml" />
+    <Content Include="Views\Schedules\ViewSchedule.cshtml" />
+    <Content Include="Views\Schedules\_StudentsSchedule.cshtml" />
+    <Content Include="Views\Documents\_UploadDocument.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

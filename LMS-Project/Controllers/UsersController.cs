@@ -22,7 +22,7 @@ namespace LMS_Project.Controllers
         {
             List<ExtendedUserVM> viewModel = new List<ExtendedUserVM>();
 
-            foreach (User user in repository.Users())
+            foreach (User user in repository.Users().OrderBy(u => u.LastName))
             {
                 viewModel.Add(new ExtendedUserVM { User = user, RoleName = new UsersRepository().GetUserRole(user.Id).Name });
             }
@@ -78,12 +78,12 @@ namespace LMS_Project.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
             User user = repository.User(id);
             if (user == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index");
             }
             return View(user);
         }
