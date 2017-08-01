@@ -25,7 +25,7 @@ namespace LMS_Project.Repositories
 
         public bool Add(Course course)
         {
-            if (course.TeacherID != null && course.Subject != null)
+            if (course.TeacherID != null && course.SubjectID != null)
             {
                 var _courses = this.Courses().Where(c => c.TeacherID == course.TeacherID && c.SubjectID == course.SubjectID);
                 if (_courses.Count() != 0)
@@ -75,25 +75,22 @@ namespace LMS_Project.Repositories
             db.SaveChanges();
         }
         /// <summary>
-        /// Returns all avaible teachers for a specific subject
+        /// Returns all Avaible Subjects for a specific teacher
         /// </summary>
-        /// <param name="subject"></param>
+        /// <param name="teacherID"></param>
         /// <returns></returns>
-        public List<User> AvaibleTeachers(Subject subject)
+        public List<Subject> AvaibleSubjects(string teacherID)
         {
-            List<User> _result = new List<User>();
-
-            if (subject != null)
+            List<Subject> _result = new List<Subject>();
+            
+            foreach(Subject s in new SubjectsRepository().Subjects())
             {
-
-                foreach (User t in new UsersRepository().Users())
+                if(s.Courses.Where(c=>c.TeacherID==teacherID).Count()==0)
                 {
-                    if (t.Courses.Where(c => c.Subject.Name == subject.Name).Count() == 0)
-                    {
-                        _result.Add(t);
-                    }
+                    _result.Add(s);
                 }
             }
+
             return _result;
         }
         /// <summary>

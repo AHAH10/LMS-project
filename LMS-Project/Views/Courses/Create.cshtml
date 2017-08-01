@@ -8,6 +8,8 @@
         <h4>Course</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @if(ViewBag.Subjects!=null)
+        {
         <div class="form-group">
             @Html.LabelFor(model => model.SubjectID, "SubjectID", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -15,7 +17,13 @@
                 @Html.ValidationMessageFor(model => model.SubjectID, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        }
+        else
+        {
+            <h3>No Avaible Subjects for that teacher!</h3>
+        }        
+        @if(ViewBag.Teachers!=null)
+        {
         <div class="form-group">
             @Html.LabelFor(model => model.TeacherID, "TeacherID", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -23,7 +31,11 @@
                 @Html.ValidationMessageFor(model => model.TeacherID, "", new { @class = "text-danger" })
             </div>
         </div>
-
+        }
+        else
+        {
+            <h3>No Avaible Teachers for that specific course!</h3>
+        }
         <div class="form-group">
             @ViewBag.EMessage
             <div class="col-md-offset-2 col-md-10">
