@@ -16,5 +16,6 @@ namespace LMS_Project.Models.LMS
         public virtual User Teacher { get; set; }
 
         public virtual ICollection<Document> Documents { get; set; }
+        public virtual ICollection<Schedule> Schedules { get; set; }
     }
 }

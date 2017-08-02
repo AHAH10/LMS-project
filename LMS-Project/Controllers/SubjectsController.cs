@@ -10,7 +10,7 @@ namespace LMS_Project.Controllers
 {
     public class SubjectsController : Controller
     {
-        SubjectRepository sRepo = new SubjectRepository();
+        SubjectsRepository sRepo = new SubjectsRepository();
         // GET: Subjects
         public ActionResult Index()
         {
@@ -40,10 +40,14 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                sRepo.Add(subject);
+                bool success=sRepo.Add(subject);
                 // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
+                ViewBag.EMessage = "Subject already exists.";
+                return View();
             }
             catch
             {
@@ -69,8 +73,13 @@ namespace LMS_Project.Controllers
             try
             {
                 // TODO: Add update logic here
-                sRepo.Edit(subject);
-                return RedirectToAction("Index");
+                bool success=sRepo.Edit(subject);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
+                ViewBag.EMessage = "A subject with same Name already exists";
+                return View();
             }
             catch
             {

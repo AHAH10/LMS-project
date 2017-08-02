@@ -1,34 +1,55 @@
 ﻿@model LMS_Project.Models.LMS.Course
 
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+{{1+1}}
+
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
+
+    <div class="form-horizontal" ng-controller="CourseCtrl">
         <h4>Course</h4>
+        {{data}}
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.SubjectID, "SubjectID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(m => m.SubjectID, new SelectList(ViewBag.Subjects, "Id", "Name"), htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.SubjectID, "", new { @class = "text-danger" })
+        @if (ViewBag.Subjects != null)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.SubjectID, "SubjectID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.SubjectID, new SelectList(ViewBag.Subjects, "Id", "Name"), htmlAttributes: new { @class = "form-control", @onchange = "Subjects()", @id = "selectedValue" })
+                    @Html.ValidationMessageFor(model => model.SubjectID, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.TeacherID, "TeacherID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(m => m.TeacherID, new SelectList(ViewBag.Teachers, "Id", "UserName"), htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.TeacherID, "", new { @class = "text-danger" })
+        }
+        else
+        {
+            <h3>No Avaible Subjects for that teacher!</h3>
+        }
+        @if (ViewBag.Teachers != null)
+        {
+            <div class="form-group">
+                @Html.LabelFor(model => model.TeacherID, "TeacherID", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.TeacherID, new SelectList(ViewBag.Teachers, "Id", "UserName"), htmlAttributes: new { @class = "form-control", @onchange = "Teachers()", @id = "selectedValueT" })
+                    @Html.ValidationMessageFor(model => model.TeacherID, "", new { @class = "text-danger" })
+                </div>
             </div>
-        </div>
-
+        }
+        else
+        {
+            <h3>No Avaible Teachers for that specific course!</h3>
+        }
         <div class="form-group">
+            @ViewBag.EMessage
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
-            @ViewBag.Success
         </div>
     </div>
 }
@@ -36,3 +57,8 @@
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
