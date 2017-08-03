@@ -4,7 +4,7 @@
 <div>
     <h4>News</h4>
     <hr />
-    <dl class="dl-horizontal">
+    <div class="form-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.Publisher.Email)
         </dt>
@@ -30,14 +30,14 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.NewsContent)
+            @Html.DisplayNameFor(model => model.Content)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.NewsContent)
+            @Html.DisplayFor(model => model.Content)
         </dd>
 
-    </dl>
+    </div>
 
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()

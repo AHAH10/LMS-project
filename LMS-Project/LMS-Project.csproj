@@ -195,10 +195,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\RoleHelpers.cs" />
-    <Compile Include="Migrations\201708011310170_Initial.cs" />
-    <Compile Include="Migrations\201708011310170_Initial.Designer.cs">
-      <DependentUpon>201708011310170_Initial.cs</DependentUpon>
-    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LMS\Course.cs" />
@@ -349,6 +345,9 @@
     <Content Include="Views\Students\Planning.cshtml" />
     <Content Include="Views\Teachers\Planning.cshtml" />
     <Content Include="Views\Teachers\DetailedSchedule.cshtml" />
+    <Content Include="Views\Documents\UploadDocumentForAssignments.cshtml" />
+    <Content Include="Views\Documents\UploadDocumentForClassroom.cshtml" />
+    <Content Include="Views\Documents\UploadDocumentForSpecificCourse.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -356,11 +355,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708011310170_Initial.resx">
-      <DependentUpon>201708011310170_Initial.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

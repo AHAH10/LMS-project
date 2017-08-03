@@ -15,6 +15,7 @@ using System.IO;
 
 namespace LMS_Project.Controllers
 {
+    [Authorize]
     public class DocumentsController : Controller
     {
         private DocumentsRepository repository = new DocumentsRepository();
@@ -75,23 +76,23 @@ namespace LMS_Project.Controllers
         }
         // POST  Teacher
         [HttpPost]
-        private ActionResult UploadDocumentForMyself(UploadDocumentVM viewModel)
+        public ActionResult UploadDocumentForMyself(UploadDocumentVM viewModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && viewModel.File != null)
             {
                 Document document = new Document
                 {
-                    DocumentName = viewModel.DocumentName,
+                    DocumentName = viewModel.File.FileName,
                     UserID = User.Identity.GetUserId(),
                     RoleID = new RolesRepository().RoleByName("Teacher").Id,  //
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID
                 };
                 // Use your file here
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    viewModel.File.InputStream.CopyTo(memoryStream);
-                }
+                var content = new byte[viewModel.File.ContentLength];
+                viewModel.File.InputStream.Read(content, 0, viewModel.File.ContentLength);
+                document.DocumentContent = content;
+
                 repository.Add(document);
                 return RedirectToAction("Index");
             }
@@ -103,27 +104,28 @@ namespace LMS_Project.Controllers
         // Get  Specific Course/ Student
         public ActionResult UploadDocumentForSpecificCourse()
         {
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View();
         }
         // POST  Specific Course/ Student
         [HttpPost]
-        private ActionResult UploadDocumentForSpecificCourse(UploadDocumentVM viewModel)
+        public ActionResult UploadDocumentForSpecificCourse(UploadDocumentVM viewModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && viewModel.File != null)
             {
                 Document document = new Document
                 {
-                    DocumentName = viewModel.DocumentName,
+                    DocumentName = viewModel.File.FileName,
                     UserID = User.Identity.GetUserId(),
                     RoleID = new RolesRepository().RoleByName("Teacher").Id,  //
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID
                 };
                 // Use your file here
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    viewModel.File.InputStream.CopyTo(memoryStream);
-                }
+                var content = new byte[viewModel.File.ContentLength];
+                viewModel.File.InputStream.Read(content, 0, viewModel.File.ContentLength);
+                document.DocumentContent = content;
+
                 repository.Add(document);
                 return RedirectToAction("Index");
             }
@@ -138,23 +140,23 @@ namespace LMS_Project.Controllers
         }
         // POST  For Assignments 
         [HttpPost]
-        private ActionResult UploadDocumentForAssignments(UploadDocumentVM viewModel)
+        public ActionResult UploadDocumentForAssignments(UploadDocumentVM viewModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && viewModel.File !=null)
             {
                 Document document = new Document
                 {
-                    DocumentName = viewModel.DocumentName,
+                    DocumentName = viewModel.File.FileName,
                     UserID = User.Identity.GetUserId(),
                     RoleID = new RolesRepository().RoleByName("Student").Id,  //
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID
                 };
                 // Use your file here
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    viewModel.File.InputStream.CopyTo(memoryStream);
-                }
+                var content = new byte[viewModel.File.ContentLength];
+                viewModel.File.InputStream.Read(content, 0, viewModel.File.ContentLength);
+                document.DocumentContent = content;
+
                 repository.Add(document);
                 return RedirectToAction("Index");
             }
@@ -169,23 +171,23 @@ namespace LMS_Project.Controllers
         }
         // POST Classroom
         [HttpPost]
-        private ActionResult UploadDocumentForClassroom(UploadDocumentVM viewModel)
+        public ActionResult UploadDocumentForClassroom(UploadDocumentVM viewModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && viewModel.File != null)
             {
                 Document document = new Document
                 {
-                    DocumentName = viewModel.DocumentName,
+                    DocumentName = viewModel.File.FileName,
                     UserID = User.Identity.GetUserId(),
                     RoleID = new RolesRepository().RoleByName("Teacher").Id,  
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID
                 };
                 // Use your file here
-                using (MemoryStream memoryStream = new MemoryStream())
-                {
-                    viewModel.File.InputStream.CopyTo(memoryStream);
-                }
+                var content = new byte[viewModel.File.ContentLength];
+                viewModel.File.InputStream.Read(content, 0, viewModel.File.ContentLength);
+                document.DocumentContent = content;
+
                 repository.Add(document);
                 return RedirectToAction("Index");
             }
