@@ -23,7 +23,7 @@ namespace LMS_Project.Repositories
         public void Add(Document document)
         {
             db.Documents.Add(document);
-            SaveChanges();
+            db.SaveChanges();
         }
 
         public Document Document(int? id)
@@ -38,19 +38,13 @@ namespace LMS_Project.Repositories
             if (document != null)
             {
                 db.Documents.Remove(document);
-                SaveChanges();
+                db.SaveChanges();
             }
         }
-        ////Edit
-        //public void Edit(Document document)
-        //{
-        //    db.Entry(document).State = EntityState.Modified;
-        //    SaveChanges();
-        //}
-
+        
         private void SaveChanges()
         {
-            SaveChanges();
+            db.SaveChanges();
         }
         #region IDisposable
         private bool disposedValue = false;

@@ -167,7 +167,7 @@ namespace LMS_Project.Controllers
                 if (user.FirstName.Length == 0)
                     user.FirstName = user.UserName;
 
-                var result = await UserManager.CreateAsync(user, model.Password);
+                var result = await UserManager.CreateAsync(user, DefaultPassword.Password(model.RoleName));
                 if (result.Succeeded)
                 {
                     await UserManager.AddToRoleAsync(user.Id, model.RoleName);

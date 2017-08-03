@@ -6,25 +6,19 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Course.TeacherID)
+            @Html.DisplayNameFor(model => model.Course.Subject)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Uploader.Email)
+            @Html.DisplayName("Uploader's name")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.VisibleTo.Name)
+            @Html.DisplayNameFor(model => model.VisibleFor)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.DocumentName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DocumentContent)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.UploadingDate)
@@ -32,32 +26,32 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Course.TeacherID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Uploader.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.VisibleTo.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DocumentName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DocumentContent)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UploadingDate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course.Subject.Name)
+            </td>
+            <td>
+                @if (item.Uploader != null)
+                {@Html.DisplayName(item.Uploader.ToString())
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VisibleFor.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DocumentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UploadingDate)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
 
 </table>

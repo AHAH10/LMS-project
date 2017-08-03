@@ -25,7 +25,7 @@ namespace LMS_Project.Repositories
 
         public bool Add(Course course)
         {
-            if (course.TeacherID != null && course.SubjectID != null)
+            if (course.TeacherID != null)
             {
                 var _courses = this.Courses().Where(c => c.TeacherID == course.TeacherID && c.SubjectID == course.SubjectID);
                 if (_courses.Count() != 0)
