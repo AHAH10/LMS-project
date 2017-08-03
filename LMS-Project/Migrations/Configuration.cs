@@ -4,6 +4,7 @@ namespace LMS_Project.Migrations
     using LMS_Project.Models.LMS;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
     using System.Linq;
@@ -56,7 +57,7 @@ namespace LMS_Project.Migrations
             {
                 var store = new UserStore<User>(context);
                 var userManager = new UserManager<User>(store);
-                var newuser = new User { UserName = "Admin", Email = "admin@mail.nu" };
+                var newuser = new User { UserName = "Admin", Email = "admin@mail.nu", BirthDate = DateTime.Now.ToString("yyyy/MM/dd") };
 
                 userManager.Create(newuser, "Admin-Password1");
                 userManager.AddToRole(newuser.Id, "Admin");
@@ -66,10 +67,54 @@ namespace LMS_Project.Migrations
             {
                 var store = new UserStore<User>(context);
                 var userManager = new UserManager<User>(store);
-                var newuser = new User { UserName = "Liam", Email = "liam@mail.nu", FirstName = "Liam", LastName = "B" };
+                var newuser = new User { UserName = "Liam", Email = "liam@mail.nu", FirstName = "Liam", LastName = "B", BirthDate = DateTime.Now.ToString("yyyy/MM/dd") };
 
                 userManager.Create(newuser, "Teacher-Password1");
                 userManager.AddToRole(newuser.Id, "Teacher");
+            }
+
+            if (!context.LMSUsers.Any(u => u.UserName == "Student1"))
+            {
+                var store = new UserStore<User>(context);
+                var userManager = new UserManager<User>(store);
+
+                Random rd = new Random();
+
+                for (int noStudent = 1; noStudent <= 20; noStudent += 1)
+                {
+                    int year = rd.Next(1990, 2010);
+                    int month = rd.Next(1, 13);
+                    DateTime birthDate = new DateTime(year, month, rd.Next(1, DateTime.DaysInMonth(year, month) + 1));
+                    var newuser = new User
+                    {
+                        UserName = "Student" + noStudent.ToString(),
+                        Email = "s" + noStudent.ToString() + "@mail.nu",
+                        FirstName = "Student",
+                        LastName = new string((char)((int)'A' + noStudent - 1), 5),
+                        BirthDate = birthDate.ToString("yyyy/MM/dd")
+                    };
+
+                    userManager.Create(newuser, "Student-Password1");
+                    userManager.AddToRole(newuser.Id, "Student");
+                }
+
+                for (int noTeacher = 1; noTeacher <= 10; noTeacher += 1)
+                {
+                    int year = rd.Next(1960, 2001);
+                    int month = rd.Next(1, 13);
+                    DateTime birthDate = new DateTime(year, month, rd.Next(1, DateTime.DaysInMonth(year, month) + 1));
+                    var newuser = new User
+                    {
+                        UserName = "Teacher" + noTeacher.ToString(),
+                        Email = "t" + noTeacher.ToString() + "@mail.nu",
+                        FirstName = "Teacher",
+                        LastName = new string((char)((int)'A' + noTeacher - 1), 5),
+                        BirthDate = birthDate.ToString("yyyy/MM/dd")
+                    };
+
+                    userManager.Create(newuser, "Teacher-Password1");
+                    userManager.AddToRole(newuser.Id, "Teacher");
+                }
             }
 
             User user = context.LMSUsers.FirstOrDefault(u => u.Email == "liam@mail.nu");

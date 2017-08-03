@@ -15,14 +15,13 @@ namespace LMS_Project.ViewModels
         {
             Students = students;
             InLesson = new string[] { };
-
-            if (students != null && students.Count > 0)
-                InLesson = (students.Select(s => s.Id)).ToArray();
         }
     }
 
-    public class CreateScheduleVM : IValidatableObject
+    public class CreateEditScheduleVM : IValidatableObject
     {
+        public int ID { get; set; }
+
         [Required]
         [Display(Name = "Week day")]
         [Range(0, 6, ErrorMessage = "Value for {0} must be between {1} and {2}.")]

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
@@ -13,6 +14,10 @@ namespace LMS_Project.Models.LMS
         [Display(Name = "Last name")]
         [CustomValidation(typeof(User), "ValidateLastName")]
         public string LastName { get; set; }
+
+        [Display(Name = "Birth Date")]
+        public string BirthDate { get; set; }
+
         public virtual ICollection<Grade> Grades { get; set; }
         public virtual ICollection<News> News { get; set; }
         public virtual ICollection<Course> Courses { get; set; }
@@ -58,6 +63,18 @@ namespace LMS_Project.Models.LMS
             if (!string.IsNullOrEmpty(name) && !rgx.IsMatch(name))
             {
                 result = new ValidationResult(string.Format("{0} must only contain letters, spaces and hyphens.", context.DisplayName));
+            }
+
+            return result;
+        }
+
+        public static ValidationResult ValidateBirthDate(DateTime birthDate, ValidationContext context)
+        {
+            ValidationResult result = null;
+
+            if (birthDate.Date >= DateTime.Now.Date)
+            {
+                result = new ValidationResult(string.Format("{0} must be anterior to today.", context.DisplayName));
             }
 
             return result;

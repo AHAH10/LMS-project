@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
 {
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles = "Admin")]
     public class CoursesController : Controller
     {
         private CoursesRepository cRepo = new CoursesRepository();
@@ -23,7 +23,7 @@ namespace LMS_Project.Controllers
         // GET: Course/Details/5
         public ActionResult Details(int? id)
         {
-            Course c= cRepo.Course(id) as Course;
+            Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
                 return View(c);
@@ -35,9 +35,9 @@ namespace LMS_Project.Controllers
         public ActionResult Create()
         {
             //ViewBag.Teachers = cRepo.AvaibleTeachers("french"); //- Get AviableTeachers for a specific Subject
-            ViewBag.Teachers = cRepo.GetTeachers(); // - Get All Teachers
+            ViewBag.Teachers = Teachers(); // - Get All Teachers
             ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
-           
+
             return View();
         }
 
@@ -47,12 +47,12 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                bool success=cRepo.Add(course);
+                bool success = cRepo.Add(course);
                 if (success)
                 {
                     return RedirectToAction("Index");
                 }
-                ViewBag.Teachers = cRepo.GetTeachers();
+                ViewBag.Teachers = Teachers();
                 ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 ViewBag.EMessage = "The Course You want to add already exists";
                 return View();
@@ -66,43 +66,41 @@ namespace LMS_Project.Controllers
         // GET: Course/Edit/5
         public ActionResult Edit(int? id)
         {
-            ViewBag.Teachers = cRepo.GetTeachers();
-            ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
-            Course c=cRepo.Course(id) as Course;
+            Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                return View(cRepo.Course(id));
+                ViewBag.Teachers = AvailableTeachers(c.SubjectID);
+                return View(c);
             }
-                return RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
         // POST: Course/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, Course course)
+        public ActionResult Edit(Course course)
         {
             try
             {
-                ViewBag.Teachers = cRepo.GetTeachers();
-                ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 // TODO: Add update logic here
-                bool success=cRepo.Edit(course);
+                bool success = cRepo.Edit(course);
                 if (success)
                 {
                     return RedirectToAction("Index");
                 }
                 ViewBag.EMessage = "Error 203: The teacher already have that subject";
-                return View();
+                ViewBag.Teachers = AvailableTeachers(course.SubjectID);
+                return View(course);
             }
             catch
             {
-                return View();
+                return View(course);
             }
         }
 
         // GET: Course/Delete/5
         public ActionResult Delete(int? id)
         {
-            Course c=cRepo.Course(id) as Course;
+            Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
                 return View(cRepo.Course(id));
@@ -124,6 +122,33 @@ namespace LMS_Project.Controllers
             {
                 return View();
             }
+        }
+
+        private List<SelectListItem> Teachers()
+        {
+            return new UsersRepository().Teachers().Select(t => new SelectListItem
+            {
+                Text = t.ToString(),
+                Value = t.Id.ToString()
+            }).ToList();
+        }
+
+        private List<SelectListItem> AvailableTeachers(int subjectId)
+        {
+            return new UsersRepository().AvailableTeachers(subjectId).Select(t => new SelectListItem
+            {
+                Text = t.ToString(),
+                Value = t.Id.ToString()
+            }).ToList();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                cRepo.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

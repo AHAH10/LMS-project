@@ -183,13 +183,22 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
-    <Compile Include="Controllers\SchedulesController.cs" />
+    <Compile Include="Controllers\SchedulesController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\SubjectsController.cs" />
+    <Compile Include="Controllers\TeachersController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Extensions\Extensions.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\RoleHelpers.cs" />
+    <Compile Include="Migrations\201708011310170_Initial.cs" />
+    <Compile Include="Migrations\201708011310170_Initial.Designer.cs">
+      <DependentUpon>201708011310170_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LMS\Course.cs" />
@@ -215,9 +224,13 @@
     <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ChangePasswordVM.cs" />
-    <Compile Include="ViewModels\CreateScheduleVM.cs" />
+    <Compile Include="ViewModels\CreateEditScheduleVM.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="ViewModels\ExtendedUserVM.cs" />
     <Compile Include="ViewModels\UploadDocumentVM.cs" />
+    <Compile Include="ViewModels\DetailedScheduleVM.cs" />
+    <Compile Include="ViewModels\UsersScheduleVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\aspnet-LMS-Project-20170724014225.mdf" />
@@ -230,6 +243,9 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Scripts\Angular\angular.min.js" />
+    <Content Include="Scripts\Angular\Courses.js" />
+    <Content Include="Scripts\Angular\MainAngular.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -244,6 +260,12 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\Schedules\Create.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\Schedules\_StudentsSchedule.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -308,7 +330,6 @@
     <Content Include="Views\Documents\Index.cshtml" />
     <Content Include="Views\Subjects\Create.cshtml" />
     <Content Include="Views\Subjects\Index.cshtml" />
-    <Content Include="Views\Schedules\Create.cshtml" />
     <Content Include="Views\Schedules\Delete.cshtml" />
     <Content Include="Views\Schedules\Details.cshtml" />
     <Content Include="Views\Schedules\Edit.cshtml" />
@@ -319,14 +340,15 @@
     <Content Include="Views\Subjects\Delete.cshtml" />
     <Content Include="Views\Subjects\Details.cshtml" />
     <Content Include="Views\Subjects\Edit.cshtml" />
-    <Content Include="Views\Schedules\ViewSchedule.cshtml" />
-    <Content Include="Views\Schedules\_StudentsSchedule.cshtml" />
     <Content Include="Views\Documents\_UploadDocument.cshtml" />
     <Content Include="Views\News\Create.cshtml" />
     <Content Include="Views\News\Delete.cshtml" />
     <Content Include="Views\News\Details.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
+    <Content Include="Views\Students\Planning.cshtml" />
+    <Content Include="Views\Teachers\Planning.cshtml" />
+    <Content Include="Views\Teachers\DetailedSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -335,6 +357,12 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201708011310170_Initial.resx">
+      <DependentUpon>201708011310170_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

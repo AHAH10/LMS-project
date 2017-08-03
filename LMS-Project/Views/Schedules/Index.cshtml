@@ -36,7 +36,13 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Classroom.Name)
+                @{string remarks = string.Empty;
+                if (item.Classroom.Remarks.Length > 0)
+                {
+                    remarks = " - " + item.Classroom.Remarks;
+                }
+                }
+                @Html.DisplayName(item.Classroom.Name + remarks)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Course.Subject.Name)

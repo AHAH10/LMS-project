@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -58,10 +59,15 @@ namespace LMS_Project.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
-            ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
+            ViewBag.Classrooms = Classrooms();
             ViewBag.Courses = Courses();
 
-            return View(new CreateScheduleVM { Students = Students() });
+            return View(new CreateEditScheduleVM
+            {
+                BeginningTime = new DateTime() + new TimeSpan(8, 0, 0),
+                EndingTime = new DateTime() + new TimeSpan(19, 0, 0),
+                Students = Students()
+            });
         }
 
         // POST: Schedules/Create
@@ -70,84 +76,39 @@ namespace LMS_Project.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Create([Bind(Include = "ID,WeekDay,BeginningTime,EndingTime,CourseID,ClassroomID")] CreateScheduleVM viewModel, StudentsInLesson studentsInLesson)
+        public ActionResult Create([Bind(Include = "ID,WeekDay,BeginningTime,EndingTime,CourseID,ClassroomID")] CreateEditScheduleVM viewModel, StudentsInLesson studentsInLesson)
         {
             if (ModelState.IsValid)
             {
-                // Let's check if all data are available at the given day and times, starting with the teacher
-                Course course = new CoursesRepository().Course(viewModel.CourseID);
-
-                Schedule availability = repository.TeacherAvailability(course.TeacherID,
-                                                                       viewModel.WeekDay,
-                                                                       viewModel.BeginningTime.ToString("HH:mm"),
-                                                                       viewModel.EndingTime.ToString("HH:mm"));
-
-                if (availability != null)
+                if (TestAvailability(viewModel, studentsInLesson))
                 {
-                    ModelState.AddModelError("", course.Teacher.ToString() + " is not available at the given day and times:");
-                    ModelState.AddModelError("", availability.ToString());
-
-                    ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
-                    ViewBag.Courses = Courses();
-                    return View(new CreateScheduleVM { Students = Students() });
-                }
-
-                // Then, we can check if the room is available
-                Classroom classroom = new ClassroomsRepository().Classroom(viewModel.ClassroomID);
-
-                availability = repository.ClassroomAvailability(viewModel.ClassroomID,
-                                                                viewModel.WeekDay,
-                                                                viewModel.BeginningTime.ToString("HH:mm"),
-                                                                viewModel.EndingTime.ToString("HH:mm"));
-
-                if (availability != null)
-                {
-                    ModelState.AddModelError("", "The classroom " + classroom.Name + " is not available at the given day and times:");
-                    ModelState.AddModelError("", availability.ToString());
-
-                    ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
-                    ViewBag.Courses = Courses();
-                    return View(new CreateScheduleVM { Students = Students() });
-                }
-
-                // Finally, let's check if all the students are available for the lesson
-                foreach (string studentId in studentsInLesson.InLesson)
-                {
-                    User student = new UsersRepository().User(studentId);
-
-                    availability = repository.StudentAvailability(studentId,
-                                                                  viewModel.WeekDay,
-                                                                  viewModel.BeginningTime.ToString("HH:mm"),
-                                                                  viewModel.EndingTime.ToString("HH:mm"));
-
-                    if (availability != null)
+                    Schedule schedule = new Schedule
                     {
-                        ModelState.AddModelError("", student.ToString() + " is not available at the given day and times:");
-                        ModelState.AddModelError("", availability.ToString());
+                        WeekDay = viewModel.WeekDay,
+                        BeginningTime = viewModel.BeginningTime.ToString(ScheduleConstants.TIME_FORMAT),
+                        EndingTime = viewModel.EndingTime.ToString(ScheduleConstants.TIME_FORMAT),
+                        ClassroomID = viewModel.ClassroomID,
+                        CourseID = viewModel.CourseID
+                    };
 
-                        ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
-                        ViewBag.Courses = Courses();
-                        return View(new CreateScheduleVM { Students = Students() });
-                    }
+                    repository.Add(schedule, studentsInLesson.InLesson.ToList());
+
+                    return RedirectToAction("Index");
                 }
-
-                Schedule schedule = new Schedule
+                else
                 {
-                    WeekDay = viewModel.WeekDay,
-                    BeginningTime = viewModel.BeginningTime.ToString("HH:mm"),
-                    EndingTime = viewModel.EndingTime.ToString("HH:mm"),
-                    ClassroomID = viewModel.ClassroomID,
-                    CourseID = viewModel.CourseID
-                };
-
-                repository.Add(schedule, studentsInLesson.InLesson.ToList());
-
-                return RedirectToAction("Index");
+                    ViewBag.Classrooms = Classrooms();
+                    ViewBag.Courses = Courses();
+                    return View(new CreateEditScheduleVM { Students = Students(studentsInLesson.InLesson.ToList()) });
+                }
             }
 
-            ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
+            ViewBag.Classrooms = Classrooms();
             ViewBag.Courses = Courses();
-            return View(new CreateScheduleVM { Students = Students() });
+            return View(new CreateEditScheduleVM
+            {
+                Students = Students(studentsInLesson.InLesson.ToList())
+            });
         }
 
         // GET: Schedules/Edit/5
@@ -158,15 +119,26 @@ namespace LMS_Project.Controllers
             {
                 return RedirectToAction("Index");
             }
+
             Schedule schedule = repository.Schedule(id);
             if (schedule == null)
             {
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
+            ViewBag.Classrooms = Classrooms();
             ViewBag.Courses = Courses();
-            return View(schedule);
+
+            return View(new CreateEditScheduleVM
+            {
+                ID = schedule.ID,
+                BeginningTime = DateTime.ParseExact(schedule.BeginningTime, ScheduleConstants.TIME_FORMAT, CultureInfo.InvariantCulture),
+                ClassroomID = schedule.ClassroomID,
+                CourseID = schedule.CourseID,
+                EndingTime = DateTime.ParseExact(schedule.EndingTime, ScheduleConstants.TIME_FORMAT, CultureInfo.InvariantCulture),
+                WeekDay = schedule.WeekDay,
+                Students = Students(schedule.Students.Select(s => s.Id).ToList())
+            });
         }
 
         // POST: Schedules/Edit/5
@@ -175,72 +147,40 @@ namespace LMS_Project.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit([Bind(Include = "ID,WeekDay,BeginningTime,EndingTime,CourseId,ClassroomId")] Schedule schedule)
+        public ActionResult Edit([Bind(Include = "ID,WeekDay,BeginningTime,EndingTime,CourseId,ClassroomId")] CreateEditScheduleVM viewModel, StudentsInLesson studentsInLesson)
         {
+            Schedule schedule = repository.Schedule(viewModel.ID);
+
             if (ModelState.IsValid)
             {
-                // Let's check if all data are available at the given day and times, starting with the teacher
-                Course course = new CoursesRepository().Course(schedule.CourseID);
-
-                Schedule availability = repository.TeacherAvailability(course.TeacherID,
-                                                                       schedule.WeekDay,
-                                                                       schedule.BeginningTime,
-                                                                       schedule.EndingTime);
-
-                if (availability != null)
+                if (TestAvailability(viewModel, studentsInLesson))
                 {
-                    ModelState.AddModelError("", course.Teacher.ToString() + " is not available at the given day and times:");
-                    ModelState.AddModelError("", availability.ToString());
+                    schedule.BeginningTime = viewModel.BeginningTime.ToString(ScheduleConstants.TIME_FORMAT);
+                    schedule.ClassroomID = viewModel.ClassroomID;
+                    schedule.CourseID = viewModel.CourseID;
+                    schedule.EndingTime = viewModel.EndingTime.ToString(ScheduleConstants.TIME_FORMAT);
+                    schedule.WeekDay = schedule.WeekDay;
 
-                    ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
+                    repository.Edit(schedule, studentsInLesson.InLesson.ToList());
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Classrooms = Classrooms();
                     ViewBag.Courses = Courses();
-                    return View(schedule);
+
+                    viewModel.Students = Students(schedule.Students.Select(s => s.Id).ToList());
+
+                    return View(viewModel);
                 }
-
-                // Then, we can check if the room is available
-                Classroom classroom = new ClassroomsRepository().Classroom(schedule.ClassroomID);
-
-                availability = repository.ClassroomAvailability(schedule.ClassroomID,
-                                                                schedule.WeekDay,
-                                                                schedule.BeginningTime,
-                                                                schedule.EndingTime);
-
-                if (availability != null)
-                {
-                    ModelState.AddModelError("", "The classroom " + classroom.Name + " is not available at the given day and times:");
-                    ModelState.AddModelError("", availability.ToString());
-
-                    ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
-                    ViewBag.Courses = Courses();
-                    return View(schedule);
-                }
-
-                // Finally, let's check if all the students are available for the lesson
-                foreach (User student in schedule.Students)
-                {
-                    availability = repository.StudentAvailability(student.Id,
-                                                                  schedule.WeekDay,
-                                                                  schedule.BeginningTime,
-                                                                  schedule.EndingTime);
-
-                    if (availability != null)
-                    {
-                        ModelState.AddModelError("", student.ToString() + " is not available at the given day and times:");
-                        ModelState.AddModelError("", availability.ToString());
-
-                        ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
-                        ViewBag.Courses = Courses();
-                        return View(schedule);
-                    }
-                }
-
-                repository.Edit(schedule);
-                return RedirectToAction("Index");
             }
 
-            ViewBag.Classrooms = new ClassroomsRepository().Classrooms().ToList();
+            ViewBag.Classrooms = Classrooms();
             ViewBag.Courses = Courses();
-            return View(schedule);
+
+            viewModel.Students = Students(schedule.Students.Select(s => s.Id).ToList());
+
+            return View(viewModel);
         }
 
         // GET: Schedules/Delete/5
@@ -269,23 +209,6 @@ namespace LMS_Project.Controllers
             return RedirectToAction("Index");
         }
 
-        [Authorize(Roles = "Student,Teacher")]
-        public ActionResult ViewSchedule()
-        {
-            List<Schedule> planning = new List<Schedule>();
-
-            if (User.IsInRole("Student"))
-            {
-                planning = repository.StudentSchedules(User.Identity.GetUserId()).ToList();
-            }
-            else if (User.IsInRole("Teacher"))
-            {
-                planning = repository.TeacherSchedules(User.Identity.GetUserId()).ToList();
-            }
-
-            return View(planning);
-        }
-
         private List<SelectListItem> Courses()
         {
             return new CoursesRepository().Courses().Select(c => new SelectListItem
@@ -295,13 +218,78 @@ namespace LMS_Project.Controllers
             }).ToList();
         }
 
-        private StudentsInLesson Students()
+        private List<SelectListItem> Classrooms()
+        {
+            return new ClassroomsRepository().Classrooms().Select(c => new SelectListItem
+            {
+                Text = c.Name + (c.Remarks == null || c.Remarks.Length == 0 ? string.Empty : " - " + c.Remarks),
+                Value = c.ID.ToString()
+            }).ToList();
+        }
+
+        private StudentsInLesson Students(List<string> studentsInLesson = null)
         {
             StudentsInLesson students = new StudentsInLesson();
 
-            students.Initilize(new UsersRepository().Students().OrderBy(es => es.Id).ToList());
+            students.Initilize(new UsersRepository().Students().OrderBy(s => s.LastName).ThenBy(s => s.FirstName).ToList());
+
+            if (studentsInLesson != null)
+                students.InLesson = studentsInLesson.ToArray();
 
             return students;
+        }
+
+        private bool TestAvailability(CreateEditScheduleVM viewModel, StudentsInLesson students)
+        {
+            // Let's check if all data are available at the given day and times, starting with the teacher
+            Course course = new CoursesRepository().Course(viewModel.CourseID);
+
+            Schedule availability = repository.TeacherAvailability(course.TeacherID,
+                                                                   viewModel.WeekDay,
+                                                                   viewModel.BeginningTime.ToString(ScheduleConstants.TIME_FORMAT),
+                                                                   viewModel.EndingTime.ToString(ScheduleConstants.TIME_FORMAT));
+
+            if (availability != null)
+            {
+                ModelState.AddModelError("", course.Teacher.ToString() + " is not available at the given day and times:");
+                ModelState.AddModelError("", availability.ToString());
+                return false;
+            }
+
+            // Then, we can check if the room is available
+            Classroom classroom = new ClassroomsRepository().Classroom(viewModel.ClassroomID);
+
+            availability = repository.ClassroomAvailability(viewModel.ClassroomID,
+                                                            viewModel.WeekDay,
+                                                            viewModel.BeginningTime.ToString(ScheduleConstants.TIME_FORMAT),
+                                                            viewModel.EndingTime.ToString(ScheduleConstants.TIME_FORMAT));
+
+            if (availability != null)
+            {
+                ModelState.AddModelError("", "The classroom " + classroom.Name + " is not available at the given day and times:");
+                ModelState.AddModelError("", availability.ToString());
+                return false;
+            }
+
+            // Finally, let's check if all the students are available for the lesson
+            foreach (string studentId in students.InLesson)
+            {
+                User student = new UsersRepository().User(studentId);
+
+                availability = repository.StudentAvailability(studentId,
+                                                              viewModel.WeekDay,
+                                                              viewModel.BeginningTime.ToString(ScheduleConstants.TIME_FORMAT),
+                                                              viewModel.EndingTime.ToString(ScheduleConstants.TIME_FORMAT));
+
+                if (availability != null)
+                {
+                    ModelState.AddModelError("", student.ToString() + " is not available at the given day and times:");
+                    ModelState.AddModelError("", availability.ToString());
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         protected override void Dispose(bool disposing)
