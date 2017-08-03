@@ -56,24 +56,7 @@ namespace LMS_Project.Controllers
             return View(nRepo.GetSpecificNews(id));
         }
 
-        // POST: News/Edit/5
-        [Authorize(Roles = "Admin")]
-        [HttpPost]
-        public ActionResult Edit(int id, News news)
-        {
-            try
-            {
-                // TODO: Add update logic here
-                news.EditedByID = User.Identity.GetUserId();
-                news.LastEditedDate = DateTime.Now;
-                nRepo.Edit(news);
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+        
 
         // GET: News/Delete/5
         [Authorize(Roles = "Admin")]

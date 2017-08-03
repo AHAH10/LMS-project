@@ -189,9 +189,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\RoleHelpers.cs" />
-    <Compile Include="Migrations\201708010848533_Initial.cs" />
-    <Compile Include="Migrations\201708010848533_Initial.Designer.cs">
-      <DependentUpon>201708010848533_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201708020910331_Initial.cs" />
+    <Compile Include="Migrations\201708020910331_Initial.Designer.cs">
+      <DependentUpon>201708020910331_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201708021206110_Initial-force.cs" />
+    <Compile Include="Migrations\201708021206110_Initial-force.Designer.cs">
+      <DependentUpon>201708021206110_Initial-force.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -341,8 +345,11 @@
     <Folder Include="Views\Grades\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708010848533_Initial.resx">
-      <DependentUpon>201708010848533_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708020910331_Initial.resx">
+      <DependentUpon>201708020910331_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201708021206110_Initial-force.resx">
+      <DependentUpon>201708021206110_Initial-force.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
