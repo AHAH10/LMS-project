@@ -1,4 +1,5 @@
 ﻿using LMS_Project.Models.LMS;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -73,13 +74,21 @@ namespace LMS_Project.Models
         [Display(Name = "User name")]
         public string UserName { get; set; }
 
+        [Required]
         [Display(Name = "First name")]
         [CustomValidation(typeof(User), "ValidateFirstName")]
         public string FirstName { get; set; }
 
+        [Required]
         [Display(Name = "Last name")]
         [CustomValidation(typeof(User), "ValidateLastName")]
         public string LastName { get; set; }
+
+        [Required]
+        [Display(Name = "Birth Date")]
+        [CustomValidation(typeof(User), "ValidateBirthDate")]
+        [DataType(DataType.Date)]
+        public DateTime BirthDate { get; set; }
 
         [Required]
         [Display(Name = "Select a role")]

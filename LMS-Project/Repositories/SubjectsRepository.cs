@@ -8,7 +8,7 @@ using System.Web;
 
 namespace LMS_Project.Repositories
 {
-    public class SubjectsRepository:IDisposable
+    public class SubjectsRepository : IDisposable
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -29,8 +29,8 @@ namespace LMS_Project.Repositories
 
         public bool Add(Subject subject)
         {
-            var _subjects = this.Subjects().Where(s => s.Name.ToLower() == subject.Name.ToLower());
-            if(_subjects.Count()!=0)
+            var _subjects = this.Subjects().Where(s => string.Compare(s.Name, subject.Name, true) == 0);
+            if (_subjects.Count() != 0)
             {
                 _subjects = null;
                 return false;
@@ -42,8 +42,8 @@ namespace LMS_Project.Repositories
 
         public bool Edit(Subject subject)
         {
-            var _subjects = this.Subjects().Where(s => s.Name.ToLower() == subject.Name.ToLower() &&subject.ID!=s.ID);
-            if(_subjects.Count()!=0)
+            var _subjects = this.Subjects().Where(s => string.Compare(s.Name, subject.Name, true) == 0 && subject.ID != s.ID);
+            if (_subjects.Count() != 0)
             {
                 _subjects = null;
                 return false;
@@ -68,7 +68,7 @@ namespace LMS_Project.Repositories
         {
             db.SaveChanges();
         }
-        
+
         #region IDisposable Support
         private bool disposedValue = false;
 
@@ -86,5 +86,5 @@ namespace LMS_Project.Repositories
             Dispose(true);
         }
         #endregion
-    }  
+    }
 }

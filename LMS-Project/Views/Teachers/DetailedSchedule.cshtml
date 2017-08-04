@@ -1,0 +1,70 @@
+﻿@model LMS_Project.Models.LMS.Schedule
+
+@{
+    ViewBag.Title = "Detailed Schedule";
+}
+
+<h2>Detailed Schedule</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.WeekDay)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.WeekDay)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Time")
+        </dt>
+
+        <dd>
+            @Html.DisplayName(Model.BeginningTime + "-" + Model.EndingTime)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Course)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Course.Subject.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Classroom)
+        </dt>
+
+        <dd>
+            @{string remarks = Model.Classroom.Remarks;
+            if (remarks.Length > 0)
+            {
+                remarks = " - " + remarks;
+            }
+            }
+            @Html.DisplayName(Model.Classroom.Name + " (" + Model.Classroom.Location + ")" + remarks)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Students)
+        </dt>
+
+        <dd>
+            <div class="container" style="padding:0">
+                <ul class="list-group list-unstyled">
+                    @foreach (LMS_Project.Models.LMS.User student in Model.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                    {
+                        <li>
+                            @Html.DisplayName(student.ToString())
+                        </li>
+                    }
+                </ul>
+            </div>
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Planning")
+</p>

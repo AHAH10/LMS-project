@@ -42,8 +42,8 @@ namespace LMS_Project.Repositories
 
         public bool Edit(Course course)
         {
-           
-            if (this.db.Courses.Where(_cRel => _cRel.ID != course.ID && _cRel.SubjectID == course.SubjectID&&_cRel.TeacherID == course.TeacherID).Count() ==0)
+
+            if (this.db.Courses.Where(_cRel => _cRel.ID != course.ID && _cRel.SubjectID == course.SubjectID && _cRel.TeacherID == course.TeacherID).Count() == 0)
             {
                 db.Entry(course).State = EntityState.Modified;
                 db.SaveChanges();
@@ -58,7 +58,7 @@ namespace LMS_Project.Repositories
 
             if (course != null)
             {
-                if(course.Documents.Count()==0 && course.Schedules.Count()==0)
+                if (course.Documents.Count() == 0 && course.Schedules.Count() == 0)
                 {
                     db.Subjects.Where(s => s.Courses.Remove(course));
                     db.Courses.Remove(course);
@@ -82,10 +82,10 @@ namespace LMS_Project.Repositories
         public List<Subject> AvaibleSubjects(string teacherID)
         {
             List<Subject> Subject_result = new List<Subject>();
-            
-            foreach(Course co in db.Courses)
+
+            foreach (Course co in db.Courses)
             {
-                if(co.TeacherID!=teacherID)
+                if (co.TeacherID != teacherID)
                 {
                     Subject_result.Add(new SubjectsRepository().Subject(co.SubjectID));
                 }
@@ -93,56 +93,42 @@ namespace LMS_Project.Repositories
 
             return Subject_result;
         }
-        /// <summary>
-        /// Returns all avaible teachers for a specific subject
-        /// </summary>
-        /// <param name="subjectName"></param>
-        /// <returns></returns>
-        public List<User> AvaibleTeachers(string subjectName)
-        {
-            List<User> _result = new List<User>();
 
-                foreach (User t in GetTeachers())
-                {
-                    if (t.Courses.Where(c => c.Subject.Name.ToLower() == subjectName.ToLower()).Count() == 0)
-                    {
-                        _result.Add(t);
-                    }
-                }
+        ///// <summary>
+        ///// Returns all avaible teachers for a specific subject
+        ///// </summary>
+        ///// <param name="subjectName"></param>
+        ///// <returns></returns>
+        //public List<User> AvaibleTeachers(string subjectName)
+        //{
+        //    List<User> _result = new List<User>();
 
-            return _result;
-        }
-        public List<User> AvaibleTeachers(int subjectID)
-        {
-            List<User> _result = new List<User>();
+        //    foreach (User t in GetTeachers())
+        //    {
+        //        if (t.Courses.Where(c => string.Compare(c.Subject.Name, subjectName, true) == 0).Count() == 0)
+        //        {
+        //            _result.Add(t);
+        //        }
+        //    }
 
-            foreach (User t in GetTeachers())
-            {
-                if (t.Courses.Where(c => c.Subject.ID == subjectID).Count() == 0)
-                {
-                    _result.Add(t);
-                }
-            }
+        //    return _result;
+        //}
 
-            return _result;
-        }
-        /// <summary>
-        /// Returns all teachers
-        /// </summary>
-        /// <returns></returns>
-        public List<User> GetTeachers()
-        {
-            List<User> _teachers = new List<User>();
+        //public List<User> AvaibleTeachers(int subjectID)
+        //{
+        //    List<User> _result = new List<User>();
 
-            foreach(User u in new UsersRepository().Users())
-            {
-                if (new UsersRepository().GetUserRole(u.Id).Name.ToLower() == "teacher")
-                {
-                    _teachers.Add(u);
-                }
-            }
-            return _teachers;
-        }
+        //    foreach (User t in GetTeachers())
+        //    {
+        //        if (t.Courses.Where(c => c.Subject.ID == subjectID).Count() == 0)
+        //        {
+        //            _result.Add(t);
+        //        }
+        //    }
+
+        //    return _result;
+        //}
+
         #region IDisposable Support
         private bool disposedValue = false;
 

@@ -4,45 +4,62 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+@{string title = Model.ToString();
+if (title.Length == 0)
+{
+    title = "Details";
+}
+}
+<h2>@title</h2>
 
-<div>
-    <h4>@Model.UserName</h4>
-    <hr />
-    <div class="index-table">
-        <table>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Email)
-                </th>
-                <th>
-                    @Html.LabelFor(model => model.PhoneNumber, "Phone Number")
-                </th>
-                @{if (Model.Courses != null && Model.Courses.Count > 0)
-                {
+    <div>
+        <hr />
+        <div class="index-table">
+            <table>
+                <tr>
                     <th>
-                        @Html.DisplayNameFor(model => model.Courses)
+                        @Html.DisplayNameFor(model => model.UserName)
                     </th>
-                }}
-            </tr>
-            <tr>
-                <td>
-                    @Html.DisplayFor(model => model.Email)
-                </td>
-                <td>
-                    @Html.DisplayFor(model => model.PhoneNumber)
-                </td>
-                @{if (Model.Courses != null && Model.Courses.Count > 0)
-                {
+                    <th>
+                        @Html.DisplayNameFor(model => model.BirthDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </th>
+                    <th>
+                        @Html.LabelFor(model => model.PhoneNumber, "Phone Number")
+                    </th>
+                    @{if (Model.Courses != null && Model.Courses.Count > 0)
+                    {
+                        <th>
+                            @Html.DisplayNameFor(model => model.Courses)
+                        </th>
+                    }}
+                </tr>
+                <tr>
                     <td>
-                        @Html.DisplayFor(model => model.Courses.First().Subject.Name)
+                        @Html.DisplayFor(model => model.UserName)
                     </td>
-                }}
-            </tr>
-        </table>
+                    <td>
+                        @Html.DisplayFor(model => model.BirthDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.PhoneNumber)
+                    </td>
+                    @{if (Model.Courses != null && Model.Courses.Count > 0)
+                    {
+                        <td>
+                            @Html.DisplayFor(model => model.Courses.First().Subject.Name)
+                        </td>
+                    }}
+                </tr>
+            </table>
+        </div>
     </div>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>

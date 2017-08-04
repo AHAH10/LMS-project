@@ -1,4 +1,4 @@
-﻿@model LMS_Project.ViewModels.CreateScheduleVM
+﻿@model LMS_Project.ViewModels.CreateEditScheduleVM
 
 @{
     ViewBag.Title = "Create";
@@ -39,7 +39,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CourseID, "CourseID", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.CourseID, "Course", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.CourseID, (IEnumerable<SelectListItem>)ViewBag.Courses, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.CourseID, "", new { @class = "text-danger" })
@@ -47,9 +47,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ClassroomID, "ClassroomID", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ClassroomID, "Classroom", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ClassroomID, new SelectList(ViewBag.ClassRooms, "Id", "Name"), htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.ClassroomID, (IEnumerable<SelectListItem>)ViewBag.ClassRooms, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ClassroomID, "", new { @class = "text-danger" })
             </div>
         </div>

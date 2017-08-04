@@ -9,7 +9,7 @@
             @Html.DisplayNameFor(model => model.Subject.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Teacher.Email)
+            @Html.DisplayNameFor(model => model.Teacher)
         </th>
         <th></th>
     </tr>
@@ -20,7 +20,7 @@
             @Html.DisplayFor(modelItem => item.Subject.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Teacher.Email)
+            @Html.DisplayName(item.Teacher.ToString())
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |

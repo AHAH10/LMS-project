@@ -1,5 +1,6 @@
 ﻿using LMS_Project.Models;
 using LMS_Project.Models.LMS;
+using LMS_Project.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -54,8 +55,8 @@ namespace LMS_Project.Repositories
             return Schedules().Where(s => s.Course.TeacherID == teacherId &&
                                           s.WeekDay == weekDay)
                               .OrderBy(s => s.BeginningTime)
-                              .FirstOrDefault(s => (string.Compare(s.BeginningTime, beginningTime) == -1 && string.Compare(s.EndingTime, beginningTime) == 1) ||
-                                                   (string.Compare(s.BeginningTime, endingTime) == -1 && string.Compare(s.EndingTime, endingTime) == 1));
+                              .FirstOrDefault(s => (string.Compare(s.BeginningTime, beginningTime) != 1 && string.Compare(s.EndingTime, beginningTime) != -1) ||
+                                                   (string.Compare(s.BeginningTime, endingTime) != 1 && string.Compare(s.EndingTime, endingTime) != -1));
         }
 
         /// <summary>
@@ -74,8 +75,9 @@ namespace LMS_Project.Repositories
                                                           (schStudent, student) => student)
                               .Any(u => u.Id.Equals(studentId)))
                               .OrderBy(s => s.BeginningTime)
-                              .FirstOrDefault(s => (string.Compare(s.BeginningTime, beginningTime) == -1 && string.Compare(s.EndingTime, beginningTime) == 1 ||
-                                                   (string.Compare(s.BeginningTime, endingTime) == -1 && string.Compare(s.EndingTime, endingTime) == 1)));
+                              .FirstOrDefault(s => s.WeekDay == weekDay &&
+                                                   (string.Compare(s.BeginningTime, beginningTime) != 1 && string.Compare(s.EndingTime, beginningTime) != -1 ||
+                                                   (string.Compare(s.BeginningTime, endingTime) != 1 && string.Compare(s.EndingTime, endingTime) != -1)));
         }
 
         /// <summary>
@@ -91,8 +93,8 @@ namespace LMS_Project.Repositories
             return Schedules().Where(s => s.ClassroomID == classroomId &&
                                           s.WeekDay == weekDay)
                               .OrderBy(s => s.BeginningTime)
-                              .FirstOrDefault(s => (string.Compare(s.BeginningTime, beginningTime) == -1 && string.Compare(s.EndingTime, beginningTime) == 1) ||
-                                                   (string.Compare(s.BeginningTime, endingTime) == -1 && string.Compare(s.EndingTime, endingTime) == 1));
+                              .FirstOrDefault(s => (string.Compare(s.BeginningTime, beginningTime) != 1 && string.Compare(s.EndingTime, beginningTime) != -1) ||
+                                                   (string.Compare(s.BeginningTime, endingTime) != 1 && string.Compare(s.EndingTime, endingTime) != -1));
         }
 
         public Schedule Schedule(int? id)
@@ -100,9 +102,14 @@ namespace LMS_Project.Repositories
             return Schedules().FirstOrDefault(s => s.ID == id);
         }
 
+        private List<User> StudentsInLesson(List<string> studentsInLesson)
+        {
+            return db.LMSUsers.Where(u => studentsInLesson.Contains(u.Id)).Select(u => u).ToList();
+        }
+
         public void Add(Schedule schedule, List<string> students)
         {
-            List<User> studentsInLesson = db.LMSUsers.Where(u => students.Contains(u.Id)).Select(u => u).ToList();
+            List<User> studentsInLesson = StudentsInLesson(students);
 
             schedule.Students = studentsInLesson;
 
@@ -121,9 +128,37 @@ namespace LMS_Project.Repositories
             SaveChanges();
         }
 
-        public void Edit(Schedule schedule)
+        public void Edit(Schedule schedule, List<string> students)
         {
+            // Remove the previous list of students
+            List<User> previousStudents = db.LMSUsers.Where(u => u.Schedules.Join(db.Schedules,
+                                                                                  s => s.ID,
+                                                                                  sch => sch.ID,
+                                                                                  (s, sch) => s)
+                                                     .Any(s => s.ID == schedule.ID))
+                                                     .ToList();
+
+            foreach (User student in previousStudents)
+            {
+                student.Schedules.Remove(schedule);
+                db.Entry(student).State = EntityState.Modified;
+            }
+
+            List<User> studentsInLesson = StudentsInLesson(students);
+
+            schedule.Students = studentsInLesson;
             db.Entry(schedule).State = EntityState.Modified;
+
+            foreach (User student in studentsInLesson)
+            {
+                if (student.Schedules == null)
+                    student.Schedules = new List<Schedule> { schedule };
+                else
+                    student.Schedules.Add(schedule);
+
+                db.Entry(student).State = EntityState.Modified;
+            }
+
             SaveChanges();
         }
 

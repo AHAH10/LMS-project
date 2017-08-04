@@ -22,7 +22,6 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Ungraded assignments", "Index", "Documents")</li>
-                    <li>@Html.ActionLink("See my Schedule", "ViewSchedule", "Schedules")</li>
                     <li class="dropdown">
                         <a href="#"
                            class="dropdown-toggle"
@@ -33,7 +32,8 @@
                         <ul class="dropdown-menu">
                             <li>@Html.ActionLink("For a specific course", "UploadDocumentForSpecificCourse", "Documents")</li>
                             <li>@Html.ActionLink("For myself", "UploadDocumentForMyself", "Documents")</li>
-                        </ul>
+                    <li>@Html.ActionLink("See my Schedule", "Planning", "Teachers")</li>
+                </ul>
                     </li>                </ul>
                 @Html.Partial("_LoginPartial")
             </div>

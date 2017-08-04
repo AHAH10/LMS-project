@@ -1,0 +1,54 @@
+﻿@model LMS_Project.ViewModels.UsersScheduleVM
+@{
+    ViewBag.Title = "Schedule";
+}
+
+<h2>Schedule for @Model.UsersFullName</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedules.First().WeekDay)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedules.First().BeginningTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedules.First().EndingTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedules.First().Course.Subject)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedules.First().Classroom)
+        </th>
+    </tr>
+
+    @foreach (var item in Model.Schedules)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.WeekDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeginningTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndingTime)
+            </td>
+            <td>
+                @Html.ActionLink(item.Course.Subject.Name, "DetailedSchedule", "Teachers", new { scheduleId = item.ID }, null)
+            </td>
+            <td>
+                @{string remarks = item.Classroom.Remarks;
+                if (remarks.Length > 0)
+                {
+                    remarks = " - " + remarks;
+                }
+                }
+                @Html.DisplayName(item.Classroom.Name + " (" + item.Classroom.Location + ")" + remarks)
+            </td>
+        </tr>
+    }
+
+</table>

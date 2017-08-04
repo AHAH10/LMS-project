@@ -143,7 +143,7 @@ namespace LMS_Project.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
-            return View(new RegisterViewModel { Roles = new RolesRepository().Roles().ToList() });
+            return View(new RegisterViewModel { BirthDate = DateTime.Now, Roles = new RolesRepository().Roles().ToList() });
         }
 
         //
@@ -160,12 +160,9 @@ namespace LMS_Project.Controllers
                     UserName = model.UserName,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    Email = model.Email
+                    Email = model.Email,
+                    BirthDate = model.BirthDate.ToString("yyyy/MM/dd")
                 };
-
-                // By default, the user's firstname is equal to the username
-                if (user.FirstName.Length == 0)
-                    user.FirstName = user.UserName;
 
                 var result = await UserManager.CreateAsync(user, DefaultPassword.Password(model.RoleName));
                 if (result.Succeeded)

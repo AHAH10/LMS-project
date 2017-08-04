@@ -1,4 +1,4 @@
-﻿@model LMS_Project.Models.LMS.Schedule
+﻿@model LMS_Project.ViewModels.CreateEditScheduleVM
 
 @{
     ViewBag.Title = "Edit";
@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>Schedule</h4>
         <hr />
@@ -52,10 +52,12 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ClassroomID, "Classroom", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("ClassroomId", new SelectList(ViewBag.Classrooms, "ID", "Name", Model.ClassroomID), htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("ClassroomId",(IEnumerable<SelectListItem>)ViewBag.Classrooms, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.ClassroomID, "", new { @class = "text-danger" })
             </div>
         </div>
+
+        @Html.Partial("_StudentsSchedule", Model.Students)
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">

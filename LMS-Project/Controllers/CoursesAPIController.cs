@@ -25,7 +25,7 @@ namespace LMS_Project.Controllers
         /// <returns></returns>
         public User[] GetAvaibleTeachers(int subjectID)
         {
-            return db.AvaibleTeachers(subjectID).ToArray();
+            return new UsersRepository().AvailableTeachers(subjectID).ToArray();
         }
         /// <summary>
         /// Return a list of avaible subjects for a specific teacher
