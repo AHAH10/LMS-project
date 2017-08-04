@@ -4,7 +4,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    <div class="form-horizontal" ng-controller="CourseCtrl" ng-init="Update()">
+    <div class="form-horizontal" ng-controller="CourseCtrl">
         <h4>Course</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -27,7 +27,7 @@
             </div>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" ng-init="Start()">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
