@@ -17,24 +17,17 @@ namespace LMS_Project.Controllers
     [Authorize(Roles="Admin")] //Only an Admin can access the api
     public class CoursesAPIController : ApiController
     {
-        private CoursesRepository db = new CoursesRepository();
-        /// <summary>
-        /// Returns a list of avaible teachers for a specific subject
-        /// </summary>
-        /// <param name="subjectName"></param>
-        /// <returns></returns>
-        public User[] GetAvaibleTeachers(int subjectID)
-        {
-            return new UsersRepository().AvailableTeachers(subjectID).ToArray();
+        public List<Subject> GetAvaibleSubjects(string user)
+        { 
+            return new SubjectsRepository().AvaibleSubjects(user);
         }
-        /// <summary>
-        /// Return a list of avaible subjects for a specific teacher
-        /// </summary>
-        /// <param name="teacherID"></param>
-        /// <returns></returns>
-        public List<Subject> GetAvaibleSubjects(string teacherID)
+        public List<User> GetAvaibleTeachers(int subject)
         {
-            return db.AvaibleSubjects(teacherID);
+            return new UsersRepository().AvailableTeachers(subject).ToList();
+        }
+        public List<Subject> GetSubjects()
+        {
+            return new SubjectsRepository().Subjects().ToList();
         }
     }
 }

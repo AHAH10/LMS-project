@@ -34,9 +34,16 @@ namespace LMS_Project.Controllers
         // GET: Course/Create
         public ActionResult Create()
         {
-            //ViewBag.Teachers = cRepo.AvaibleTeachers("french"); //- Get AviableTeachers for a specific Subject
-            ViewBag.Teachers = Teachers(); // - Get All Teachers
-            ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
+            ViewBag.Teachers = new UsersRepository().AvailableTeachers(new SubjectsRepository().Subjects().ToList()[0].ID);
+            List<Subject> s = new List<Subject>();
+            foreach (Subject sub in new SubjectsRepository().Subjects())
+            {
+                if (new UsersRepository().AvailableTeachers(sub.ID).Count() != 0)
+                {
+                    s.Add(sub);
+                }
+            }
+            ViewBag.Subjects = s;
 
             return View();
         }
@@ -52,7 +59,7 @@ namespace LMS_Project.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                ViewBag.Teachers = Teachers();
+                ViewBag.Teachers = new UsersRepository().Teachers();
                 ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 ViewBag.EMessage = "The Course You want to add already exists";
                 return View();
@@ -69,7 +76,8 @@ namespace LMS_Project.Controllers
             Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                ViewBag.Teachers = AvailableTeachers(c.SubjectID);
+                ViewBag.Teachers = new UsersRepository().AvailableTeachers(c.SubjectID);
+                ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 return View(c);
             }
             return RedirectToAction("Index");
@@ -88,7 +96,8 @@ namespace LMS_Project.Controllers
                     return RedirectToAction("Index");
                 }
                 ViewBag.EMessage = "Error 203: The teacher already have that subject";
-                ViewBag.Teachers = AvailableTeachers(course.SubjectID);
+                ViewBag.Teachers = new UsersRepository().Teachers();
+                ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 return View(course);
             }
             catch
@@ -122,33 +131,6 @@ namespace LMS_Project.Controllers
             {
                 return View();
             }
-        }
-
-        private List<SelectListItem> Teachers()
-        {
-            return new UsersRepository().Teachers().Select(t => new SelectListItem
-            {
-                Text = t.ToString(),
-                Value = t.Id.ToString()
-            }).ToList();
-        }
-
-        private List<SelectListItem> AvailableTeachers(int subjectId)
-        {
-            return new UsersRepository().AvailableTeachers(subjectId).Select(t => new SelectListItem
-            {
-                Text = t.ToString(),
-                Value = t.Id.ToString()
-            }).ToList();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                cRepo.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

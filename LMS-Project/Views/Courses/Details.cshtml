@@ -20,11 +20,18 @@
         </dd>
 
         <dt>
-            @Html.DisplayName("Name")
+            @Html.DisplayNameFor(model => model.Teacher.UserName)
         </dt>
 
         <dd>
-            @Html.DisplayName(Model.Teacher.ToString())
+            @Html.DisplayFor(model => model.Teacher.UserName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Teacher.Roles.First().RoleId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacher.Roles.First().RoleId)
         </dd>
         <dt>
             Amount of Courses

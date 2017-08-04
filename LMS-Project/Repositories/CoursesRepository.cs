@@ -74,60 +74,6 @@ namespace LMS_Project.Repositories
         {
             db.SaveChanges();
         }
-        /// <summary>
-        /// Returns all Avaible Subjects for a specific teacher
-        /// </summary>
-        /// <param name="teacherID"></param>
-        /// <returns></returns>
-        public List<Subject> AvaibleSubjects(string teacherID)
-        {
-            List<Subject> Subject_result = new List<Subject>();
-
-            foreach (Course co in db.Courses)
-            {
-                if (co.TeacherID != teacherID)
-                {
-                    Subject_result.Add(new SubjectsRepository().Subject(co.SubjectID));
-                }
-            }
-
-            return Subject_result;
-        }
-
-        ///// <summary>
-        ///// Returns all avaible teachers for a specific subject
-        ///// </summary>
-        ///// <param name="subjectName"></param>
-        ///// <returns></returns>
-        //public List<User> AvaibleTeachers(string subjectName)
-        //{
-        //    List<User> _result = new List<User>();
-
-        //    foreach (User t in GetTeachers())
-        //    {
-        //        if (t.Courses.Where(c => string.Compare(c.Subject.Name, subjectName, true) == 0).Count() == 0)
-        //        {
-        //            _result.Add(t);
-        //        }
-        //    }
-
-        //    return _result;
-        //}
-
-        //public List<User> AvaibleTeachers(int subjectID)
-        //{
-        //    List<User> _result = new List<User>();
-
-        //    foreach (User t in GetTeachers())
-        //    {
-        //        if (t.Courses.Where(c => c.Subject.ID == subjectID).Count() == 0)
-        //        {
-        //            _result.Add(t);
-        //        }
-        //    }
-
-        //    return _result;
-        //}
 
         #region IDisposable Support
         private bool disposedValue = false;
