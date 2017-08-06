@@ -109,7 +109,7 @@ namespace LMS_Project.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                ViewBag.EMessage = "Error 666: The subject you want to delete can't be deleted. (Make sure that the course(s) containing the subject is deleted.)";
+                ViewBag.EMessage = "Error 666: The subject you want to delete can't be deleted. (Make sure that course(s) are removed.)";
                 return View();    
             }
             catch

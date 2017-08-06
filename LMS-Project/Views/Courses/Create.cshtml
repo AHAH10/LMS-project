@@ -9,7 +9,7 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Subject, "Subject", htmlAttributes: new {ng_click="SortList('subjects')", @style = "cursor:pointer;", @class = "control-label" })
+            @Html.LabelFor(model => model.Subject, "Subject", htmlAttributes: new { ng_click = "SortList('subjects')", @style = "cursor:pointer;", @class = "control-label" })
             <div class="row">
                 <div class="col-md-10">
                     @Html.DropDownListFor(m => m.SubjectID, new SelectList(ViewBag.Subjects, "ID", "Name"), htmlAttributes: new { ng_model = "selectedSubject", ng_change = "Update()", @id = "subjects", @class = "form-control" })
@@ -18,10 +18,10 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.TeacherID, "Teacher", htmlAttributes: new { ng_click = "SortList('teachers')", @style="cursor:pointer;",@class = "control-label" })
+            @Html.LabelFor(model => model.TeacherID, "Teacher", htmlAttributes: new { ng_click = "SortList('teachers')", @style = "cursor:pointer;", @class = "control-label" })
             <div class="row">
                 <div class="col-md-10">
-                    @Html.DropDownListFor(m => m.TeacherID, new SelectList(ViewBag.Teachers, "Id", "UserName"), htmlAttributes: new {@id = "teachers", @class = "form-control" })
+                    @Html.DropDownListFor(m => m.TeacherID, new SelectList(ViewBag.Teachers, "Id", "UserName"), htmlAttributes: new { @id = "teachers", @class = "form-control" })
                     @Html.ValidationMessageFor(model => model.TeacherID, "", new { @class = "text-danger" })
                 </div>
             </div>
