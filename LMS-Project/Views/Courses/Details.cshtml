@@ -12,33 +12,26 @@
             @Html.DisplayFor(model => model.Subject.Name)
         </dd>
         <dt>
+            @Html.DisplayNameFor(model => model.Teacher.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacher.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Teacher.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Teacher.LastName)
+        </dd>
+        <dt>
             @Html.DisplayNameFor(model => model.Teacher.Email)
         </dt>
 
         <dd>
             @Html.DisplayFor(model => model.Teacher.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Teacher.UserName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Teacher.UserName)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Teacher.Roles.First().RoleId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Teacher.Roles.First().RoleId)
-        </dd>
-        <dt>
-            Amount of Courses
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Teacher.Courses.Count)
         </dd>
     </dl>
 </div>

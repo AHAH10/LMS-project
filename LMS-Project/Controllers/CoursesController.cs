@@ -34,16 +34,8 @@ namespace LMS_Project.Controllers
         // GET: Course/Create
         public ActionResult Create()
         {
-            ViewBag.Teachers = new UsersRepository().AvailableTeachers(new SubjectsRepository().Subjects().ToList()[0].ID);
-            List<Subject> s = new List<Subject>();
-            foreach (Subject sub in new SubjectsRepository().Subjects())
-            {
-                if (new UsersRepository().AvailableTeachers(sub.ID).Count() != 0)
-                {
-                    s.Add(sub);
-                }
-            }
-            ViewBag.Subjects = s;
+            ViewBag.Teachers = new UsersRepository().Teachers().ToList();
+            ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
 
             return View();
         }
@@ -59,7 +51,7 @@ namespace LMS_Project.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                ViewBag.Teachers = new UsersRepository().Teachers();
+                ViewBag.Teachers = new UsersRepository().Teachers().ToList();
                 ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 ViewBag.EMessage = "The Course You want to add already exists";
                 return View();
@@ -96,7 +88,7 @@ namespace LMS_Project.Controllers
                     return RedirectToAction("Index");
                 }
                 ViewBag.EMessage = "Error 203: The teacher already have that subject";
-                ViewBag.Teachers = new UsersRepository().Teachers();
+                ViewBag.Teachers = new UsersRepository().Teachers().ToList();
                 ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 return View(course);
             }
@@ -124,8 +116,13 @@ namespace LMS_Project.Controllers
             try
             {
                 // TODO: Add delete logic here
-                cRepo.Delete(id);
-                return RedirectToAction("Index");
+                bool success = cRepo.Delete(id);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
+                ViewBag.EMessage = "Error 615: The course you want to delete can't be deleted. (Make sure that it have no documents or schedule to it.)";
+                return View();
             }
             catch
             {

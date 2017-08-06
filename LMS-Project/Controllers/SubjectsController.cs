@@ -104,10 +104,13 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                sRepo.Delete(id);
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                bool success= sRepo.Delete(id);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
+                ViewBag.EMessage = "Error 666: The subject you want to delete can't be deleted. (Make sure that the course(s) containing the subject is deleted.)";
+                return View();    
             }
             catch
             {

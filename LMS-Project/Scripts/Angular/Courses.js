@@ -1,23 +1,37 @@
 ﻿(function () {
-    var sortSAsc = true;
-    var sortTAsc = true;
-
     var app = angular.module("LMSApp");
-    app.controller("CourseCtrl", ["$scope", "$http", function ($scope, $http) {
+    //index
+    app.controller("Course_Index_Ctrl", ["$scope", "$http", function ($scope, $http) {
+        $scope.reverse = true;
+
+        $scope.orderByMe = function (type) {
+            $scope.myOrderBy = type;
+            $scope.reverse = ($scope.myOrderBy === type) ? !$scope.reverse : false;
+        };
+        $scope.getData = function () {
+            $http.get('/api/C_And_S_API/GetAllCourses')
+                .then(function (response) {
+                    $scope.courses = JSON.parse(JSON.stringify(response.data));
+                })
+        };
+    }]);
+    //Create
+    app.controller("Course_Create_Ctrl", ["$scope", "$http", function ($scope, $http) {
 
         $scope.selectedSubject = document.getElementById("subjects").value;
+        var start = true;
+        var sortSAsc = true;
+        var sortTAsc = true;
 
-        $scope.Start = function(){
+        $scope.Start = function () {
+            sortTheList("subjects");
             update();
-            //sortTheList("teachers");
-            //sortTheList("subjects");
-            alert("testin");
         }
 
         function getAvaibleTeachers() {
-            $http.get('/api/CoursesAPI/GetAvaibleTeachers?subject=' + $scope.selectedSubject)
+            $http.get('/api/C_And_S_API/GetAvailableTeachersWithLessInfo?subjectID=' + $scope.selectedSubject)
                 .then(function (response) {
-                    $scope.teachers = JSON.parse(JSON.stringify(response.data));
+                    $scope.teachers = JSON.parse(JSON.stringify(response.data)); //Any references will be converted into objectsS
 
                     var op = [];
 
@@ -27,11 +41,14 @@
                         _option.text = $scope.teachers[i].FirstName + " " + $scope.teachers[i].LastName;
                         op.push(_option);
                     }
-
                     updateDropDownList("teachers", op);
+                    if (start) {
+                        sortTheList("teachers");
+                        start = false;
+                    }
                 });
         }
-        function sort(options,desc){
+        function sort(options, desc) {
             if (desc == true) {
                 options.sort(function (a, b) {
                     var textA = a.text.toLowerCase(), textB = b.text.toLowerCase()
@@ -62,15 +79,15 @@
         $scope.Update = function () {
             update();
         };
-        function sortTheList(sID)
-        {
+        //an ng-repeat select list would had been easier, but if javascript is disabled on the client, the dropdown list should still work
+        function sortTheList(sID) {
             if (sID == "teachers") {
                 var op = [];
 
-                for (var i = 0; i < $scope.teachers.length; i++) {
+                for (var i = 0; i < document.getElementById("teachers").getElementsByTagName("option").length; i++) {
                     var _option = { value: "", text: "" };
-                    _option.value = $scope.teachers[i].Id;
-                    _option.text = $scope.teachers[i].FirstName + " " + $scope.teachers[i].LastName;
+                    _option.value = document.getElementById("teachers").getElementsByTagName("option")[i].value;
+                    _option.text = document.getElementById("teachers").getElementsByTagName("option")[i].text;
                     op.push(_option);
                 }
                 if (sortTAsc == true) {
@@ -83,7 +100,7 @@
                 }
                 updateDropDownList("teachers", op);
             }
-            if (sID == "subjects") {
+            else {
                 var opS = [];
 
                 for (var i = 0; i < document.getElementById("subjects").getElementsByTagName("option").length; i++) {
@@ -106,22 +123,23 @@
         $scope.SortList = function (sID) {
             sortTheList(sID);
         };
-    }]);
 
-    function updateDropDownList(select_id,optionsList) {
-        var list = document.getElementById(select_id);
-        
-        if (list.getElementsByTagName("option") != null) {
-            while (list.firstChild) {
-                list.removeChild(list.firstChild);
+        function updateDropDownList(select_id, optionsList) {
+            var list = document.getElementById(select_id);
+            //Remove all options from the dropdownlist
+            if (list.getElementsByTagName("option") != null) {
+                while (list.firstChild) {
+                    list.removeChild(list.firstChild);
+                }
+            }
+            //create and append new options
+            for (var i = 0; i < optionsList.length; i++) {
+                var element = document.createElement("option");
+                element.textContent = optionsList[i].text;
+                element.value = optionsList[i].value;
+                list.appendChild(element);
             }
         }
-        for (var i = 0; i < optionsList.length; i++) {
-            var element = document.createElement("option");
-            element.textContent = optionsList[i].text;
-            element.value = optionsList[i].value;
-            list.appendChild(element);
-        }
-    }
- 
+    }]);
+
 }());
