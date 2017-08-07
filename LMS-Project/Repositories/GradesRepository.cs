@@ -23,6 +23,7 @@ namespace LMS_Project.Repositories
 
         public void Add(Grade grade)
         {
+            grade.Date = DateTime.Now;
             db.Grades.Add(grade);
             SaveChanges();
         }

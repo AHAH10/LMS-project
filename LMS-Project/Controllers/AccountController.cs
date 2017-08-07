@@ -214,7 +214,7 @@ namespace LMS_Project.Controllers
         // plus de détails, voir  https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,UserName,FirstName,LastName,Email,PhoneNumber")] User user, string roleName)
+        public ActionResult Edit([Bind(Include = "Id,UserName,FirstName,LastName,Email,PhoneNumber,BirthDate")] User user, string roleName)
         {
             if (ModelState.IsValid)
             {
@@ -229,6 +229,7 @@ namespace LMS_Project.Controllers
                 originalUser.UserName = user.UserName;
                 originalUser.FirstName = user.FirstName;
                 originalUser.LastName = user.LastName;
+                originalUser.BirthDate = user.BirthDate;
 
                 Role originalRole = repository.GetUserRole(user.Id);
 

@@ -33,8 +33,6 @@ namespace LMS_Project.Controllers
             Document d = new DocumentsRepository().Document(id) as Document;
             if(d!=null){
                 if(gRepo.Grades().Where(g=>g.DocumentID==d.ID).Count()==0){
-                //ViewBag.Document = d;
-
                     return View(new Grade {  DocumentID=d.ID, Document=d});
                 }
             }
@@ -49,7 +47,6 @@ namespace LMS_Project.Controllers
             {
                 // TODO: Add insert logic here
                 gRepo.Add(grade);
-                
                 return RedirectToAction("Index","Documents");
             }
             catch
