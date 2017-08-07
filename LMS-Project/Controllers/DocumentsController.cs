@@ -140,6 +140,17 @@ namespace LMS_Project.Controllers
         // Get For Assignments 
         public ActionResult UploadDocumentForAssignments()
         {
+            List<Course> debug = new List<Course>();
+
+                /*The Course list on User model is empty , please solve that bug
+                 List<Course> courses=new UsersRepository().Students(u=>u.Id==User.Identity.GetUserId()).SingleOrDefault().Courses.toList();
+                 */
+
+                foreach(Schedule s in new UsersRepository().Students().Where(u=>u.Id==User.Identity.GetUserId()).SingleOrDefault().Schedules)
+                {
+                    debug.Add(s.Course);
+                }
+            ViewBag.Courses = debug;
             return View();
         }
         // POST  For Assignments 
@@ -148,12 +159,13 @@ namespace LMS_Project.Controllers
         {
             if (ModelState.IsValid && viewModel.File != null)
             {
+
                 Document document = new Document
                 {
                     DocumentName = viewModel.File.FileName,
                     ContentType = viewModel.File.ContentType,
                     UploaderID = User.Identity.GetUserId(),
-                    RoleID = new RolesRepository().RoleByName("User").Id,  
+                    RoleID = new RolesRepository().RoleByName("Student").Id,  
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID
                 };
