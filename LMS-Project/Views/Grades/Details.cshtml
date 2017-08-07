@@ -1,0 +1,28 @@
+﻿@model LMS_Project.Models.LMS.Grade
+
+<div>
+    <h4>Grade</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Document.DocumentName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Document.DocumentName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AGrade)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AGrade)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
