@@ -21,9 +21,7 @@ namespace LMS_Project
                 .Add(new MediaTypeHeaderValue("text/html"));
             
             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling
-                 = Newtonsoft.Json.ReferenceLoopHandling.Serialize;
-            config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling
-                 = Newtonsoft.Json.PreserveReferencesHandling.Objects;
+                 = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         }
     }
 }
