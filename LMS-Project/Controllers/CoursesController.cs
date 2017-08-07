@@ -1,11 +1,7 @@
-﻿using LMS_Project.Models;
-using LMS_Project.Models.LMS;
+﻿using LMS_Project.Models.LMS;
 using LMS_Project.Repositories;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
@@ -14,6 +10,7 @@ namespace LMS_Project.Controllers
     public class CoursesController : Controller
     {
         private CoursesRepository cRepo = new CoursesRepository();
+
         // GET: Course
         public ActionResult Index()
         {
@@ -34,7 +31,6 @@ namespace LMS_Project.Controllers
         // GET: Course/Create
         public ActionResult Create()
         {
-            //ViewBag.Teachers = cRepo.AvaibleTeachers("french"); //- Get AviableTeachers for a specific Subject
             ViewBag.Teachers = Teachers(); // - Get All Teachers
             ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
 
@@ -135,7 +131,10 @@ namespace LMS_Project.Controllers
 
         private List<SelectListItem> AvailableTeachers(int subjectId)
         {
-            return new UsersRepository().AvailableTeachers(subjectId).Select(t => new SelectListItem
+            return new UsersRepository().AvailableTeachers(subjectId)
+                                        .OrderBy(t => t.LastName)
+                                        .ThenBy(t => t.FirstName)
+                                        .Select(t => new SelectListItem
             {
                 Text = t.ToString(),
                 Value = t.Id.ToString()

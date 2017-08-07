@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using System.Web.Http.Description;
-using LMS_Project.Models;
-using LMS_Project.Models.LMS;
+﻿using LMS_Project.Models.LMS;
 using LMS_Project.Repositories;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web.Http;
 
 namespace LMS_Project.Controllers
 {
@@ -18,6 +10,12 @@ namespace LMS_Project.Controllers
     public class CoursesAPIController : ApiController
     {
         private CoursesRepository db = new CoursesRepository();
+
+        public List<Course> Get()
+        {
+            return db.Courses().ToList();
+        }
+
         /// <summary>
         /// Returns a list of avaible teachers for a specific subject
         /// </summary>
@@ -27,6 +25,7 @@ namespace LMS_Project.Controllers
         {
             return new UsersRepository().AvailableTeachers(subjectID).ToArray();
         }
+
         /// <summary>
         /// Return a list of avaible subjects for a specific teacher
         /// </summary>

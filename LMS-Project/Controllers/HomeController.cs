@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using LMS_Project.Repositories;
+using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
@@ -10,21 +8,20 @@ namespace LMS_Project.Controllers
     {
         public ActionResult Index()
         {
-            return View();
-        }
+            if (Request.IsAuthenticated)
+                switch (new UsersRepository().GetUserRole(User.Identity.GetUserId()).Name)
+                {
+                    case "Student":
+                        return RedirectToAction("Planning", "Students");
+                    case "Teacher":
+                        return RedirectToAction("UngradedAssignments", "Teachers");
+                    case "Admin":
+                        break;
+                    default:
+                        break;
+                }
 
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            return RedirectToAction("Index", "News");
         }
     }
 }
