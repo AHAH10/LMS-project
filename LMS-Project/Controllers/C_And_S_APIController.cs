@@ -17,8 +17,7 @@ namespace LMS_Project.Controllers
         [HttpGet]
         public List<User> GetAvailableTeachers(int subjectID)
         {
-            List<User> debug= new UsersRepository().AvailableTeachers(subjectID).ToList();
-            return debug; //VS 17 returns an access violation, so use GetAvailableTeachersWithLessInfo instead
+            return new UsersRepository().AvailableTeachers(subjectID).ToList(); //unsafe code - because of passwordhash and other private info
         }
         /// <summary>
         /// Returns all available Teachers for a specific subject but with less info.
