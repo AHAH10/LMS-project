@@ -5,7 +5,7 @@
 </p>
 
 <table class="table table-hover">
-    <thead>
+    <thead class="news-head">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Publisher.Email)
@@ -26,36 +26,40 @@
             <th></th>
         </tr>
     </thead>
-    
+
     <tbody>
 
-@foreach (var item in Model) {
-    
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Publisher.Email)
-            </td>
-            <td>
-                @Html.DisplayName(item.Publisher.ToString())
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PublishingDate)
-            </td>
+        @foreach (var item in Model)
+        {
 
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Content)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
-            </td>
-        </tr>
+            <tr class="customSize">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publisher.Email)
+                </td>
+                <td>
+                    @if (!item.AnonymousPublisher)
+                {
+                        @Html.DisplayName(item.Publisher.ToString())
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishingDate)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            </tr>
         }
     </tbody>
-    
+
 
 </table>

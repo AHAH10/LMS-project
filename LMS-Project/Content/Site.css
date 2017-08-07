@@ -25,10 +25,10 @@ textarea {
 .newsHead {
     text-align: center;
     margin-left: -6.5em;
-    
-    
 }
-
-
+.table thead > tr > th {
+    text-align: center;
+    vertical-align: central;
+}
     
 
