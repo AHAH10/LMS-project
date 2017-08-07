@@ -16,8 +16,15 @@ namespace LMS_Project
           
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                         "~/Scripts/Angular/angular.min.js",
-                        "~/Scripts/Angular/MainAngular.js",
-                        "~/Scripts/Angular/Courses.js",
+                        "~/Scripts/Angular/MainAngular.js"));
+            
+            bundles.Add(new ScriptBundle("~/bundles/angularcourses").Include(
+                        "~/Scripts/Angular/Courses.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/angularsubjects").Include(
+                        "~/Scripts/Angular/Subjects.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/angularschedules").Include(
                         "~/Scripts/Angular/Schedules.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're

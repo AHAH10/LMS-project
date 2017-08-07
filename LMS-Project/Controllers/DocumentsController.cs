@@ -23,7 +23,8 @@ namespace LMS_Project.Controllers
         // GET: Documents
         public ActionResult Index()
         {
-            return View(repository.Documents().ToList());   // check if works
+           
+            return View(repository.Documents().ToList());   
         }
 
         // GET: Documents/Details/5
@@ -83,12 +84,14 @@ namespace LMS_Project.Controllers
                 Document document = new Document
                 {
                     DocumentName = viewModel.File.FileName,
-                    UserID = User.Identity.GetUserId(),
-                    RoleID = new RolesRepository().RoleByName("Teacher").Id,  //
+                    ContentType = viewModel.File.ContentType,
+                    UploaderID = User.Identity.GetUserId(),
+                    RoleID = new RolesRepository().RoleByName("Teacher").Id,  
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID
+
                 };
-                // Use your file here
+               
                 var content = new byte[viewModel.File.ContentLength];
                 viewModel.File.InputStream.Read(content, 0, viewModel.File.ContentLength);
                 document.DocumentContent = content;
@@ -101,13 +104,13 @@ namespace LMS_Project.Controllers
 
             return View(viewModel);
         }
-        // Get  Specific Course/ Student
+        // Get  Specific Course
         public ActionResult UploadDocumentForSpecificCourse()
         {
             ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View();
         }
-        // POST  Specific Course/ Student
+        // POST  Specific Course
         [HttpPost]
         public ActionResult UploadDocumentForSpecificCourse(UploadDocumentVM viewModel)
         {
@@ -116,8 +119,9 @@ namespace LMS_Project.Controllers
                 Document document = new Document
                 {
                     DocumentName = viewModel.File.FileName,
-                    UserID = User.Identity.GetUserId(),
-                    RoleID = new RolesRepository().RoleByName("Teacher").Id,  //
+                    ContentType = viewModel.File.ContentType,
+                    UploaderID = User.Identity.GetUserId(),
+                    RoleID = new RolesRepository().RoleByName("Teacher").Id,  
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID
                 };
@@ -136,19 +140,32 @@ namespace LMS_Project.Controllers
         // Get For Assignments 
         public ActionResult UploadDocumentForAssignments()
         {
+            List<Course> debug = new List<Course>();
+
+                /*The Course list on User model is empty , please solve that bug
+                 List<Course> courses=new UsersRepository().Students(u=>u.Id==User.Identity.GetUserId()).SingleOrDefault().Courses.toList();
+                 */
+
+                foreach(Schedule s in new UsersRepository().Students().Where(u=>u.Id==User.Identity.GetUserId()).SingleOrDefault().Schedules)
+                {
+                    debug.Add(s.Course);
+                }
+            ViewBag.Courses = debug;
             return View();
         }
         // POST  For Assignments 
         [HttpPost]
         public ActionResult UploadDocumentForAssignments(UploadDocumentVM viewModel)
         {
-            if (ModelState.IsValid && viewModel.File !=null)
+            if (ModelState.IsValid && viewModel.File != null)
             {
+
                 Document document = new Document
                 {
                     DocumentName = viewModel.File.FileName,
-                    UserID = User.Identity.GetUserId(),
-                    RoleID = new RolesRepository().RoleByName("Student").Id,  //
+                    ContentType = viewModel.File.ContentType,
+                    UploaderID = User.Identity.GetUserId(),
+                    RoleID = new RolesRepository().RoleByName("Student").Id,  
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID
                 };
@@ -178,8 +195,9 @@ namespace LMS_Project.Controllers
                 Document document = new Document
                 {
                     DocumentName = viewModel.File.FileName,
-                    UserID = User.Identity.GetUserId(),
-                    RoleID = new RolesRepository().RoleByName("Teacher").Id,  
+                    ContentType = viewModel.File.ContentType,
+                    UploaderID = User.Identity.GetUserId(),
+                    RoleID = new RolesRepository().RoleByName("Teacher").Id,
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID
                 };
@@ -194,6 +212,15 @@ namespace LMS_Project.Controllers
 
             ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View(viewModel);
+        }
+
+        // Download Document
+
+        public FileResult Download(int id)
+        {
+           
+            Document fileToRetrieve = repository.Document(id);
+            return File(fileToRetrieve.DocumentContent, fileToRetrieve.ContentType, fileToRetrieve.DocumentName);
         }
 
         protected override void Dispose(bool disposing)

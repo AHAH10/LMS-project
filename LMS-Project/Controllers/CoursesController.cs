@@ -1,7 +1,11 @@
-﻿using LMS_Project.Models.LMS;
+﻿using LMS_Project.Models;
+using LMS_Project.Models.LMS;
 using LMS_Project.Repositories;
+using Microsoft.AspNet.Identity.EntityFramework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
@@ -10,7 +14,6 @@ namespace LMS_Project.Controllers
     public class CoursesController : Controller
     {
         private CoursesRepository cRepo = new CoursesRepository();
-
         // GET: Course
         public ActionResult Index()
         {
@@ -31,7 +34,7 @@ namespace LMS_Project.Controllers
         // GET: Course/Create
         public ActionResult Create()
         {
-            ViewBag.Teachers = Teachers(); // - Get All Teachers
+            ViewBag.Teachers = new UsersRepository().Teachers().ToList();
             ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
 
             return View();
@@ -48,7 +51,7 @@ namespace LMS_Project.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                ViewBag.Teachers = Teachers();
+                ViewBag.Teachers = new UsersRepository().Teachers().ToList();
                 ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 ViewBag.EMessage = "The Course You want to add already exists";
                 return View();
@@ -65,7 +68,8 @@ namespace LMS_Project.Controllers
             Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                ViewBag.Teachers = AvailableTeachers(c.SubjectID);
+                ViewBag.Teachers = new UsersRepository().AvailableTeachers(c.SubjectID);
+                ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 return View(c);
             }
             return RedirectToAction("Index");
@@ -84,7 +88,8 @@ namespace LMS_Project.Controllers
                     return RedirectToAction("Index");
                 }
                 ViewBag.EMessage = "Error 203: The teacher already have that subject";
-                ViewBag.Teachers = AvailableTeachers(course.SubjectID);
+                ViewBag.Teachers = new UsersRepository().Teachers().ToList();
+                ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 return View(course);
             }
             catch
@@ -111,43 +116,18 @@ namespace LMS_Project.Controllers
             try
             {
                 // TODO: Add delete logic here
-                cRepo.Delete(id);
-                return RedirectToAction("Index");
+                bool success = cRepo.Delete(id);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
+                ViewBag.EMessage = "Error 615: The course you want to delete can't be deleted. (Make sure that it have no documents or schedule to it.)";
+                return View();
             }
             catch
             {
                 return View();
             }
-        }
-
-        private List<SelectListItem> Teachers()
-        {
-            return new UsersRepository().Teachers().Select(t => new SelectListItem
-            {
-                Text = t.ToString(),
-                Value = t.Id.ToString()
-            }).ToList();
-        }
-
-        private List<SelectListItem> AvailableTeachers(int subjectId)
-        {
-            return new UsersRepository().AvailableTeachers(subjectId)
-                                        .OrderBy(t => t.LastName)
-                                        .ThenBy(t => t.FirstName)
-                                        .Select(t => new SelectListItem
-            {
-                Text = t.ToString(),
-                Value = t.Id.ToString()
-            }).ToList();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                cRepo.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

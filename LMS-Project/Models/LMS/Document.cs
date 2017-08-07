@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.IO;
 using System.Linq;
 using System.Web;
-
 
 namespace LMS_Project.Models.LMS
 {
@@ -20,12 +20,14 @@ namespace LMS_Project.Models.LMS
         [Required]
         public byte[] DocumentContent { get; set; }
 
+        public string ContentType { get; set; }
+
         [Required]
         public DateTime UploadingDate { get; set; }
 
         [Required]
         [ForeignKey("Uploader")]
-        public string UserID { get; set; }
+        public string UploaderID { get; set; }
         public virtual User Uploader { get; set; }
 
         [Required]

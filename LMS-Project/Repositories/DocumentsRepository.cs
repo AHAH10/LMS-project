@@ -40,8 +40,7 @@ namespace LMS_Project.Repositories
                 db.Documents.Remove(document);
                 db.SaveChanges();
             }
-        }
-        
+        }   
         private void SaveChanges()
         {
             db.SaveChanges();
