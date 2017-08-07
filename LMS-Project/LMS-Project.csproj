@@ -182,15 +182,19 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\SubjectsController.cs" />
-    <Compile Include="Migrations\201708070651076_Initial.cs" />
-    <Compile Include="Migrations\201708070651076_Initial.Designer.cs">
-      <DependentUpon>201708070651076_Initial.cs</DependentUpon>
+    <Compile Include="Extensions\Extensions.cs" />
+    <Compile Include="Migrations\201708031337318_Documents.cs" />
+    <Compile Include="Migrations\201708031337318_Documents.Designer.cs">
+      <DependentUpon>201708031337318_Documents.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\LMS\Notification.cs" />
+    <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\SubjectsRepository.cs" />
     <Compile Include="Controllers\TeachersController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
@@ -228,6 +232,10 @@
     <Compile Include="ViewModels\UsersScheduleVM.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-LMS-Project-20170724014225.mdf" />
+    <Content Include="App_Data\aspnet-LMS-Project-20170724014225_log.ldf">
+      <DependentUpon>aspnet-LMS-Project-20170724014225.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -344,6 +352,11 @@
     <Content Include="Views\Grades\Index.cshtml" />
     <Content Include="Views\Grades\Details.cshtml" />
     <Content Include="Views\Grades\Grading.cshtml" />
+    <Content Include="Views\Notifications\Create.cshtml" />
+    <Content Include="Views\Notifications\Delete.cshtml" />
+    <Content Include="Views\Notifications\Details.cshtml" />
+    <Content Include="Views\Notifications\Edit.cshtml" />
+    <Content Include="Views\Notifications\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -352,12 +365,10 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708070651076_Initial.resx">
-      <DependentUpon>201708070651076_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708031337318_Documents.resx">
+      <DependentUpon>201708031337318_Documents.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

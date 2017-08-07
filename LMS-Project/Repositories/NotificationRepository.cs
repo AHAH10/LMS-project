@@ -1,4 +1,5 @@
 ﻿using LMS_Project.Models;
+using LMS_Project.Models.LMS;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,35 @@ namespace LMS_Project.Repositories
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
+        public IEnumerable<Notification> Notifications()
+        {
+            return db.Notifications;
+        }
+
+        //Create
+
+        //Add
+        public void Add(Notification notification)
+        {
+            db.Notifications.Add(notification);
+            db.SaveChanges();
+        }
+
+        public Notification Notifications(int? id)
+        {
+            return Notifications().FirstOrDefault(n => n.ID == id);
+        }
+
+        // Delete
+        public void Delete(int id)
+        {
+            Notification notification = Notifications(id);
+            if (notification != null)
+            {
+                db.Notifications.Remove(notification);
+                db.SaveChanges();
+            }
+        }
 
         private void SaveChanges()
         {
