@@ -42,13 +42,12 @@ namespace LMS_Project.Repositories
 
         public bool Edit(Subject subject)
         {
-            var _subjects = this.Subjects().Where(s => s.Name.ToLower() == subject.Name.ToLower() && subject.ID != s.ID);
-            if (_subjects.Count() != 0)
+            if (db.Subjects.Where(s => s.Name.ToLower() == subject.Name.ToLower()).Count() != 0)
             {
-                _subjects = null;
                 return false;
             }
             db.Entry(subject).State = EntityState.Modified;
+            //db.Subjects.Attach(subject); 
             db.SaveChanges();
             return true;
         }

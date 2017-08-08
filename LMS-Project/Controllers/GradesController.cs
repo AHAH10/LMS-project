@@ -28,7 +28,7 @@ namespace LMS_Project.Controllers
             }
             return RedirectToAction("Index");
         }
-        public ActionResult Grading(int? id)
+        public ActionResult Grade(int? id)
         {
             Document d = new DocumentsRepository().Document(id) as Document;
             if(d!=null){
@@ -41,7 +41,7 @@ namespace LMS_Project.Controllers
 
         // POST: Grades/Create
         [HttpPost]
-        public ActionResult Grading(Grade grade)
+        public ActionResult Grade(Grade grade)
         {
             try
             {

@@ -26,6 +26,7 @@ namespace LMS_Project.Repositories
             grade.Date = DateTime.Now;
             db.Grades.Add(grade);
             SaveChanges();
+            new NotificationRepository().Create(grade.ID);
         }
 
         public void Edit(Grade grade)

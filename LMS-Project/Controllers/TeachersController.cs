@@ -56,7 +56,11 @@ namespace LMS_Project.Controllers
         [Authorize(Roles = "Teacher")]
         public ActionResult UngradedAssignments()
         {
-            return View();
+            //Change the document list to a document list containing only ungraded documents from the courses that the teacher have.
+            List<Document> dList = new List<Document>();
+            dList = new DocumentsRepository().Documents().ToList();
+
+            return View(dList);
         }
 
         protected override void Dispose(bool disposing)
