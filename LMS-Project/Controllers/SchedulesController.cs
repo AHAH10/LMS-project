@@ -101,14 +101,14 @@ namespace LMS_Project.Controllers
         {
             if (id == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
 
             Schedule schedule = repository.Schedule(id);
 
             if (schedule == null)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
             }
 
             string userId = User.Identity.GetUserId();
@@ -138,36 +138,13 @@ namespace LMS_Project.Controllers
 
                     break;
                 default:
-                    return RedirectToAction("Index");
+                    return RedirectToAction("Index", "Home");
             }
 
             if (documents.Count == 0)
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Home");
 
             return View(documents);
-        }
-
-        private List<SelectListItem> Courses()
-        {
-            return new CoursesRepository().Courses()
-                                          .OrderBy(c => c.Subject.Name)
-                                          .ThenBy(c => c.Teacher.ToString())
-                                          .Select(c => new SelectListItem
-                                          {
-                                              Text = c.Subject.Name + " (" + c.Teacher.ToString() + ")",
-                                              Value = c.ID.ToString()
-                                          }).ToList();
-        }
-
-        private List<SelectListItem> Classrooms()
-        {
-            return new ClassroomsRepository().Classrooms()
-                                             .OrderBy(c => c.Name)
-                                             .Select(c => new SelectListItem
-                                             {
-                                                 Text = c.Name + (c.Remarks == null || c.Remarks.Length == 0 ? string.Empty : " - " + c.Remarks),
-                                                 Value = c.ID.ToString()
-                                             }).ToList();
         }
 
         protected override void Dispose(bool disposing)

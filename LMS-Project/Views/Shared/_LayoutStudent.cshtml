@@ -9,6 +9,9 @@
 
 </head>
 <body>
+@using LMS_Project.Repositories;
+@using Microsoft.AspNet.Identity;
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -29,11 +32,19 @@
                            aria-haspopup="true"
                            aria-expanded="false">Upload a Document<span class="caret"></span></a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("For an assignment", "UploadDocumentForAssignments", "Documents")</li>
+                            <li>@Html.ActionLink("As an assignment", "UploadDocumentForAssignments", "Documents")</li>
                             <li>@Html.ActionLink("For a classroom", "UploadDocumentForClassroom", "Documents")</li>
                         </ul>
                     </li>
-                    <li>@Html.ActionLink("Read my Notifications", "Notifications", "Students")</li>
+                    <li>
+                        @{string strNbUnreadNotifications = string.Empty;
+                          int intNbUnreadNotifications = new NotificationRepository().UnreadNotifications(User.Identity.GetUserId()).Count();
+                        if (intNbUnreadNotifications > 0)
+                        {
+                            strNbUnreadNotifications = " (" + intNbUnreadNotifications.ToString() + ")";
+                        }}
+                        @Html.ActionLink("Notifications" + strNbUnreadNotifications, "Notifications", "Students")
+                    </li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

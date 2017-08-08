@@ -15,15 +15,26 @@ using System.IO;
 
 namespace LMS_Project.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Student,Teacher")]
     public class DocumentsController : Controller
     {
         private DocumentsRepository repository = new DocumentsRepository();
 
         // GET: Documents
-        public ActionResult Index()
+        public ActionResult Index(int? courseId)
         {
-            return View(repository.Documents().ToList());   // check if works
+            if (courseId == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            Course course = new CoursesRepository().Course(courseId);
+            if (course == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(repository.Documents((int)courseId).ToList());
         }
 
         // GET: Documents/Details/5
@@ -71,7 +82,7 @@ namespace LMS_Project.Controllers
         [HttpGet]
         public ActionResult UploadDocumentForMyself()
         {
-            ViewBag.Courses = new CoursesRepository().Courses().ToList();
+            ViewBag.Courses = GetCourses(false);
             return View();
         }
         // POST  Teacher
@@ -80,120 +91,128 @@ namespace LMS_Project.Controllers
         {
             if (ModelState.IsValid && viewModel.File != null)
             {
-                Document document = new Document
-                {
-                    DocumentName = viewModel.File.FileName,
-                    UploaderID = User.Identity.GetUserId(),
-                    RoleID = new RolesRepository().RoleByName("Teacher").Id,  //
-                    UploadingDate = DateTime.Now,
-                    CourseID = viewModel.CourseID
-                };
-                // Use your file here
-                var content = new byte[viewModel.File.ContentLength];
-                viewModel.File.InputStream.Read(content, 0, viewModel.File.ContentLength);
-                document.DocumentContent = content;
-
-                repository.Add(document);
+                CreateDocument(viewModel, "Teacher");
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Courses = new CoursesRepository().Courses().ToList();
+            ViewBag.Courses = GetCourses(false);
 
             return View(viewModel);
         }
-        // Get  Specific Course/ Student
+
+        // Get  Specific Course
         public ActionResult UploadDocumentForSpecificCourse()
         {
-            ViewBag.Courses = new CoursesRepository().Courses().ToList();
+            ViewBag.Courses = GetCourses(false);
             return View();
         }
-        // POST  Specific Course/ Student
+
+        // POST  Specific Course
         [HttpPost]
         public ActionResult UploadDocumentForSpecificCourse(UploadDocumentVM viewModel)
         {
             if (ModelState.IsValid && viewModel.File != null)
             {
-                Document document = new Document
-                {
-                    DocumentName = viewModel.File.FileName,
-                    UploaderID = User.Identity.GetUserId(),
-                    RoleID = new RolesRepository().RoleByName("Teacher").Id,  //
-                    UploadingDate = DateTime.Now,
-                    CourseID = viewModel.CourseID
-                };
-                // Use your file here
-                var content = new byte[viewModel.File.ContentLength];
-                viewModel.File.InputStream.Read(content, 0, viewModel.File.ContentLength);
-                document.DocumentContent = content;
-
-                repository.Add(document);
+                CreateDocument(viewModel, "Student");
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Courses = new CoursesRepository().Courses().ToList();
+            ViewBag.Courses = GetCourses(false);
             return View(viewModel);
         }
+
         // Get For Assignments 
         public ActionResult UploadDocumentForAssignments()
         {
+            ViewBag.Courses = GetCourses(true);
             return View();
         }
+
         // POST  For Assignments 
         [HttpPost]
         public ActionResult UploadDocumentForAssignments(UploadDocumentVM viewModel)
         {
-            if (ModelState.IsValid && viewModel.File !=null)
+            if (ModelState.IsValid && viewModel.File != null)
             {
-                Document document = new Document
-                {
-                    DocumentName = viewModel.File.FileName,
-                    UploaderID = User.Identity.GetUserId(),
-                    RoleID = new RolesRepository().RoleByName("Student").Id,  //
-                    UploadingDate = DateTime.Now,
-                    CourseID = viewModel.CourseID
-                };
-                // Use your file here
-                var content = new byte[viewModel.File.ContentLength];
-                viewModel.File.InputStream.Read(content, 0, viewModel.File.ContentLength);
-                document.DocumentContent = content;
-
-                repository.Add(document);
+                CreateDocument(viewModel, "Teacher");
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Courses = new CoursesRepository().Courses().ToList();
+            ViewBag.Courses = GetCourses(true);
             return View(viewModel);
         }
+
         // Get  Classroom
         public ActionResult UploadDocumentForClassroom()
         {
+            ViewBag.Courses = GetCourses(true);
             return View();
         }
+
         // POST Classroom
         [HttpPost]
         public ActionResult UploadDocumentForClassroom(UploadDocumentVM viewModel)
         {
             if (ModelState.IsValid && viewModel.File != null)
             {
-                Document document = new Document
-                {
-                    DocumentName = viewModel.File.FileName,
-                    UploaderID = User.Identity.GetUserId(),
-                    RoleID = new RolesRepository().RoleByName("Teacher").Id,  
-                    UploadingDate = DateTime.Now,
-                    CourseID = viewModel.CourseID
-                };
-                // Use your file here
-                var content = new byte[viewModel.File.ContentLength];
-                viewModel.File.InputStream.Read(content, 0, viewModel.File.ContentLength);
-                document.DocumentContent = content;
-
-                repository.Add(document);
+                CreateDocument(viewModel, "Student");
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Courses = new CoursesRepository().Courses().ToList();
+            ViewBag.Courses = GetCourses(true);
             return View(viewModel);
+        }
+
+        // Download Document
+        public FileResult Download(int id)
+        {
+            Document fileToRetrieve = repository.Document(id);
+            return File(fileToRetrieve.DocumentContent, fileToRetrieve.ContentType, fileToRetrieve.DocumentName);
+        }
+
+        private List<SelectListItem> GetCourses(bool forAStudent)
+        {
+            if (forAStudent)
+                return new UsersRepository().User(User.Identity.GetUserId())
+                                            .Schedules
+                                            .Select(s => s.Course)
+                                            .OrderBy(c => c.Subject.Name)
+                                            .ThenBy(c => c.Teacher.ToString())
+                                            .Select(c => new SelectListItem
+                                            {
+                                                Text = c.Subject.Name + " (" + c.Teacher.ToString() + ")",
+                                                Value = c.ID.ToString()
+                                            })
+                                            .ToList();
+            else
+                return new UsersRepository().User(User.Identity.GetUserId())
+                                            .Courses
+                                            .OrderBy(c => c.Subject.Name)
+                                            .ThenBy(c => c.Teacher.ToString())
+                                            .Select(c => new SelectListItem
+                                            {
+                                                Text = c.Subject.Name + " (" + c.Teacher.ToString() + ")",
+                                                Value = c.ID.ToString()
+                                            })
+                                            .ToList();
+        }
+
+        private void CreateDocument(UploadDocumentVM viewModel, string roleVisibleTo)
+        {
+            Document document = new Document
+            {
+                DocumentName = viewModel.File.FileName,
+                ContentType = viewModel.File.ContentType,
+                UploaderID = User.Identity.GetUserId(),
+                RoleID = new RolesRepository().RoleByName("Teacher").Id,
+                UploadingDate = DateTime.Now,
+                CourseID = viewModel.CourseID
+            };
+
+            document.DocumentContent = new byte[viewModel.File.ContentLength];
+            viewModel.File.InputStream.Read(document.DocumentContent, 0, viewModel.File.ContentLength);
+
+            repository.Add(document);
         }
 
         protected override void Dispose(bool disposing)

@@ -233,5 +233,14 @@ namespace LMS_Project.Controllers
                 return new TimeSpan();
             }
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                repository.Dispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }

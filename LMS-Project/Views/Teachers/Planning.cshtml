@@ -48,7 +48,7 @@
             <td>
                 @if (Model.ShowCoursesLink)
                 {
-                    @Html.ActionLink(item.Course.Subject.Name, "DetailedSchedule", "Teachers", new { scheduleId = item.ID }, null)
+                @Html.ActionLink(item.Course.Subject.Name, "DetailedSchedule", "Teachers", new { scheduleId = item.ID }, null)
                 }
                 else
                 {
@@ -57,7 +57,7 @@
             </td>
             <td>
                 @{string remarks = item.Classroom.Remarks;
-                if (remarks != null && remarks.Length > 0)
+                    if (remarks != null && remarks.Length > 0)
                 {
                     remarks = " - " + remarks;
                 }

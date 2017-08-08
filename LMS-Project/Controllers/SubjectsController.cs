@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class SubjectsController : Controller
     {
         SubjectsRepository sRepo = new SubjectsRepository();
@@ -40,7 +41,7 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                bool success=sRepo.Add(subject);
+                bool success = sRepo.Add(subject);
                 // TODO: Add insert logic here
                 if (success)
                 {
@@ -68,12 +69,12 @@ namespace LMS_Project.Controllers
 
         // POST: Subjects/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id,  Subject subject)
+        public ActionResult Edit(int id, Subject subject)
         {
             try
             {
                 // TODO: Add update logic here
-                bool success=sRepo.Edit(subject);
+                bool success = sRepo.Edit(subject);
                 if (success)
                 {
                     return RedirectToAction("Index");
@@ -104,15 +105,27 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                sRepo.Delete(id);
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                bool success = sRepo.Delete(id);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
+                ViewBag.EMessage = "Error 666: The subject you want to delete can't be deleted. (Make sure that course(s) are removed.)";
+                return View();
             }
             catch
             {
                 return View();
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                sRepo.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

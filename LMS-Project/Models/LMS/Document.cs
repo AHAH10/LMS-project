@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-
 namespace LMS_Project.Models.LMS
 {
     public class Document
@@ -19,6 +18,8 @@ namespace LMS_Project.Models.LMS
 
         [Required]
         public byte[] DocumentContent { get; set; }
+
+        public string ContentType { get; set; }
 
         [Required]
         public DateTime UploadingDate { get; set; }

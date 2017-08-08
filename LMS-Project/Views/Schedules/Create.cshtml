@@ -8,114 +8,16 @@
      ng-app="schedule"
      ng-controller="schedulesController"
      ng-init="init()">
-    @*<hr />
-        <div class="alert-danger form-group">
-            <p style="margin:0">{{errorHead}}</p>
-            <p style="margin:0" ng-repeat="message in errorMessage">&emsp;&emsp;&bull;&emsp;{{message}}</p>
-        </div>
 
-        <div class="form-group" ng-init="getWeekDays()">
-            <label class="control-label col-md-2">Week Day</label>
-            <div class="col-md-10">
-                <select class="form-control"
-                        ng-options="weekDay for weekDay in weekDays"
-                        ng-model="schedule.WeekDay"
-                        autofocus="autofocus"
-                        required></select>
-            </div>
-        </div>
-
-        <div class="form-group" ng-init="initTimePicker()">
-            <label class="control-label col-md-2">Beginning Time</label>
-            <div class="col-md-10">
-                <select class="form-control"
-                        name="beginningTime"
-                        ng-options="time.value as time.name for time in timeRange"
-                        ng-model="schedule.BeginningTime"
-                        required></select>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label class="control-label col-md-2">Ending Time</label>
-            <div class="col-md-10">
-                <select class="form-control"
-                        name="endingTime"
-                        ng-options="time.value as time.name for time in timeRange"
-                        ng-model="schedule.EndingTime"
-                        required></select>
-            </div>
-        </div>
-
-        <div class="form-group" ng-init="getCourses()">
-            <label class="control-label col-md-2">Course</label>
-            <div class="col-md-10">
-                <select class="form-control"
-                        name="courses"
-                        ng-options="course.ID as displayCourse(course) for course in courses"
-                        ng-model="schedule.CourseID"
-                        required></select>
-            </div>
-        </div>
-
-        <div class="form-group" ng-init="getClassrooms()">
-            <label class="control-label col-md-2">Classroom</label>
-            <div class="col-md-10">
-                <select ng-options="classroom.ID as displayClassroom(classroom) for classroom in classrooms"
-                        ng-model="schedule.ClassroomID"
-                        class="form-control" required></select>
-            </div>
-        </div>
-
-        <table class="table" ng-init="getStudents()">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th ng-click="orderBy('FirstName')">
-                        First Name
-                    </th>
-                    <th ng-click="orderBy('LastName')">
-                        Last Name
-                    </th>
-                    <th ng-click="orderBy('BirthDate')">
-                        Birth Date
-                    </th>
-                    <th ng-click="orderBy('Email')">
-                        Email Address
-                    </th>
-                    <th ng-click="orderBy('PhoneNumber')">
-                        Phone Number
-                    </th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr ng-repeat="student in students | orderBy:propertyName:reverse">
-                    <td class="editor-field">
-                        <div class="form-group">
-                            <input type="checkbox"
-                                   checklist-value="student.Id"
-                                   checklist-model="schedule.Students">
-                        </div>
-                    </td>
-                    <td>{{student.FirstName}}</td>
-                    <td>{{student.LastName}}</td>
-                    <td>{{student.BirthDate}}</td>
-                    <td>{{student.Email}}</td>
-                    <td>{{student.PhoneNumber}}</td>
-                </tr>
-            </tbody>
-
-        </table>*@
 
     @Html.Partial("_CreateEdit")
 
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
             <input type="submit" value="Create" class="btn btn-default" ng-click="sendData()" />
+            </div>
         </div>
     </div>
-</div>
 
 <div>
     @Html.ActionLink("Back to List", "Index")

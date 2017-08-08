@@ -17,7 +17,7 @@ namespace LMS_Project.Models.LMS
         public virtual Grade Grade { get; set; }
 
         public DateTime SendingDate { get; set; }
-        public DateTime? ReadinggDate { get; set; }
+        public DateTime? ReadingDate { get; set; }
 
 
     }

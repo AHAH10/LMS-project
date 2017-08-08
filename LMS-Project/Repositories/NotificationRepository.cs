@@ -16,22 +16,34 @@ namespace LMS_Project.Repositories
             return db.Notifications;
         }
 
+        public List<Notification> Notifications(string userId)
+        {
+            return Notifications().Where(n => n.Grade.Document.UploaderID == userId).ToList();
+        }
+
+        public List<Notification> UnreadNotifications(string userId)
+        {
+            return Notifications().Where(n => n.Grade.Document.UploaderID == userId && n.ReadingDate == null).ToList();
+        }
+
         //Create
         public void Create(int gID)
         {
-            Add(new Notification { 
-             GradeID=gID, SendingDate=DateTime.Now
+            Add(new Notification
+            {
+                GradeID = gID,
+                SendingDate = DateTime.Now
             });
         }
 
         //Confirmation that Notification is read by student
         public void NotificationRead(int? id)
         {
-            db.Notifications.Where(N => N.ID == id).SingleOrDefault().ReadinggDate = DateTime.Now;
+            db.Notifications.Where(N => N.ID == id).SingleOrDefault().ReadingDate = DateTime.Now;
         }
         //Add
         public void Add(Notification notification)
-        {  
+        {
             db.Notifications.Add(notification);
             db.SaveChanges();
         }
@@ -40,7 +52,7 @@ namespace LMS_Project.Repositories
         {
             return Notifications().FirstOrDefault(n => n.ID == id);
         }
-       
+
         // Delete
         public void Delete(int id)
         {
@@ -73,6 +85,6 @@ namespace LMS_Project.Repositories
         {
             Dispose(true);
         }
-        #endregion 
+        #endregion
     }
 }

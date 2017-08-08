@@ -13,11 +13,11 @@ namespace LMS_Project
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
-
+          
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                         "~/Scripts/Angular/angular.min.js",
                         "~/Scripts/Angular/MainAngular.js"));
-
+            
             bundles.Add(new ScriptBundle("~/bundles/angularcourses").Include(
                         "~/Scripts/Angular/Courses.js"));
 

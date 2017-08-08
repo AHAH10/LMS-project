@@ -23,9 +23,9 @@ namespace LMS_Project.Controllers
 
             if (usersRepo.GetUserRole(teacherId).Name == "Teacher")
             {
-                User user = usersRepo.User(teacherId);
+            User user = usersRepo.User(teacherId);
 
-                List<Schedule> schedules = schedRepo.TeacherSchedules(teacherId).ToList();
+            List<Schedule> schedules = schedRepo.TeacherSchedules(teacherId).ToList();
 
                 return View(new UsersScheduleVM
                 {
@@ -34,7 +34,7 @@ namespace LMS_Project.Controllers
                     ShowCoursesLink = user.Id == User.Identity.GetUserId(),
                     ShowSchedulesLink = User.IsInRole("Admin")
                 });
-            }
+        }
             else
                 return RedirectToAction("Index", "Home");
         }
@@ -62,7 +62,8 @@ namespace LMS_Project.Controllers
         [Authorize(Roles = "Teacher")]
         public ActionResult UngradedAssignments()
         {
-            return View(new List<Document>());
+            //Change the document list to a document list containing only ungraded documents from the courses that the teacher have.
+            return View(new DocumentsRepository().Documents().ToList());
         }
 
         protected override void Dispose(bool disposing)

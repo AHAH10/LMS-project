@@ -1,4 +1,5 @@
-﻿using LMS_Project.Repositories;
+﻿using LMS_Project.Models.LMS;
+using LMS_Project.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,37 +8,47 @@ using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
 {
-    [Authorize(Roles="Teacher")]
+    [Authorize(Roles="Teacher , Admin")]
     public class GradesController : Controller
     {
-        private GradesRepository db = new GradesRepository(); 
+        private GradesRepository gRepo = new GradesRepository(); 
         // GET: Grades
         public ActionResult Index()
         {
-            return View();
+            return View(gRepo.Grades());
         }
 
         // GET: Grades/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+            Grade g = gRepo.Grade(id) as Grade;
+            if (g != null)
+            {
+                return View(g);
+            }
+            return RedirectToAction("Index");
         }
 
-        // GET: Grades/Create
-        public ActionResult Create()
+        public ActionResult Grade(int? id)
         {
-            return View();
+            Document d = new DocumentsRepository().Document(id) as Document;
+            if(d!=null){
+                if(gRepo.Grades().Where(g=>g.DocumentID==d.ID).Count()==0){
+                    return View(new Grade {  DocumentID=d.ID, Document=d});
+                }
+            }
+            return RedirectToAction("index","Documents");
         }
 
         // POST: Grades/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Grade(Grade grade)
         {
             try
             {
                 // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                gRepo.Add(grade);
+                return RedirectToAction("Index","Documents");
             }
             catch
             {
@@ -48,7 +59,7 @@ namespace LMS_Project.Controllers
         // GET: Grades/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(gRepo.Grade(id));
         }
 
         // POST: Grades/Edit/5
@@ -70,7 +81,7 @@ namespace LMS_Project.Controllers
         // GET: Grades/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            return View(gRepo.Grade(id));
         }
 
         // POST: Grades/Delete/5
@@ -80,13 +91,22 @@ namespace LMS_Project.Controllers
             try
             {
                 // TODO: Add delete logic here
-
+                gRepo.Delete(id);
                 return RedirectToAction("Index");
             }
             catch
             {
                 return View();
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                gRepo.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

@@ -10,27 +10,27 @@
 
 <div class="form-horizontal" ng-app="schedule" ng-controller="schedulesController">
     <table class="table" ng-init="getSchedules(); getWeekDays()">
-        <tr>
+    <tr>
             <th ng-click="orderBy('Classroom.Name')">
                 Classroom
-            </th>
+        </th>
             <th ng-click="orderBy('Course')">
                 Course
-            </th>
+        </th>
             <th ng-click="orderBy('Teacher.LastName')">
                 Teacher
-            </th>
+        </th>
             <th ng-click="orderBy('WeekDay')">
                 Week Day
-            </th>
+        </th>
             <th ng-click="orderBy('BeginningTime')">
                 Beginning Time
-            </th>
+        </th>
             <th ng-click="orderBy('EndingTime')">
                 Ending Time
-            </th>
-            <th></th>
-        </tr>
+        </th>
+        <th></th>
+    </tr>
 
         <tr ng-repeat="schedule in schedules | orderBy:propertyName:reverse">
             <td>
@@ -54,4 +54,4 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/angularschedules")
-}
+    }
