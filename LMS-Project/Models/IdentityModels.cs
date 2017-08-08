@@ -38,8 +38,8 @@ namespace LMS_Project.Models
         public DbSet<Classroom> Classrooms { get; set; }
         public DbSet<Document> Documents { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
-
         public DbSet<User> LMSUsers { get; set; }
         public DbSet<Role> LMSRoles { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
     }
 }

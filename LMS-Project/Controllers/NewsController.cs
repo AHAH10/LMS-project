@@ -65,7 +65,7 @@ namespace LMS_Project.Controllers
             {
                 // TODO: Add update logic here
                 news.EditedByID = User.Identity.GetUserId();
-                news.LastEditedDate = DateTime.Now;
+                news.EditedDate = DateTime.Now;
                 nRepo.Edit(news);
                 return RedirectToAction("Index");
             }

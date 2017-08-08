@@ -1,10 +1,39 @@
-﻿@model IEnumerable<LMS_Project.Models.LMS.Subject>
-
+﻿<div ng-app="LMSApp" ng-controller="Subject_Index_Ctrl" ng-init="getData()">
 <p>
     @Html.ActionLink("Create a new Subject", "Create")
 </p>
+    <div class="left">
+        <form class="glyphicon glyphicon-search" method="get">
+            <input type="text" name="Search" ng-model="searchTerm" placeholder="Free Search" style="width:120px; height:25px;font-family: Helvetica, Arial, sans-serif">
+        </form>
+    </div>
 <table class="table">
     <tr>
+        <th ng-click="orderByMe('Name')">Name</th>
+        <th></th>
+    </tr>
+    @{
+        var url1 = Url.Action("Edit", new { ID = "{{subject.ID}}" });
+        url1 = HttpUtility.UrlDecode(url1);
+    }
+    @{
+        var url2 = Url.Action("Details", new { ID = "{{subject.ID}}" });
+        url2 = HttpUtility.UrlDecode(url2);
+    }
+    @{
+        var url3 = Url.Action("Delete", new { ID = "{{subject.ID}}" });
+        url3 = HttpUtility.UrlDecode(url3);
+    }
+    <tr ng-repeat="subject in subjects | orderBy:myOrderBy:reverse | filter:searchTerm ">
+        <td>{{subject.Name}}</td>
+        <td>
+            <a data-ng-href="@url1">Edit</a> |
+            <a data-ng-href="@url2">Details</a> |
+            <a data-ng-href="@url3">Delete</a>
+        </td>
+    </tr>
+
+    @*<tr>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -22,6 +51,11 @@
             @Html.ActionLink("Delete", "Delete", new { id=item.ID })
         </td>
     </tr>
-}
+}*@
 
 </table>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/angularsubjects")
+}

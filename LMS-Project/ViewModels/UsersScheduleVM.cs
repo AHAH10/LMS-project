@@ -5,7 +5,10 @@ namespace LMS_Project.ViewModels
 {
     public class UsersScheduleVM
     {
-        public string UsersFullName { get; set; }
+        public string UserFullName { get; set; }
         public List<Schedule> Schedules { get; set; }
+        public bool ShowDocumentsLink { get; set; }
+        public bool ShowCoursesLink { get; set; }
+        public bool ShowSchedulesLink { get; set; }
     }
 }

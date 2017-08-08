@@ -1,6 +1,4 @@
-﻿@model IEnumerable<LMS_Project.Models.LMS.Schedule>
-
-@{
+﻿@{
     ViewBag.Title = "Index";
 }
 
@@ -9,62 +7,51 @@
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Classroom)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Course)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Course.Teacher)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.WeekDay)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.BeginningTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.EndingTime)
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
+<div class="form-horizontal" ng-app="schedule" ng-controller="schedulesController">
+    <table class="table" ng-init="getSchedules(); getWeekDays()">
         <tr>
+            <th ng-click="orderBy('Classroom.Name')">
+                Classroom
+            </th>
+            <th ng-click="orderBy('Course')">
+                Course
+            </th>
+            <th ng-click="orderBy('Teacher.LastName')">
+                Teacher
+            </th>
+            <th ng-click="orderBy('WeekDay')">
+                Week Day
+            </th>
+            <th ng-click="orderBy('BeginningTime')">
+                Beginning Time
+            </th>
+            <th ng-click="orderBy('EndingTime')">
+                Ending Time
+            </th>
+            <th></th>
+        </tr>
+
+        <tr ng-repeat="schedule in schedules | orderBy:propertyName:reverse">
             <td>
-                @{string remarks = string.Empty;
-                if (item.Classroom.Remarks.Length > 0)
-                {
-                    remarks = " - " + item.Classroom.Remarks;
-                }
-                }
-                @Html.DisplayName(item.Classroom.Name + remarks)
+                {{schedule.Classroom.Name}}{{schedule.Classroom.Remarks == null ? '' : ' - ' + schedule.Classroom.Remarks}}
             </td>
+            <td>{{schedule.Course.Subject.Name}}</td>
+            <td>{{schedule.Course.Teacher.FirstName}} {{schedule.Course.Teacher.LastName}}</td>
+            <td>{{weekDays[schedule.WeekDay]}}</td>
+            <td>{{schedule.BeginningTime}}</td>
+            <td>{{schedule.EndingTime}}</td>
             <td>
-                @Html.DisplayFor(modelItem => item.Course.Subject.Name)
-            </td>
-            <td>
-                @Html.DisplayName(item.Course.Teacher.ToString())
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.WeekDay)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BeginningTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndingTime)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.ID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                <a href="/Schedules/Edit/{{schedule.ID}}">Edit</a> |
+                <a href="/Schedules/Details/{{schedule.ID}}">Details</a> |
+                <a href="/Schedules/Delete/{{schedule.ID}}">Delete</a>
             </td>
         </tr>
-    }
+    </table>
+</div>
 
-</table>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/angularschedules")
+}

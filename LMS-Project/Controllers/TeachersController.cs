@@ -21,11 +21,22 @@ namespace LMS_Project.Controllers
                 teacherId = User.Identity.GetUserId();
             }
 
-            User user = usersRepo.User(teacherId);
+            if (usersRepo.GetUserRole(teacherId).Name == "Teacher")
+            {
+                User user = usersRepo.User(teacherId);
 
-            List<Schedule> schedules = schedRepo.TeacherSchedules(teacherId).ToList();
+                List<Schedule> schedules = schedRepo.TeacherSchedules(teacherId).ToList();
 
-            return View(new UsersScheduleVM { UsersFullName = user.ToString(), Schedules = schedules });
+                return View(new UsersScheduleVM
+                {
+                    UserFullName = user.ToString(),
+                    Schedules = schedules,
+                    ShowCoursesLink = user.Id == User.Identity.GetUserId(),
+                    ShowSchedulesLink = User.IsInRole("Admin")
+                });
+            }
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         public ActionResult DetailedSchedule(int? scheduleId)
@@ -42,7 +53,26 @@ namespace LMS_Project.Controllers
                 return RedirectToAction("Planning");
             }
 
+            // Get the list of available documents for the course
+            ViewBag.Documents = schedule.Course.Documents.Where(d => d.VisibleFor.Name == "Student" || d.UploaderID == User.Identity.GetUserId());
+
             return View(schedule);
+        }
+
+        [Authorize(Roles = "Teacher")]
+        public ActionResult UngradedAssignments()
+        {
+            return View(new List<Document>());
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                schedRepo.Dispose();
+                usersRepo.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

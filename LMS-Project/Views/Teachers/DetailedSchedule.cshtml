@@ -1,4 +1,5 @@
-﻿@model LMS_Project.Models.LMS.Schedule
+﻿@using LMS_Project.Models.LMS
+@model Schedule
 
 @{
     ViewBag.Title = "Detailed Schedule";
@@ -39,7 +40,7 @@
 
         <dd>
             @{string remarks = Model.Classroom.Remarks;
-            if (remarks.Length > 0)
+            if (remarks != null && remarks.Length > 0)
             {
                 remarks = " - " + remarks;
             }
@@ -54,10 +55,27 @@
         <dd>
             <div class="container" style="padding:0">
                 <ul class="list-group list-unstyled">
-                    @foreach (LMS_Project.Models.LMS.User student in Model.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                    @foreach (User student in Model.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
                     {
                         <li>
                             @Html.DisplayName(student.ToString())
+                        </li>
+                    }
+                </ul>
+            </div>
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Related Documents")
+        </dt>
+
+        <dd>
+            <div class="container" style="padding:0">
+                <ul class="list-group list-unstyled">
+                    @foreach (Document document in ViewBag.Documents)
+                    {
+                        <li>
+                            @Html.DisplayFor(modelItem => document.DocumentName)
                         </li>
                     }
                 </ul>

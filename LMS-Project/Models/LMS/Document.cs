@@ -25,7 +25,7 @@ namespace LMS_Project.Models.LMS
 
         [Required]
         [ForeignKey("Uploader")]
-        public string UserID { get; set; }
+        public string UploaderID { get; set; }
         public virtual User Uploader { get; set; }
 
         [Required]

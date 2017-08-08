@@ -17,11 +17,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("See my Schedule", "Planning", "Students", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("See my Schedule", "Planning", "Students")</li>
                     <li class="dropdown">
                         <a href="#"
                            class="dropdown-toggle"
@@ -34,6 +33,7 @@
                             <li>@Html.ActionLink("For a classroom", "UploadDocumentForClassroom", "Documents")</li>
                         </ul>
                     </li>
+                    <li>@Html.ActionLink("Read my Notifications", "Notifications", "Students")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

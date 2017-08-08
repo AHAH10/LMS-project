@@ -83,7 +83,7 @@ namespace LMS_Project.Controllers
                 Document document = new Document
                 {
                     DocumentName = viewModel.File.FileName,
-                    UserID = User.Identity.GetUserId(),
+                    UploaderID = User.Identity.GetUserId(),
                     RoleID = new RolesRepository().RoleByName("Teacher").Id,  //
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID
@@ -116,7 +116,7 @@ namespace LMS_Project.Controllers
                 Document document = new Document
                 {
                     DocumentName = viewModel.File.FileName,
-                    UserID = User.Identity.GetUserId(),
+                    UploaderID = User.Identity.GetUserId(),
                     RoleID = new RolesRepository().RoleByName("Teacher").Id,  //
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID
@@ -147,7 +147,7 @@ namespace LMS_Project.Controllers
                 Document document = new Document
                 {
                     DocumentName = viewModel.File.FileName,
-                    UserID = User.Identity.GetUserId(),
+                    UploaderID = User.Identity.GetUserId(),
                     RoleID = new RolesRepository().RoleByName("Student").Id,  //
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID
@@ -178,7 +178,7 @@ namespace LMS_Project.Controllers
                 Document document = new Document
                 {
                     DocumentName = viewModel.File.FileName,
-                    UserID = User.Identity.GetUserId(),
+                    UploaderID = User.Identity.GetUserId(),
                     RoleID = new RolesRepository().RoleByName("Teacher").Id,  
                     UploadingDate = DateTime.Now,
                     CourseID = viewModel.CourseID

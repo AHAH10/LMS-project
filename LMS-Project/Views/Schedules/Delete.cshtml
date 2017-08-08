@@ -48,7 +48,7 @@
 
         <dd>
             @{string remarks = Model.Classroom.Remarks;
-            if (remarks.Length > 0)
+            if (remarks != null && remarks.Length > 0)
             {
                 remarks = " - " + remarks;
             }
