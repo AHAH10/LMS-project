@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
 {
+    [Authorize(Roles="Admin")]
     public class SubjectsController : Controller
     {
         SubjectsRepository sRepo = new SubjectsRepository();

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<LMS_Project.Models.LMS.Course>
 
-<div ng-controller="Course_Index_Ctrl" ng-init="getData()">
+<div ng-app="LMSApp" ng-controller="Course_Index_Ctrl" ng-init="getData()">
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
@@ -55,5 +55,6 @@
     </table>
 </div>
 @section Scripts {
+    @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/angularcourses")
 }
