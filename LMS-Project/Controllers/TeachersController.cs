@@ -48,7 +48,7 @@ namespace LMS_Project.Controllers
             }
 
             // Get the list of available documents for the course
-            ViewBag.Documents = schedule.Course.Documents.Where(d => d.VisibleFor.Name == "Student" || d.UserID == User.Identity.GetUserId());
+            ViewBag.Documents = schedule.Course.Documents.Where(d => d.VisibleFor.Name == "Student" || d.UploaderID == User.Identity.GetUserId());
 
             return View(schedule);
         }

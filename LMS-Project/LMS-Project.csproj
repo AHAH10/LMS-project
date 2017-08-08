@@ -176,13 +176,14 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClassroomsAPIController.cs" />
     <Compile Include="Controllers\ClassroomsController.cs" />
-    <Compile Include="Controllers\CoursesAPIController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
+    <Compile Include="Controllers\C_And_S_APIController.cs" />
     <Compile Include="Controllers\DocumentsController.cs" />
     <Compile Include="Controllers\GradesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SchedulesAPIController.cs" />
     <Compile Include="Controllers\SchedulesController.cs">
@@ -209,6 +210,7 @@
     <Compile Include="Models\LMS\Document.cs" />
     <Compile Include="Models\LMS\Grade.cs" />
     <Compile Include="Models\LMS\News.cs" />
+    <Compile Include="Models\LMS\Notification.cs" />
     <Compile Include="Models\LMS\Role.cs" />
     <Compile Include="Models\LMS\Schedule.cs" />
     <Compile Include="Models\LMS\User.cs" />
@@ -220,6 +222,7 @@
     <Compile Include="Repositories\DocumentsRepository.cs" />
     <Compile Include="Repositories\GradesRepository.cs" />
     <Compile Include="Repositories\NewsRepository.cs" />
+    <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\RolesRepository.cs" />
     <Compile Include="Repositories\SchedulesRepository.cs" />
     <Compile Include="Repositories\SubjectsRepository.cs" />
@@ -247,6 +250,7 @@
     <Content Include="Scripts\Angular\Schedules.js" />
     <Content Include="Scripts\Angular\Courses.js" />
     <Content Include="Scripts\Angular\MainAngular.js" />
+    <Content Include="Scripts\Angular\Subjects.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
