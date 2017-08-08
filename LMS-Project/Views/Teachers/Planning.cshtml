@@ -1,9 +1,20 @@
-﻿@model LMS_Project.ViewModels.UsersScheduleVM
+﻿@using Microsoft.AspNet.Identity
+@using LMS_Project.Models
+@using LMS_Project.Models.LMS
+@using Microsoft.AspNet.Identity.EntityFramework
+
+@model LMS_Project.ViewModels.UsersScheduleVM
 @{
     ViewBag.Title = "Schedule";
 }
 
-<h2>Schedule for @Model.UsersFullName</h2>
+<h2>Schedule for @Model.UserFullName</h2>
+
+@* Test to determinate if the courses should be displayed as links or plain text *@
+@{UserManager<User> manager = new UserManager<User>(new UserStore<User>(new ApplicationDbContext()));
+    User currentUser = manager.FindById(User.Identity.GetUserId());
+    bool displayLinks = currentUser.Id == Model.UserId;
+}
 
 <table class="table">
     <tr>
@@ -37,18 +48,25 @@
                 @Html.DisplayFor(modelItem => item.EndingTime)
             </td>
             <td>
-                @Html.ActionLink(item.Course.Subject.Name, "DetailedSchedule", "Teachers", new { scheduleId = item.ID }, null)
+                @if (displayLinks)
+                {
+                    @Html.ActionLink(item.Course.Subject.Name, "DetailedSchedule", "Teachers", new { scheduleId = item.ID }, null)
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.Course.Subject.Name)
+                }
             </td>
             <td>
                 @{string remarks = item.Classroom.Remarks;
-                if (remarks.Length > 0)
-                {
-                    remarks = " - " + remarks;
-                }
+                    if (remarks != null && remarks.Length > 0)
+                    {
+                        remarks = " - " + remarks;
+                    }
                 }
                 @Html.DisplayName(item.Classroom.Name + " (" + item.Classroom.Location + ")" + remarks)
             </td>
         </tr>
-    }
+                    }
 
 </table>

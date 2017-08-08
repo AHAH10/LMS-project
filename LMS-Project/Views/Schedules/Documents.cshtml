@@ -1,0 +1,36 @@
+﻿@model IEnumerable<LMS_Project.Models.LMS.Document>
+
+@{
+    ViewBag.Title = "Documents";
+}
+
+<h2>Documents related to @Model.First().Course.Subject.Name</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Uploaded")
+        </th>
+        <th>
+            @Html.DisplayName("By")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DocumentName)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.UploadingDate)
+        </td>
+        <td>
+            @Html.DisplayName(item.Uploader.ToString())
+        </td>
+        <td>
+            @Html.ActionLink(item.DocumentName, "Download", "Documents", new { item.ID }, null)
+        </td>
+    </tr>
+}
+
+</table>

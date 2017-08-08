@@ -1,68 +1,119 @@
-﻿@model LMS_Project.ViewModels.CreateEditScheduleVM
-
-@{
+﻿@{
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Create a new Schedule</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<div class="form-horizontal" ng-app="schedule" ng-controller="schedulesController">
+    <hr />
+    <div class="alert-danger form-group">
+        <p style="margin:0" >{{errorHead}}</p>
+        <p style="margin:0" ng-repeat="message in errorMessage">&emsp;&emsp;&bull;&emsp;{{message}}</p>
+    </div>
 
-    <div class="form-horizontal">
-        <h4>Schedule</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.WeekDay, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.WeekDay, htmlAttributes: new { @class = "form-control", autofocus = "auto-focus" })
-                @Html.ValidationMessageFor(model => model.WeekDay, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.BeginningTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BeginningTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BeginningTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndingTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndingTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndingTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CourseID, "Course", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.CourseID, (IEnumerable<SelectListItem>)ViewBag.Courses, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CourseID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ClassroomID, "Classroom", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ClassroomID, (IEnumerable<SelectListItem>)ViewBag.ClassRooms, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ClassroomID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @Html.Partial("_StudentsSchedule", Model.Students)
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+    <div class="form-group" ng-init="getWeekDays()">
+        <label class="control-label col-md-2">Week Day</label>
+        <div class="col-md-10">
+            <select class="form-control"
+                    ng-model="schedule.WeekDay"
+                    required>
+                <!-- Option for each weekday -->
+                <option ng-repeat="weekDay in weekDays" value="{{weekDay}}">{{weekDay}}</option>
+            </select>
         </div>
     </div>
-}
+
+    <div class="form-group" ng-init="initTimePicker()">
+        <label class="control-label col-md-2">Beginning Time</label>
+        <div class="col-md-10">
+            <select class="form-control" ng-model="schedule.BeginningTime">
+                <option ng-repeat="time in timeRange" value="{{time.value}}">{{time.name}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label class="control-label col-md-2">Ending Time</label>
+        <div class="col-md-10">
+            <select class="form-control" ng-model="schedule.EndingTime">
+                <option ng-repeat="time in timeRange" value="{{time.value}}">{{time.name}}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" ng-init="getCourses()">
+        <label class="control-label col-md-2">Course</label>
+        <div class="col-md-10">
+            <select ng-model="schedule.CourseID" class="form-control" required>
+                <!-- Option for each course -->
+                <option ng-repeat="course in courses track by $index" value="{{course.ID}}">
+                    {{course.Subject.Name}} ({{course.Teacher.FirstName}} {{course.Teacher.LastName}})
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" ng-init="getClassrooms()">
+        <label class="control-label col-md-2">Classroom</label>
+        <div class="col-md-10">
+            <select ng-model="schedule.ClassroomID" class="form-control" required>
+                <!-- Option for each classroom -->
+                Add an ng-if to only display Remarks when it's available!
+                <option ng-repeat="classroom in classrooms track by $index" value="{{classroom.ID}}">
+                    {{classroom.Name}}{{classroom.Remarks == null ? '' : ' - ' + classroom.Remarks}}
+                </option>
+            </select>
+        </div>
+    </div>
+
+    <table class="table" ng-init="getStudents()">
+        <thead>
+            <tr>
+                <th></th>
+                <th ng-click="orderBy('FirstName')">
+                    First Name
+                </th>
+                <th ng-click="orderBy('LastName')">
+                    Last Name
+                </th>
+                <th ng-click="orderBy('BirthDate')">
+                    Birth Date
+                </th>
+                <th ng-click="orderBy('Email')">
+                    Email Address
+                </th>
+                <th ng-click="orderBy('PhoneNumber')">
+                    Phone Number
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="student in students | orderBy:propertyName:reverse">
+                <td class="editor-field">
+                    <div class="form-group">
+                        <input type="checkbox"
+                               ng-true-value="'{{student.Id}}'"
+                               ng-model="schedule.Students[$index]"
+                               ng-checked="schedule.Students.indexOf(student) > -1" />
+                    </div>
+                </td>
+                <td>{{student.FirstName}}</td>
+                <td>{{student.LastName}}</td>
+                <td>{{student.BirthDate}}</td>
+                <td>{{student.Email}}</td>
+                <td>{{student.PhoneNumber}}</td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-default" ng-click="sendData()" />
+        </div>
+    </div>
+</div>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
@@ -70,4 +121,5 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/angular")
 }
