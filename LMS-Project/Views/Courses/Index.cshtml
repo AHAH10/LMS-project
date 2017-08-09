@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LMS_Project.Models.LMS.Course>
+﻿@model IEnumerable<LMS_Project.ViewModels.CoursesVM>
 
 <div ng-app="LMSApp" ng-controller="Course_Index_Ctrl" ng-init="getData()">
     <p>
@@ -12,8 +12,9 @@
     <table class="table">
         <tr>
             <th ng-click="orderByMe('Subject.Name')">@Html.DisplayNameFor(model => model.Subject.Name)</th>
-            <th ng-click="orderByMe('Teacher.LastName+Teacher.FirstName')">@Html.DisplayNameFor(model => model.Teacher)</th>
-            <th></th>
+            <th ng-click="orderByMe('Teacher.UserName')">@Html.DisplayNameFor(model => model.Teacher)</th>
+            <th>@Html.DisplayNameFor(model => model.DocumentCount)</th>
+            <th>@Html.DisplayNameFor(model => model.ScheduleCount)</th>
         </tr>
         @{
             var url1 = Url.Action("Edit", new { ID = "{{course.ID}}" });
@@ -29,13 +30,31 @@
         }
         <tr ng-repeat="course in courses | orderBy:myOrderBy:reverse | filter:searchTerm ">
             <td>{{course.Subject.Name}}</td>
-            <td>{{course.Teacher.FirstName}} {{course.Teacher.LastName}}</td>
+            <td>{{course.Teacher.UserName}}</td> <!--UserName is replaced with a fullName if the api is working-->
+            <td>{{course.DocumentCount}}</td>
+            <td>{{course.ScheduleCount}}</td>  
             <td>
-                <a data-ng-href="@url1">Edit</a> |
-                <a data-ng-href="@url2">Details</a> |
-                <a data-ng-href="@url3">Delete</a>
+                <a data-ng-href="@url1">Edit</a>
+                <a data-ng-href="@url2">Details</a>
+                <a data-ng-href="@url3">Remove</a>
             </td>
         </tr>
+        <!--Replace the ng-repeat with this if we don't like angular - That means a new sorting system and search must be re created-->
+        @*@foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subject.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayName(item.Teacher.ToString())
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+                        @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+                    </td>
+                </tr>
+            }*@
     </table>
 </div>
 @section Scripts {

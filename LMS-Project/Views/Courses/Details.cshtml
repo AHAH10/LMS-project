@@ -1,7 +1,7 @@
-﻿@model LMS_Project.Models.LMS.Course
+﻿@model LMS_Project.ViewModels.CoursesVM
 
 <div>
-    <h4>Course</h4>
+    <h4>CoursesVM</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -11,21 +11,7 @@
         <dd>
             @Html.DisplayFor(model => model.Subject.Name)
         </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Teacher.FirstName)
-        </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Teacher.FirstName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Teacher.LastName)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Teacher.LastName)
-        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Teacher.Email)
         </dt>
@@ -33,9 +19,10 @@
         <dd>
             @Html.DisplayFor(model => model.Teacher.Email)
         </dd>
+
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

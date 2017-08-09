@@ -1,4 +1,4 @@
-﻿@model LMS_Project.Models.LMS.Course
+﻿@model LMS_Project.ViewModels.CoursesVM
 
 @{
     ViewBag.Title = "Edit";
@@ -7,57 +7,37 @@
 
 <h2>Edit</h2>
 
-
-@using (Html.BeginForm())
-{
+<form action="../Edit/" method="POST">
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal" ng-app="LMSApp" ng-controller="Course_Create_Ctrl">
+    <div class="form-horizontal" ng-app="LMSApp" ng-controller="Course_Edit_Ctrl">
         <h4>Course</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.ID)
+        @Html.HiddenFor(model => model.Id)
 
-        @if (ViewBag.Subjects != null)
-        {
             <div class="form-group">
-                @Html.LabelFor(model => model.Subject.Name, "Subject", htmlAttributes: new { ng_click = "SortList('subjects')", @style = "cursor:pointer;", @class = "control-label col-md-2" })
-                <div class="row">
+                @Html.LabelFor(model => model.Teacher.UserName, "Teacher", htmlAttributes: new { ng_click="orderByMe('LastName')", @class = "control-label col-md-2" })
+                <div class="row" ng-init="Start('@Html.ValueFor(m=>m.SubjectID)')">
                     <div class="col-md-10">
-                        @Html.DropDownListFor(m => m.SubjectID, new SelectList(ViewBag.Subjects, "Id", "Name"), htmlAttributes: new { ng_model = "selectedSubject", ng_change = "Update()", @id = "subjects", @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.SubjectID, "", new { @class = "text-danger" })
+
+                        <select name="tID" ng-model="selectedTeacher" class="form-control">
+                            <option ng-repeat="teacher in teachers | orderBy:myOrderBy:reverse" value="{{teacher.Id}}">{{teacher.FirstName}} {{teacher.LastName}}</option>
+                        </select>
+                        <input type="hidden" name="sID" value="@Html.ValueFor(m=>m.SubjectID)"/>
+                        <input type="hidden" name="id" value="@Html.ValueFor(m=>m.Id)" />
                     </div>
                 </div>
             </div>
-        }
-        else
-        {
-            <h3>No Avaible Subjects for that teacher!</h3>
-        }
-        @if (ViewBag.Teachers != null)
-        {
-            <div class="form-group">
-                @Html.LabelFor(model => model.Teacher.UserName, "Teacher", htmlAttributes: new { ng_click = "SortList('teachers')", @style = "cursor:pointer;", @class = "control-label col-md-2" })
-                <div class="row">
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(m => m.TeacherID, new SelectList(ViewBag.Teachers, "Id", "UserName"), htmlAttributes: new { @id = "teachers", @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.TeacherID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-        }
-        else
-        {
-            <h3>No Avaible Teachers for that specific course!</h3>
-        }
 
-        <div class="form-group" ng-init="Start()">
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Edit" class="btn btn-default" />
             </div>
         </div>
     </div>
-}
+</form>
 
 <div>
     @Html.ActionLink("Back to List", "Index")
