@@ -37,7 +37,8 @@ namespace LMS_Project.Controllers
 
                 tempS.ID = c.SubjectID;
                 tempS.Name = c.Subject.Name;
-
+          
+                tempC.Name = c.Name;
                 tempC.ID = c.ID;
                 tempC.DocumentCount = c.Documents.Count();
                 tempC.ScheduleCount = c.Schedules.Count();

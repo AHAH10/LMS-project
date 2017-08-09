@@ -6,15 +6,14 @@
     </p>
     <div class="left">
         <form class="glyphicon glyphicon-search" method="get">
-            <input type="text" name="Search" ng-model="searchTerm" placeholder="Free Search" style="width:120px; height:25px;font-family: Helvetica, Arial, sans-serif">
+            <input type="text" name="Search" ng-model="searchTerm" placeholder="Search Field" style="width:120px; height:25px;font-family: Helvetica, Arial, sans-serif">
         </form>
     </div>
     <table class="table">
         <tr>
-            <th ng-click="orderByMe('Subject.Name')">@Html.DisplayNameFor(model => model.Subject.Name)</th>
-            <th ng-click="orderByMe('Teacher.UserName')">@Html.DisplayNameFor(model => model.Teacher)</th>
-            <th>@Html.DisplayNameFor(model => model.DocumentCount)</th>
-            <th>@Html.DisplayNameFor(model => model.ScheduleCount)</th>
+            <th ng-click="orderByMe('Name')"><b>Course Name</b></th>
+            <th ng-click="orderByMe('Subject.Name')"><b>Subject</b></th>
+            <th ng-click="orderByMe('Teacher.UserName')"><b>Teacher</b></th>
         </tr>
         @{
             var url1 = Url.Action("Edit", new { ID = "{{course.ID}}" });
@@ -29,14 +28,13 @@
             url3 = HttpUtility.UrlDecode(url3);
         }
         <tr ng-repeat="course in courses | orderBy:myOrderBy:reverse | filter:searchTerm ">
+            <td>{{course.Name}}</td>
             <td>{{course.Subject.Name}}</td>
             <td>{{course.Teacher.UserName}}</td> <!--UserName is replaced with a fullName if the api is working-->
-            <td>{{course.DocumentCount}}</td>
-            <td>{{course.ScheduleCount}}</td>  
             <td>
-                <a data-ng-href="@url1">Edit</a>
+                <a data-ng-href="@url1" ng-hide="course.DocumentCount > 0 && course.Name!='' || course.ScheduleCount > 0 && course.Name!=''">Edit</a>
                 <a data-ng-href="@url2">Details</a>
-                <a data-ng-href="@url3">Remove</a>
+                <a data-ng-href="@url3" ng-hide="course.DocumentCount > 0 || course.ScheduleCount > 0">Remove</a>
             </td>
         </tr>
         <!--Replace the ng-repeat with this if we don't like angular - That means a new sorting system and search must be re created-->

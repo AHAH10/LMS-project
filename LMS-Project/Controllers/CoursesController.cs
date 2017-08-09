@@ -54,13 +54,13 @@ namespace LMS_Project.Controllers
         // POST: Course/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(string tID, string sID)
+        public ActionResult Create(string name,string tID, string sID)
         {
             sID = sID.Substring(sID.IndexOf(':')+1);
             try
             {
                 int sId = int.Parse(sID);
-                bool success = cRepo.Add(new Course { SubjectID=sId, TeacherID=tID});
+                bool success = cRepo.Add(new Course {  Name=name, SubjectID=sId, TeacherID=tID});
                 if (success)
                 {
                     return RedirectToAction("Index");
@@ -80,7 +80,7 @@ namespace LMS_Project.Controllers
             Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                CoursesVM cVM = new CoursesVM { ID = c.ID, SubjectID = c.SubjectID, TeacherID = c.TeacherID, Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name }, Teacher = new User { Id = c.TeacherID, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName, UserName = c.Teacher.UserName, Email = c.Teacher.Email } };
+                CoursesVM cVM = new CoursesVM {  Name=c.Name,ID = c.ID, SubjectID = c.SubjectID, TeacherID = c.TeacherID, Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name }, Teacher = new User { Id = c.TeacherID, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName, UserName = c.Teacher.UserName, Email = c.Teacher.Email } };
                 return View(cVM);
             }
             return RedirectToAction("Index");
@@ -89,11 +89,11 @@ namespace LMS_Project.Controllers
         // POST: Course/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id,string tID, int sID)
+        public ActionResult Edit(int id,string tID, int sID, string name)
         {
                 // TODO: Add update logic here
 
-                Course cToEdit = new Course() { SubjectID = sID, TeacherID = tID, ID = id };
+                Course cToEdit = new Course() { Name=name, SubjectID = sID, TeacherID = tID, ID = id };
                 bool success = cRepo.Edit(cToEdit);
                 if (success)
                 {
