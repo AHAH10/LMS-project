@@ -188,13 +188,9 @@
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\SubjectsController.cs" />
     <Compile Include="Extensions\Extensions.cs" />
-    <Compile Include="Migrations\201708031337318_Documents.cs" />
-    <Compile Include="Migrations\201708031337318_Documents.Designer.cs">
-      <DependentUpon>201708031337318_Documents.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201708080633329_DocumentX.cs" />
-    <Compile Include="Migrations\201708080633329_DocumentX.Designer.cs">
-      <DependentUpon>201708080633329_DocumentX.cs</DependentUpon>
+    <Compile Include="Migrations\201708090914032_Docz.cs" />
+    <Compile Include="Migrations\201708090914032_Docz.Designer.cs">
+      <DependentUpon>201708090914032_Docz.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\LMS\Notification.cs" />
@@ -205,7 +201,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\RoleHelpers.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LMS\Course.cs" />
     <Compile Include="Models\LMS\Classroom.cs" />
@@ -311,7 +306,6 @@
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Shared\_LayoutStudent.cshtml" />
     <Content Include="Views\Shared\_LayoutTeacher.cshtml" />
-    <Content Include="Views\Users\EditorTemplates\Roles.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Delete.cshtml" />
     <Content Include="Views\Roles\Details.cshtml" />
@@ -369,13 +363,9 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708031337318_Documents.resx">
-      <DependentUpon>201708031337318_Documents.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201708080633329_DocumentX.resx">
-      <DependentUpon>201708080633329_DocumentX.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708090914032_Docz.resx">
+      <DependentUpon>201708090914032_Docz.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
