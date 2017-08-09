@@ -146,7 +146,8 @@ namespace LMS_Project.Controllers
                  List<Course> courses=new UsersRepository().Students(u=>u.Id==User.Identity.GetUserId()).SingleOrDefault().Courses.toList();
                  */
 
-                foreach(Schedule s in new UsersRepository().Students().Where(u=>u.Id==User.Identity.GetUserId()).SingleOrDefault().Schedules)
+                foreach(Schedule s in 
+                    new UsersRepository().Students().Where(u=>u.Id==User.Identity.GetUserId()).SingleOrDefault().Schedules)
                 {
                     debug.Add(s.Course);
                 }
@@ -184,11 +185,13 @@ namespace LMS_Project.Controllers
         // Get  Classroom
         public ActionResult UploadDocumentForClassroom()
         {
+            ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View();
         }
         // POST Classroom
         [HttpPost]
         public ActionResult UploadDocumentForClassroom(UploadDocumentVM viewModel)
+        
         {
             if (ModelState.IsValid && viewModel.File != null)
             {
@@ -209,7 +212,6 @@ namespace LMS_Project.Controllers
                 repository.Add(document);
                 return RedirectToAction("Index");
             }
-
             ViewBag.Courses = new CoursesRepository().Courses().ToList();
             return View(viewModel);
         }
