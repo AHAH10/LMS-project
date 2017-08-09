@@ -31,7 +31,7 @@
         function getAvaibleTeachers() {
             $http.get('/api/C_And_S_API/GetAvailableTeachersWithLessInfo?subjectID=' + $scope.selectedSubject)
                 .then(function (response) {
-                    $scope.teachers = JSON.parse(JSON.stringify(response.data)); //Any references will be converted into objectsS
+                    $scope.teachers = JSON.parse(JSON.stringify(response.data)); //Any references will be converted into objects
 
                     var op = [];
 

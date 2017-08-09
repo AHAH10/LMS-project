@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<LMS_Project.Models.LMS.Course>
 
-<div ng-controller="Course_Index_Ctrl" ng-init="getData()">
+<div ng-app="LMSApp" ng-controller="Course_Index_Ctrl" ng-init="getData()">
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
@@ -12,7 +12,7 @@
     <table class="table">
         <tr>
             <th ng-click="orderByMe('Subject.Name')">@Html.DisplayNameFor(model => model.Subject.Name)</th>
-            <th ng-click="orderByMe('Teacher.UserName')">@Html.DisplayNameFor(model => model.Teacher)</th>
+            <th ng-click="orderByMe('Teacher.LastName+Teacher.FirstName')">@Html.DisplayNameFor(model => model.Teacher)</th>
             <th></th>
         </tr>
         @{
@@ -29,31 +29,16 @@
         }
         <tr ng-repeat="course in courses | orderBy:myOrderBy:reverse | filter:searchTerm ">
             <td>{{course.Subject.Name}}</td>
-            <td>{{course.Teacher.UserName}}</td> <!--UserName is replaced with a fullName if the api is working-->
+            <td>{{course.Teacher.FirstName}} {{course.Teacher.LastName}}</td>
             <td>
                 <a data-ng-href="@url1">Edit</a> |
                 <a data-ng-href="@url2">Details</a> |
-                <a data-ng-href="@url3">CheckOut</a>
+                <a data-ng-href="@url3">Delete</a>
             </td>
         </tr>
-        <!--Replace the ng-repeat with this if we don't like angular - That means a new sorting system and search must be re created-->
-        @*@foreach (var item in Model) {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Subject.Name)
-                    </td>
-                    <td>
-                        @Html.DisplayName(item.Teacher.ToString())
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-                        @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-                        @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-                    </td>
-                </tr>
-            }*@
     </table>
 </div>
 @section Scripts {
+    @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/angularcourses")
 }

@@ -12,7 +12,7 @@
 {
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal" ng-controller="Course_Create_Ctrl">
+    <div class="form-horizontal" ng-app="LMSApp" ng-controller="Course_Create_Ctrl">
         <h4>Course</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -65,5 +65,6 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/angularcourses")
 }

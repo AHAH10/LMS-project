@@ -21,11 +21,38 @@ namespace LMS_Project.Controllers
                 studentId = User.Identity.GetUserId();
             }
 
-            User user = usersRepo.User(studentId);
+            if (usersRepo.GetUserRole(studentId).Name == "Student")
+            {
+                User user = usersRepo.User(studentId);
 
-            List<Schedule> schedules = schedRepo.StudentSchedules(studentId).ToList();
+                List<Schedule> schedules = schedRepo.StudentSchedules(studentId).ToList();
 
-            return View(new UsersScheduleVM { UsersFullName = user.ToString(), Schedules = schedules });
+                return View(new UsersScheduleVM
+                {
+                    UserFullName = user.ToString(),
+                    Schedules = schedules,
+                    ShowDocumentsLink = user.Id == User.Identity.GetUserId(),
+                    ShowSchedulesLink = User.IsInRole("Admin")
+                });
+            }
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        [Authorize(Roles = "Student")]
+        public ActionResult Notifications()
+        {
+            return View();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                schedRepo.Dispose();
+                usersRepo.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

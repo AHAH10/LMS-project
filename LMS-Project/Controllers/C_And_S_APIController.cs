@@ -19,6 +19,7 @@ namespace LMS_Project.Controllers
         {
             return new UsersRepository().AvailableTeachers(subjectID).ToList(); //unsafe code - because of passwordhash and other private info
         }
+
         /// <summary>
         /// Returns all available Teachers for a specific subject but with less info.
         /// </summary>
@@ -40,6 +41,7 @@ namespace LMS_Project.Controllers
             }
             return _teachers;
         }
+
         /// <summary>
         /// Return all courses
         /// </summary>
@@ -83,6 +85,7 @@ namespace LMS_Project.Controllers
 
             return _courses;
         }
+
         [HttpGet]
         public List<Subject> GetAllSubjects() //VS 17 returns access violation if a whole User is returned through api, Courses contains a teacher...
         {

@@ -29,12 +29,11 @@ namespace LMS_Project.Repositories
 
         public bool Add(Subject subject)
         {
-            var _subjects = this.Subjects().Where(s => s.Name.ToLower() == subject.Name.ToLower());
-            if (_subjects.Count() != 0)
+            if (db.Subjects.FirstOrDefault(s => string.Compare(s.Name, subject.Name, true) == 0) != null)
             {
-                _subjects = null;
                 return false;
             }
+
             db.Subjects.Add(subject);
             SaveChanges();
             return true;
@@ -42,12 +41,11 @@ namespace LMS_Project.Repositories
 
         public bool Edit(Subject subject)
         {
-            var _subjects = this.Subjects().Where(s => s.Name.ToLower() == subject.Name.ToLower() && subject.ID != s.ID);
-            if (_subjects.Count() != 0)
+            if (db.Subjects.FirstOrDefault(s => string.Compare(s.Name, subject.Name, true) == 0 && s.ID != subject.ID) != null)
             {
-                _subjects = null;
                 return false;
             }
+
             db.Entry(subject).State = EntityState.Modified;
             db.SaveChanges();
             return true;

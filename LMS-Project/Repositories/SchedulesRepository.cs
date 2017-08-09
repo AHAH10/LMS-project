@@ -29,17 +29,14 @@ namespace LMS_Project.Repositories
                 }
             }
 
-            return schedules.OrderBy(s => s.BeginningTime)
-                            .GroupBy(s => s.WeekDay)
-                            .SelectMany(s => s);
+            return schedules.OrderBy(s => s.WeekDay).ThenBy(s => s.BeginningTime);
         }
 
         public IEnumerable<Schedule> TeacherSchedules(string teacherUserId)
         {
             return Schedules().Where(s => s.Course.TeacherID == teacherUserId)
-                              .OrderBy(s => s.BeginningTime)
-                              .GroupBy(s => s.WeekDay)
-                              .SelectMany(s => s);
+                              .OrderBy(s => s.WeekDay)
+                              .ThenBy(s => s.BeginningTime);
         }
 
         /// <summary>
@@ -73,7 +70,7 @@ namespace LMS_Project.Repositories
                                                           schStudent => schStudent.Id,
                                                           student => student.Id,
                                                           (schStudent, student) => student)
-                              .Any(u => u.Id.Equals(studentId)))
+                              .Any(student => student.Id.Equals(studentId)))
                               .OrderBy(s => s.BeginningTime)
                               .FirstOrDefault(s => s.WeekDay == weekDay &&
                                                    (string.Compare(s.BeginningTime, beginningTime) != 1 && string.Compare(s.EndingTime, beginningTime) != -1 ||
@@ -107,24 +104,46 @@ namespace LMS_Project.Repositories
             return db.LMSUsers.Where(u => studentsInLesson.Contains(u.Id)).Select(u => u).ToList();
         }
 
-        public void Add(Schedule schedule, List<string> students)
+        /// <summary>
+        /// Indicates if the student actually takes part or not to the course related to the schedule
+        /// </summary>
+        /// <param name="studentId">Student ID</param>
+        /// <param name="id">Schedule ID</param>
+        /// <returns></returns>
+        internal bool TakesPart(string studentId, int id)
         {
-            List<User> studentsInLesson = StudentsInLesson(students);
+            return Schedules().Where(s => s.Students.Join(db.LMSUsers,
+                                                          schStudent => schStudent.Id,
+                                                          student => student.Id,
+                                                          (schStudent, student) => student)
+                              .Any(student => student.Id.Equals(studentId))).Count() > 0;
+        }
 
-            schedule.Students = studentsInLesson;
+        /// <summary>
+        /// Indicates if the teacher is in charge or not of the course related to the schedule
+        /// </summary>
+        /// <param name="teacherId">Teacher ID</param>
+        /// <param name="id">Schedule ID</param>
+        /// <returns></returns>
+        internal bool IsInCharge(string teacherId, int id)
+        {
+            Schedule schedule = Schedule(id);
 
+            if (schedule == null)
+                return false;
+
+            return schedule.Course.TeacherID == teacherId;
+        }
+
+        public void Add(Schedule schedule)
+        {
             db.Schedules.Add(schedule);
+            SaveChanges();
+        }
 
-            foreach (User student in studentsInLesson)
-            {
-                if (student.Schedules == null)
-                    student.Schedules = new List<Schedule> { schedule };
-                else
-                    student.Schedules.Add(schedule);
-
-                db.Entry(student).State = EntityState.Modified;
-            }
-
+        public void Edit(Schedule schedule)
+        {
+            db.Entry(schedule).State = EntityState.Modified;
             SaveChanges();
         }
 

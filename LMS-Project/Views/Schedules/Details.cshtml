@@ -39,7 +39,7 @@
         </dt>
 
         <dd>
-            @Html.ActionLink(Model.Course.Teacher.ToString(), "Schedule", "Users", new { userId = Model.Course.TeacherID }, null)
+            @Html.ActionLink(Model.Course.Teacher.ToString(), "Planning", "Teachers", new { teacherId = Model.Course.TeacherID }, null)
         </dd>
 
         <dt>
@@ -48,7 +48,7 @@
 
         <dd>
             @{string remarks = Model.Classroom.Remarks;
-            if (remarks.Length > 0)
+            if (remarks != null && remarks.Length > 0)
             {
                 remarks = " - " + remarks;
             }

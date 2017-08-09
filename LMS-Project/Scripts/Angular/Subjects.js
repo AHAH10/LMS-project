@@ -8,6 +8,7 @@
             $scope.myOrderBy = type;
             $scope.reverse = ($scope.myOrderBy === type) ? !$scope.reverse : false;
         };
+
         $scope.getData = function () {
             $http.get('/api/C_And_S_API/GetAllSubjects')
                 .then(function (response) {

@@ -34,7 +34,8 @@ namespace LMS_Project.Controllers
         // GET: Course/Create
         public ActionResult Create()
         {
-            ViewBag.Teachers = new UsersRepository().Teachers().ToList();
+            //ViewBag.Teachers = cRepo.AvaibleTeachers("french"); //- Get AviableTeachers for a specific Subject
+            ViewBag.Teachers = Teachers(); // - Get All Teachers
             ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
 
             return View();
@@ -51,7 +52,7 @@ namespace LMS_Project.Controllers
                 {
                     return RedirectToAction("Index");
                 }
-                ViewBag.Teachers = new UsersRepository().Teachers().ToList();
+                ViewBag.Teachers = Teachers();
                 ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 ViewBag.EMessage = "The Course You want to add already exists";
                 return View();
@@ -68,8 +69,7 @@ namespace LMS_Project.Controllers
             Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                ViewBag.Teachers = new UsersRepository().AvailableTeachers(c.SubjectID);
-                ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
+                ViewBag.Teachers = AvailableTeachers(c.SubjectID);
                 return View(c);
             }
             return RedirectToAction("Index");
@@ -88,8 +88,7 @@ namespace LMS_Project.Controllers
                     return RedirectToAction("Index");
                 }
                 ViewBag.EMessage = "Error 203: The teacher already have that subject";
-                ViewBag.Teachers = new UsersRepository().Teachers().ToList();
-                ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
+                ViewBag.Teachers = AvailableTeachers(course.SubjectID);
                 return View(course);
             }
             catch
@@ -116,18 +115,40 @@ namespace LMS_Project.Controllers
             try
             {
                 // TODO: Add delete logic here
-                bool success = cRepo.Delete(id);
-                if (success)
-                {
-                    return RedirectToAction("Index");
-                }
-                ViewBag.EMessage = "Error 615: The course you want to delete can't be deleted. (Make sure that it have no documents or schedule to it.)";
-                return View();
+                cRepo.Delete(id);
+                return RedirectToAction("Index");
             }
             catch
             {
                 return View();
             }
+        }
+
+        private List<SelectListItem> Teachers()
+        {
+            return new UsersRepository().Teachers().Select(t => new SelectListItem
+            {
+                Text = t.ToString(),
+                Value = t.Id.ToString()
+            }).ToList();
+        }
+
+        private List<SelectListItem> AvailableTeachers(int subjectId)
+        {
+            return new UsersRepository().AvailableTeachers(subjectId).Select(t => new SelectListItem
+            {
+                Text = t.ToString(),
+                Value = t.Id.ToString()
+            }).ToList();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                cRepo.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

@@ -28,13 +28,12 @@ namespace LMS_Project.Controllers
             }
             return RedirectToAction("Index");
         }
-        public ActionResult Grading(int? id)
+
+        public ActionResult Grade(int? id)
         {
             Document d = new DocumentsRepository().Document(id) as Document;
             if(d!=null){
                 if(gRepo.Grades().Where(g=>g.DocumentID==d.ID).Count()==0){
-                //ViewBag.Document = d;
-
                     return View(new Grade {  DocumentID=d.ID, Document=d});
                 }
             }
@@ -43,13 +42,12 @@ namespace LMS_Project.Controllers
 
         // POST: Grades/Create
         [HttpPost]
-        public ActionResult Grading(Grade grade)
+        public ActionResult Grade(Grade grade)
         {
             try
             {
                 // TODO: Add insert logic here
                 gRepo.Add(grade);
-                
                 return RedirectToAction("Index","Documents");
             }
             catch
@@ -100,6 +98,15 @@ namespace LMS_Project.Controllers
             {
                 return View();
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                gRepo.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

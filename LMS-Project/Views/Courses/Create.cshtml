@@ -1,14 +1,14 @@
 ﻿@model LMS_Project.Models.LMS.Course
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-    <div class="form-horizontal" ng-controller="Course_Create_Ctrl">
+    <div class="form-horizontal" ng-app="LMSApp" ng-controller="Course_Create_Ctrl">
         <h4>Course</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
+            <div class="form-group">
             @Html.LabelFor(model => model.Subject, "Subject", htmlAttributes: new { ng_click = "SortList('subjects')", @style = "cursor:pointer;", @class = "control-label" })
             <div class="row">
                 <div class="col-md-10">
@@ -17,7 +17,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
+            <div class="form-group">
             @Html.LabelFor(model => model.TeacherID, "Teacher", htmlAttributes: new { ng_click = "SortList('teachers')", @style = "cursor:pointer;", @class = "control-label" })
             <div class="row">
                 <div class="col-md-10">
@@ -42,5 +42,6 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/angularcourses")
 }
