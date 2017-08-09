@@ -91,8 +91,17 @@ namespace LMS_Project.Controllers
         {
             if (ModelState.IsValid && viewModel.File != null)
             {
-                CreateDocument(viewModel, "Teacher");
-                return RedirectToAction("Index");
+                string result = CreateDocument(viewModel, RoleConstants.Teacher);
+
+                if (result.Length == 0)
+                    return RedirectToAction("Index");
+                else
+                {
+                    ViewBag.ErrorMessage = result;
+                    ViewBag.Courses = GetCourses(false);
+
+                    return View(viewModel);
+                }
             }
 
             ViewBag.Courses = GetCourses(false);
@@ -113,8 +122,17 @@ namespace LMS_Project.Controllers
         {
             if (ModelState.IsValid && viewModel.File != null)
             {
-                CreateDocument(viewModel, "Student");
-                return RedirectToAction("Index");
+                string result = CreateDocument(viewModel, RoleConstants.Student);
+
+                if (result.Length == 0)
+                    return RedirectToAction("Index");
+                else
+                {
+                    ViewBag.ErrorMessage = result;
+                    ViewBag.Courses = GetCourses(false);
+
+                    return View(viewModel);
+                }
             }
 
             ViewBag.Courses = GetCourses(false);
@@ -134,8 +152,17 @@ namespace LMS_Project.Controllers
         {
             if (ModelState.IsValid && viewModel.File != null)
             {
-                CreateDocument(viewModel, "Teacher");
-                return RedirectToAction("Index");
+                string result = CreateDocument(viewModel, RoleConstants.Teacher);
+
+                if (result.Length == 0)
+                    return RedirectToAction("Index");
+                else
+                {
+                    ViewBag.ErrorMessage = result;
+                    ViewBag.Courses = GetCourses(false);
+
+                    return View(viewModel);
+                }
             }
 
             ViewBag.Courses = GetCourses(true);
@@ -155,12 +182,26 @@ namespace LMS_Project.Controllers
         {
             if (ModelState.IsValid && viewModel.File != null)
             {
-                CreateDocument(viewModel, "Student");
-                return RedirectToAction("Index");
+                string result = CreateDocument(viewModel, RoleConstants.Student);
+
+                if (result.Length == 0)
+                    return RedirectToAction("Index");
+                else
+                {
+                    ViewBag.ErrorMessage = result;
+                    ViewBag.Courses = GetCourses(false);
+
+                    return View(viewModel);
+                }
             }
 
             ViewBag.Courses = GetCourses(true);
             return View(viewModel);
+        }
+
+        public ActionResult MyDocuments()
+        {
+            return View(repository.Documents(User.Identity.GetUserId()).ToList());
         }
 
         // Download Document
@@ -197,22 +238,31 @@ namespace LMS_Project.Controllers
                                             .ToList();
         }
 
-        private void CreateDocument(UploadDocumentVM viewModel, string roleVisibleTo)
+        private string CreateDocument(UploadDocumentVM viewModel, string roleVisibleTo)
         {
-            Document document = new Document
+            try
             {
-                DocumentName = viewModel.File.FileName,
-                ContentType = viewModel.File.ContentType,
-                UploaderID = User.Identity.GetUserId(),
-                RoleID = new RolesRepository().RoleByName("Teacher").Id,
-                UploadingDate = DateTime.Now,
-                CourseID = viewModel.CourseID
-            };
+                Document document = new Document
+                {
+                    DocumentName = viewModel.File.FileName,
+                    ContentType = viewModel.File.ContentType,
+                    UploaderID = User.Identity.GetUserId(),
+                    RoleID = new RolesRepository().RoleByName(roleVisibleTo).Id,
+                    UploadingDate = DateTime.Now,
+                    CourseID = viewModel.CourseID
+                };
 
-            document.DocumentContent = new byte[viewModel.File.ContentLength];
-            viewModel.File.InputStream.Read(document.DocumentContent, 0, viewModel.File.ContentLength);
+                document.DocumentContent = new byte[viewModel.File.ContentLength];
+                viewModel.File.InputStream.Read(document.DocumentContent, 0, viewModel.File.ContentLength);
 
-            repository.Add(document);
+                repository.Add(document);
+
+                return string.Empty;
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
         }
 
         protected override void Dispose(bool disposing)

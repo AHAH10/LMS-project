@@ -198,6 +198,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708090826022_Initial.cs" />
+    <Compile Include="Migrations\201708090826022_Initial.Designer.cs">
+      <DependentUpon>201708090826022_Initial.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\LMS\Course.cs" />
@@ -267,9 +271,6 @@
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\Schedules\Create.cshtml">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="Views\Schedules\_StudentsSchedule.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Web.config" />
@@ -355,7 +356,6 @@
     <Content Include="Views\Teachers\UngradedAssignments.cshtml" />
     <Content Include="Views\Students\Notifications.cshtml" />
     <Content Include="Views\Schedules\Documents.cshtml" />
-    <Content Include="Views\Schedules\ViewSchedule.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Notifications\Create.cshtml" />
     <Content Include="Views\Notifications\Delete.cshtml" />
@@ -367,6 +367,7 @@
     <Content Include="Views\Grades\Index.cshtml" />
     <Content Include="Views\Schedules\_CreateEdit.cshtml" />
     <Content Include="Views\Grades\Grade.cshtml" />
+    <Content Include="Views\Documents\MyDocuments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -374,6 +375,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201708090826022_Initial.resx">
+      <DependentUpon>201708090826022_Initial.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

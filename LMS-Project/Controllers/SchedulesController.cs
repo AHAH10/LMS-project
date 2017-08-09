@@ -30,9 +30,9 @@ namespace LMS_Project.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }
-            
+
             Schedule schedule = repository.Schedule(id);
-            
+
             if (schedule == null)
             {
                 return RedirectToAction("Index", "Home");
@@ -114,31 +114,31 @@ namespace LMS_Project.Controllers
             string userId = User.Identity.GetUserId();
             List<Document> documents = schedule.Course.Documents.ToList();
 
-            switch (new UsersRepository().GetUserRole(userId).Name)
+            string roleName = new UsersRepository().GetUserRole(userId).Name;
+            if (roleName == RoleConstants.Student)
             {
-                case "Student":
-                    // Any student is allowed to see documents for the current course, as long as the
-                    // given student takes part of that course
-                    if (!repository.TakesPart(userId, (int)id))
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-
-                    // But only documents visible to Students are displayed
-                    documents = documents.Where(d => d.VisibleFor.Name == "Student").ToList();
-
-                    break;
-                case "Teacher":
-                    // Any teacher is allowed to see documents for the current course, as long as the
-                    // given teacher is in charge of that course
-                    if (!repository.IsInCharge(userId, (int)id))
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-
-                    break;
-                default:
+                // Any student is allowed to see documents for the current course, as long as the
+                // given student takes part of that course
+                if (!repository.TakesPart(userId, (int)id))
+                {
                     return RedirectToAction("Index", "Home");
+                }
+
+                // But only documents visible to Students are displayed
+                documents = documents.Where(d => d.VisibleFor.Name == RoleConstants.Student).ToList();
+            }
+            else if (roleName == RoleConstants.Teacher)
+            {
+                // Any teacher is allowed to see documents for the current course, as long as the
+                // given teacher is in charge of that course
+                if (!repository.IsInCharge(userId, (int)id))
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
             }
 
             if (documents.Count == 0)

@@ -56,7 +56,7 @@
     </div>
 </div>
 
-<table class="table">
+<table class="table" ng-start-waiting>
     <thead>
         <tr>
             <th></th>
@@ -79,7 +79,8 @@
     </thead>
 
     <tbody>
-        <tr ng-repeat="student in students | orderBy:propertyName:reverse">
+        <tr ng-repeat="student in students | orderBy:propertyName:reverse"
+            ng-test-end-waiting>
             <td class="editor-field">
                 <div class="form-group">
                     <input type="checkbox"

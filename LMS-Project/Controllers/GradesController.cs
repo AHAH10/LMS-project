@@ -8,10 +8,10 @@ using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
 {
-    [Authorize(Roles="Teacher , Admin")]
+    [Authorize(Roles = "Teacher , Admin")]
     public class GradesController : Controller
     {
-        private GradesRepository gRepo = new GradesRepository(); 
+        private GradesRepository gRepo = new GradesRepository();
         // GET: Grades
         public ActionResult Index()
         {
@@ -31,13 +31,15 @@ namespace LMS_Project.Controllers
 
         public ActionResult Grade(int? id)
         {
-            Document d = new DocumentsRepository().Document(id) as Document;
-            if(d!=null){
-                if(gRepo.Grades().Where(g=>g.DocumentID==d.ID).Count()==0){
-                    return View(new Grade {  DocumentID=d.ID, Document=d});
+            Document d = new DocumentsRepository().Document(id);
+            if (d != null)
+            {
+                if (gRepo.Grades().Where(g => g.Document.ID == d.ID).Count() == 0)
+                {
+                    return View(new Grade { Document = d });
                 }
             }
-            return RedirectToAction("index","Documents");
+            return RedirectToAction("index", "Documents");
         }
 
         // POST: Grades/Create
@@ -48,7 +50,7 @@ namespace LMS_Project.Controllers
             {
                 // TODO: Add insert logic here
                 gRepo.Add(grade);
-                return RedirectToAction("Index","Documents");
+                return RedirectToAction("Index", "Documents");
             }
             catch
             {

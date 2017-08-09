@@ -25,10 +25,8 @@ textarea {
 .newsHead {
     text-align: center;
     margin-left: -6.5em;
-    
-    
 }
 
-
-    
-
+.waiting {
+    cursor: wait;
+}

@@ -3,25 +3,37 @@ using System.Collections.Generic;
 
 namespace LMS_Project.Models.LMS
 {
-    public static class DefaultPassword
+    public static class RoleConstants
     {
+        public static string Student
+        {
+            get { return "Student"; }
+            private set { }
+        }
+
+        public static string Teacher
+        {
+            get { return "Teacher"; }
+            private set { }
+        }
+
+        public static string Admin
+        {
+            get { return "Admin"; }
+            private set { }
+        }
+
         public static string Password(string roleName)
         {
             string password = string.Empty;
 
-            switch (roleName)
-            {
-                case "Teacher":
-                    password = "Teacher-Password1";
-                    break;
-                case "Student":
-                    password = "Student-Password1";
-                    break;
-                case "Admin":
-                    password = "Admin-Password1";
-                    break;
-            }
-
+            if (roleName == RoleConstants.Teacher)
+                password = "Teacher-Password1";
+            else if (roleName == RoleConstants.Student)
+                password = "Student-Password1";
+            else if (roleName == RoleConstants.Admin)
+                password = "Admin-Password1";
+            
             return password;
         }
     }

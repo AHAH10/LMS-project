@@ -5,9 +5,7 @@ namespace LMS_Project.ViewModels
 {
     public class DetailedScheduleVM
     {
-        public List<Schedule> Schedules { get; set; }
-        public string UsersFullName { get; set; }
-        public string TeachersName { get; set; }
-        public List<string> Students { get; set; }
+        public Schedule Schedule { get; set; }
+        public List<Document> Documents { get; set; }
     }
 }

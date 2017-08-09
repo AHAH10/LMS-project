@@ -19,9 +19,24 @@ namespace LMS_Project.Repositories
             return db.Documents;
         }
 
+        /// <summary>
+        /// Returns the list of documents uploaded for a given course
+        /// </summary>
+        /// <param name="courseId">Course ID</param>
+        /// <returns></returns>
         public IEnumerable<Document> Documents(int courseId)
         {
             return db.Documents.Where(d => d.CourseID == courseId);
+        }
+
+        /// <summary>
+        /// Returns the list of documents uploaded by a user
+        /// </summary>
+        /// <param name="userId">User's ID</param>
+        /// <returns></returns>
+        public IEnumerable<Document> Documents(string userId)
+        {
+            return db.Documents.Where(d => d.UploaderID == userId);
         }
 
         //Add

@@ -9,16 +9,16 @@
 <table class="table">
     <tr>
         <th>
+            @Html.DisplayNameFor(model => model.DocumentName)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Course)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Uploader)
+            @Html.DisplayName("Uploaded")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UploadingDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DocumentName)
+            @Html.DisplayName("By")
         </th>
         <th></th>
     </tr>
@@ -27,19 +27,18 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Course.Subject.Name)
+                @Html.ActionLink(item.DocumentName, "Download", "Documents", new { id = item.ID }, null)
             </td>
             <td>
-                @Html.DisplayName(item.Uploader.ToString())
+                @Html.DisplayFor(modelItem => item.Course.Subject.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UploadingDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DocumentName)
+                @Html.DisplayName(item.Uploader.ToString())
             </td>
             <td>
-                @Html.ActionLink("Download Document", "Download", "Documents", new { id = item.ID }, null) |
                 @Html.ActionLink("Set a Grade", "Grade", "Grades", new { id = item.ID }, null)
             </td>
         </tr>

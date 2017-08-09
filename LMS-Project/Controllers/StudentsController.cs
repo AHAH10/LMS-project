@@ -21,7 +21,7 @@ namespace LMS_Project.Controllers
                 studentId = User.Identity.GetUserId();
             }
 
-            if (usersRepo.GetUserRole(studentId).Name == "Student")
+            if (usersRepo.GetUserRole(studentId).Name == RoleConstants.Student)
             {
                 User user = usersRepo.User(studentId);
 
@@ -32,7 +32,7 @@ namespace LMS_Project.Controllers
                     UserFullName = user.ToString(),
                     Schedules = schedules,
                     ShowDocumentsLink = user.Id == User.Identity.GetUserId(),
-                    ShowSchedulesLink = User.IsInRole("Admin")
+                    ShowSchedulesLink = User.IsInRole(RoleConstants.Admin)
                 });
             }
             else

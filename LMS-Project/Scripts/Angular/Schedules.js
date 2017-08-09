@@ -55,13 +55,10 @@
             return hours + ':' + minutes;
         }
 
-        //$scope.getWeekDays = getWeekDays;
-        //$scope.getCourses = getCourses;
         $scope.displayCourse = displayCourse;
-        //$scope.getClassrooms = getClassrooms;
         $scope.displayClassroom = displayClassroom;
-        //$scope.getStudents = getStudents;
         $scope.getSchedules = getSchedules;
+        $scope.getWeekDays = getWeekDays;
         $scope.orderBy = orderBy;
         $scope.sendData = sendData;
 
@@ -89,7 +86,7 @@
         }
 
         function displayClassroom(classroom) {
-            return classroom.Name + (classroom.Remarks === null ? '' : ' - ' + classroom.Remarks);
+            return classroom.Name + (classroom.Remarks === null ? '' : ' - ' + classroom.Remarks) + ' (' + classroom.AmountStudentsMax + ' st. max)';
         }
 
         function getClassrooms() {
@@ -103,6 +100,10 @@
             $http.get('/api/UsersAPI/GetStudents')
                 .then(function (response) {
                     $scope.students = response.data;
+                })
+                .catch(function (errorMessage) {
+                    var mybody = angular.element(document).find('body');
+                    mybody.removeClass('waiting');
                 });
         }
 
@@ -198,4 +199,20 @@
             }
         }
     }]);
+
+    app.directive('ngStartWaiting', function () {
+        return function (scope, element, attrs) {
+            var mybody = angular.element(document).find('body');
+            mybody.addClass('waiting');
+        };
+    });
+
+    app.directive('ngTestEndWaiting', function () {
+        return function (scope, element, attrs) {
+            if (scope.$last) {
+                var mybody = angular.element(document).find('body');
+                mybody.removeClass('waiting');
+            }
+        };
+    });
 }());

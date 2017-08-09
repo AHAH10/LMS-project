@@ -14,6 +14,7 @@ namespace LMS_Project.Models.LMS
         public int ID { get; set; }
 
         [Required]
+        [Display(Name="Document Name")]
         public string DocumentName { get; set; }
 
         [Required]
@@ -38,5 +39,9 @@ namespace LMS_Project.Models.LMS
         [ForeignKey("VisibleFor")]
         public string RoleID { get; set; }
         public virtual Role VisibleFor { get; set; }
+
+        [ForeignKey("Grade")]
+        public int? GradeID { get; set; }
+        public virtual Grade Grade { get; set; }
     }
 }

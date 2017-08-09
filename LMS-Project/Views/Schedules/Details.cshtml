@@ -76,7 +76,7 @@
     </dl>
 </div>
 <p>
-    @{if (this.User.IsInRole("Admin"))
+    @{if (this.User.IsInRole(LMS_Project.Models.LMS.RoleConstants.Admin))
     {
         @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) <text>|</text>
     }
