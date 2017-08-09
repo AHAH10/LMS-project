@@ -10,11 +10,11 @@
 <form action="../Edit/" method="POST">
     @Html.AntiForgeryToken()
 
-    <div class="form-horizontal" ng-app="LMSApp" ng-controller="Course_Edit_Ctrl">
+    <div class="form-horizontal" ng-app="LMSApp" ng-controller="Course_Edit_Ctrl" ng-cloak>
         <h4>Course</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(model => model.Id)
+        @Html.HiddenFor(model => model.ID)
 
             <div class="form-group">
                 @Html.LabelFor(model => model.Teacher.UserName, "Teacher", htmlAttributes: new { ng_click="orderByMe('LastName')", @class = "control-label col-md-2" })
@@ -25,7 +25,7 @@
                             <option ng-repeat="teacher in teachers | orderBy:myOrderBy:reverse" value="{{teacher.Id}}">{{teacher.FirstName}} {{teacher.LastName}}</option>
                         </select>
                         <input type="hidden" name="sID" value="@Html.ValueFor(m=>m.SubjectID)"/>
-                        <input type="hidden" name="id" value="@Html.ValueFor(m=>m.Id)" />
+                        <input type="hidden" name="id" value="@Html.ValueFor(m=>m.ID)" />
                     </div>
                 </div>
             </div>

@@ -22,7 +22,7 @@ namespace LMS_Project.Controllers
             foreach (Course c in cRepo.Courses())
             {
                 CoursesVM tempC = new CoursesVM();
-                tempC.Id = c.ID;
+                tempC.ID = c.ID;
                 tempC.Teacher = new User { Id = c.TeacherID, UserName = c.Teacher.UserName, Email = c.Teacher.Email, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName };
                 tempC.TeacherID=c.TeacherID;
                 tempC.SubjectID=c.SubjectID;
@@ -39,7 +39,7 @@ namespace LMS_Project.Controllers
             Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                CoursesVM cVM = new CoursesVM { Id = c.ID, SubjectID = c.SubjectID, TeacherID = c.TeacherID, Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name }, Teacher = new User { Id = c.TeacherID, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName, UserName = c.Teacher.UserName, Email = c.Teacher.Email } };
+                CoursesVM cVM = new CoursesVM { ID = c.ID, SubjectID = c.SubjectID, TeacherID = c.TeacherID, Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name }, Teacher = new User { Id = c.TeacherID, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName, UserName = c.Teacher.UserName, Email = c.Teacher.Email } };
                 return View(cVM);
             }
             return RedirectToAction("Index");
@@ -80,7 +80,7 @@ namespace LMS_Project.Controllers
             Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                CoursesVM cVM = new CoursesVM { Id = c.ID, SubjectID = c.SubjectID, TeacherID = c.TeacherID, Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name }, Teacher = new User { Id = c.TeacherID, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName, UserName = c.Teacher.UserName, Email = c.Teacher.Email } };
+                CoursesVM cVM = new CoursesVM { ID = c.ID, SubjectID = c.SubjectID, TeacherID = c.TeacherID, Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name }, Teacher = new User { Id = c.TeacherID, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName, UserName = c.Teacher.UserName, Email = c.Teacher.Email } };
                 return View(cVM);
             }
             return RedirectToAction("Index");
@@ -109,7 +109,7 @@ namespace LMS_Project.Controllers
             Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                CoursesVM cVM = new CoursesVM { Id = c.ID, SubjectID = c.SubjectID, TeacherID = c.TeacherID, Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name }, Teacher = new User { Id = c.TeacherID, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName, UserName = c.Teacher.UserName, Email = c.Teacher.Email } };
+                CoursesVM cVM = new CoursesVM { ID = c.ID, SubjectID = c.SubjectID, TeacherID = c.TeacherID, Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name }, Teacher = new User { Id = c.TeacherID, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName, UserName = c.Teacher.UserName, Email = c.Teacher.Email } };
                 return View(cVM);
             }
             return RedirectToAction("Index");

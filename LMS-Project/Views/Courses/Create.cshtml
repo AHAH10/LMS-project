@@ -3,7 +3,7 @@
 <form action="/Courses/Create/" method="POST">
 
     @Html.AntiForgeryToken()
-    <div class="form-horizontal" ng-app="LMSApp" ng-controller="Course_Create_Ctrl">
+    <div class="form-horizontal" ng-app="LMSApp" ng-controller="Course_Create_Ctrl" ng-cloak>
         <h4>Course</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
