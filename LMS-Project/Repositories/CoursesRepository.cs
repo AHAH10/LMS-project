@@ -23,6 +23,23 @@ namespace LMS_Project.Repositories
             return Courses().SingleOrDefault(c => c.ID == id);
         }
 
+        public IEnumerable<Course> StudentCourses(string studentId)
+        {
+            return db.LMSUsers.FirstOrDefault(u => u.Id == studentId)
+                              .Schedules
+                              .Select(s => s.Course)
+                              .OrderBy(c => c.Subject.Name)
+                              .ThenBy(c => c.Teacher.ToString());
+        }
+
+        public IEnumerable<Course> TeacherCourse(string teacherId)
+        {
+            return db.LMSUsers.FirstOrDefault(u => u.Id == teacherId)
+                              .Courses
+                              .OrderBy(c => c.Subject.Name)
+                              .ThenBy(c => c.Teacher.ToString());
+        }
+
         public bool Add(Course course)
         {
             if (course.TeacherID != null)

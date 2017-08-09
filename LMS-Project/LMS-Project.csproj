@@ -233,6 +233,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModels\CreateScheduleVM.cs" />
+    <Compile Include="ViewModels\DocumentsScheduleVM.cs" />
     <Compile Include="ViewModels\EnumWeekDayVM.cs" />
     <Compile Include="ViewModels\ExtendedUserVM.cs" />
     <Compile Include="ViewModels\UploadDocumentVM.cs" />
@@ -327,8 +328,6 @@
     <Content Include="Views\Courses\Details.cshtml" />
     <Content Include="Views\Courses\Index.cshtml" />
     <Content Include="Views\Documents\Delete.cshtml" />
-    <Content Include="Views\Documents\Details.cshtml" />
-    <Content Include="Views\Documents\Index.cshtml" />
     <Content Include="Views\Subjects\Create.cshtml" />
     <Content Include="Views\Subjects\Index.cshtml" />
     <Content Include="Views\Schedules\Delete.cshtml" />
@@ -368,6 +367,7 @@
     <Content Include="Views\Schedules\_CreateEdit.cshtml" />
     <Content Include="Views\Grades\Grade.cshtml" />
     <Content Include="Views\Documents\MyDocuments.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
