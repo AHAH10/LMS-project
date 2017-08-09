@@ -1,28 +1,27 @@
-﻿@model LMS_Project.Models.LMS.Course
+﻿@model LMS_Project.ViewModels.CoursesVM
 
+<form action="/Courses/Create/" method="POST">
 
-@using (Html.BeginForm()) 
-{
     @Html.AntiForgeryToken()
-    <div class="form-horizontal" ng-app="LMSApp" ng-controller="Course_Create_Ctrl">
+    <div class="form-horizontal" ng-app="LMSApp" ng-controller="Course_Create_Ctrl" ng-cloak>
         <h4>Course</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-            @Html.LabelFor(model => model.Subject, "Subject", htmlAttributes: new { ng_click = "SortList('subjects')", @style = "cursor:pointer;", @class = "control-label" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Subject, "Subject", htmlAttributes: new { ng_click = "orderBySubject('Name')", @class = "control-label" })
             <div class="row">
                 <div class="col-md-10">
-                    @Html.DropDownListFor(m => m.SubjectID, new SelectList(ViewBag.Subjects, "ID", "Name"), htmlAttributes: new { ng_model = "selectedSubject", ng_change = "Update()", @id = "subjects", @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.SubjectID, "", new { @class = "text-danger" })
+                    <select id="subjects" name="sID" class="form-control" ng-model="subject" ng-change="update()" ng-options="subject.ID as subject.Name for subject in subjects | orderBy:TheOrderBySubject:Sreverse"></select>
                 </div>
             </div>
         </div>
-            <div class="form-group">
-            @Html.LabelFor(model => model.TeacherID, "Teacher", htmlAttributes: new { ng_click = "SortList('teachers')", @style = "cursor:pointer;", @class = "control-label" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.TeacherID, "Teacher", htmlAttributes: new { ng_click = "orderByTeacher('LastName')", @class = "control-label" })
             <div class="row">
                 <div class="col-md-10">
-                    @Html.DropDownListFor(m => m.TeacherID, new SelectList(ViewBag.Teachers, "Id", "UserName"), htmlAttributes: new { @id = "teachers", @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.TeacherID, "", new { @class = "text-danger" })
+                    <select id="teachers" name="tID" class="form-control">
+                        <option ng-repeat="teacher in teachers | orderBy:TheOrderByTeacher:Treverse" value="{{teacher.Id}}">{{teacher.FirstName}} {{teacher.LastName}}</option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -34,14 +33,14 @@
             @ViewBag.EMessage
         </div>
     </div>
-}
+</form>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/angular")
-    @Scripts.Render("~/bundles/angularcourses")
-}
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/angular")
+        @Scripts.Render("~/bundles/angularcourses")
+    }
