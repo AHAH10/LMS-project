@@ -21,20 +21,20 @@ namespace LMS_Project.Controllers
                 teacherId = User.Identity.GetUserId();
             }
 
-            if (usersRepo.GetUserRole(teacherId).Name == "Teacher")
+            if (usersRepo.GetUserRole(teacherId).Name == RoleConstants.Teacher)
             {
-            User user = usersRepo.User(teacherId);
+                User user = usersRepo.User(teacherId);
 
-            List<Schedule> schedules = schedRepo.TeacherSchedules(teacherId).ToList();
+                List<Schedule> schedules = schedRepo.TeacherSchedules(teacherId).ToList();
 
                 return View(new UsersScheduleVM
                 {
                     UserFullName = user.ToString(),
                     Schedules = schedules,
                     ShowCoursesLink = user.Id == User.Identity.GetUserId(),
-                    ShowSchedulesLink = User.IsInRole("Admin")
+                    ShowSchedulesLink = User.IsInRole(RoleConstants.Admin)
                 });
-        }
+            }
             else
                 return RedirectToAction("Index", "Home");
         }
@@ -54,16 +54,24 @@ namespace LMS_Project.Controllers
             }
 
             // Get the list of available documents for the course
-            ViewBag.Documents = schedule.Course.Documents.Where(d => d.VisibleFor.Name == "Student" || d.UploaderID == User.Identity.GetUserId());
+            List<Document>documents = schedule.Course
+                                              .Documents
+                                              .Where(d => d.VisibleFor.Name == RoleConstants.Student ||
+                                                          d.UploaderID == User.Identity.GetUserId())
+                                              .OrderBy(d => d.UploadingDate)
+                                              .ToList();
 
-            return View(schedule);
+            return View(new DetailedScheduleVM { Schedule = schedule, Documents = documents });
         }
 
         [Authorize(Roles = "Teacher")]
         public ActionResult UngradedAssignments()
         {
-            //Change the document list to a document list containing only ungraded documents from the courses that the teacher have.
-            return View(new DocumentsRepository().Documents().ToList());
+            // Gets the ungraded documents from the teacher's courses
+            return View(new DocumentsRepository().Documents()
+                                                 .Where(d => d.Course.TeacherID == User.Identity.GetUserId() &&
+                                                             d.VisibleFor.Name == RoleConstants.Teacher)
+                                                 .ToList());
         }
 
         protected override void Dispose(bool disposing)

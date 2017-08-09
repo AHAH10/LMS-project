@@ -8,45 +8,51 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 
-<div class="form-horizontal" ng-app="schedule" ng-controller="schedulesController">
-    <table class="table" ng-init="getSchedules(); getWeekDays()">
-    <tr>
-            <th ng-click="orderBy('Classroom.Name')">
-                Classroom
-        </th>
-            <th ng-click="orderBy('Course')">
-                Course
-        </th>
-            <th ng-click="orderBy('Teacher.LastName')">
-                Teacher
-        </th>
-            <th ng-click="orderBy('WeekDay')">
-                Week Day
-        </th>
-            <th ng-click="orderBy('BeginningTime')">
-                Beginning Time
-        </th>
-            <th ng-click="orderBy('EndingTime')">
-                Ending Time
-        </th>
-        <th></th>
-    </tr>
-
-        <tr ng-repeat="schedule in schedules | orderBy:propertyName:reverse">
-            <td>
-                {{schedule.Classroom.Name}}{{schedule.Classroom.Remarks == null ? '' : ' - ' + schedule.Classroom.Remarks}}
-            </td>
-            <td>{{schedule.Course.Subject.Name}}</td>
-            <td>{{schedule.Course.Teacher.FirstName}} {{schedule.Course.Teacher.LastName}}</td>
-            <td>{{weekDays[schedule.WeekDay]}}</td>
-            <td>{{schedule.BeginningTime}}</td>
-            <td>{{schedule.EndingTime}}</td>
-            <td>
-                <a href="/Schedules/Edit/{{schedule.ID}}">Edit</a> |
-                <a href="/Schedules/Details/{{schedule.ID}}">Details</a> |
-                <a href="/Schedules/Delete/{{schedule.ID}}">Delete</a>
-            </td>
-        </tr>
+<div class="form-horizontal"
+     ng-app="schedule"
+     ng-controller="schedulesController"
+     ng-init="getSchedules(); getWeekDays()">
+    <table class="table" ng-start-waiting>
+        <thead>
+            <tr>
+                <th ng-click="orderBy('Classroom.Name')">
+                    Classroom
+                </th>
+                <th ng-click="orderBy('Course')">
+                    Course
+                </th>
+                <th ng-click="orderBy('Teacher.LastName')">
+                    Teacher
+                </th>
+                <th ng-click="orderBy('WeekDay')">
+                    Week Day
+                </th>
+                <th ng-click="orderBy('BeginningTime')">
+                    Beginning Time
+                </th>
+                <th ng-click="orderBy('EndingTime')">
+                    Ending Time
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="schedule in schedules | orderBy:propertyName:reverse" ng-test-end-waiting>
+                <td>
+                    {{schedule.Classroom.Name}}{{schedule.Classroom.Remarks == null ? '' : ' - ' + schedule.Classroom.Remarks}}
+                </td>
+                <td>{{schedule.Course.Subject.Name}}</td>
+                <td>{{schedule.Course.Teacher.FirstName}} {{schedule.Course.Teacher.LastName}}</td>
+                <td>{{weekDays[schedule.WeekDay].Value}}</td>
+                <td>{{schedule.BeginningTime}}</td>
+                <td>{{schedule.EndingTime}}</td>
+                <td>
+                    <a href="/Schedules/Edit/{{schedule.ID}}">Edit</a> |
+                    <a href="/Schedules/Details/{{schedule.ID}}">Details</a> |
+                    <a href="/Schedules/Delete/{{schedule.ID}}">Delete</a>
+                </td>
+            </tr>
+        </tbody>
     </table>
 </div>
 
@@ -54,4 +60,4 @@
     @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/angular")
     @Scripts.Render("~/bundles/angularschedules")
-    }
+}

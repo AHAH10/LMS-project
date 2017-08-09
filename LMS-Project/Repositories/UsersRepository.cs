@@ -25,7 +25,7 @@ namespace LMS_Project.Repositories
         /// <returns></returns>
         public IEnumerable<User> Teachers()
         {
-            return UsersInRole("Teacher");
+            return UsersInRole(RoleConstants.Teacher);
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace LMS_Project.Repositories
         /// <returns></returns>
         public IEnumerable<User> Students()
         {
-            return UsersInRole("Student");
+            return UsersInRole(RoleConstants.Student);
         }
 
         /// <summary>
@@ -106,7 +106,7 @@ namespace LMS_Project.Repositories
                 UserManager<User> userManager = new UserManager<User>(store);
 
                 if (newPassword.Length == 0)
-                    newPassword = DefaultPassword.Password(userManager.GetRoles(userId).First());
+                    newPassword = RoleConstants.Password(userManager.GetRoles(userId).First());
 
                 string hashedNewPassword = userManager.PasswordHasher.HashPassword(newPassword);
                 await store.SetPasswordHashAsync(user, hashedNewPassword);

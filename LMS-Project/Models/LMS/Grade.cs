@@ -19,14 +19,17 @@ namespace LMS_Project.Models.LMS
     public class Grade
     {
         [Key]
+        [ForeignKey("Document")]
         public int ID { get; set; }
+        
+        [Required]
         public DateTime Date { get; set; }
+        
         [Required]
         public AssignmentGrade AGrade { get; set; }
-        [Required]
+        
         public string Comment { get; set; }
-        [ForeignKey("Document")]
-        public virtual int DocumentID { get; set; }
+
         public virtual Document Document { get; set; }
     }
 }

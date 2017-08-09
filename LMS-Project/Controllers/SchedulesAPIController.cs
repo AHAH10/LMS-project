@@ -115,6 +115,14 @@ namespace LMS_Project.Controllers
                 return Request.CreateErrorResponse(HttpStatusCode.NotAcceptable,
                                                    new HttpError(string.Join(@"\\", availability)));
 
+            // - Is the classroom big enough for all the students? - //
+            Classroom classroom = new ClassroomsRepository().Classroom(model.ClassroomID);
+            int nbStudents = model.Students.Where(s => s != null).Count();
+            if (classroom.AmountStudentsMax < nbStudents)
+                return Request.CreateErrorResponse(HttpStatusCode.NotAcceptable,
+                                                   new HttpError("The selected classroom is too small for the amount of users.\\"+
+                                                                 classroom.AmountStudentsMax.ToString() + " places for " + nbStudents.ToString() + " students."));
+
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 

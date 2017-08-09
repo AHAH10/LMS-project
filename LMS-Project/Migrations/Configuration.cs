@@ -20,28 +20,28 @@ namespace LMS_Project.Migrations
         protected override void Seed(ApplicationDbContext context)
         {
             #region Roles
-            if (!context.LMSRoles.Any(r => r.Name == "Admin"))
+            if (!context.LMSRoles.Any(r => r.Name == RoleConstants.Admin))
             {
                 var store = new RoleStore<Role>(context);
                 var roleManager = new RoleManager<Role>(store);
 
-                roleManager.Create(new Role("Admin"));
+                roleManager.Create(new Role(RoleConstants.Admin));
             }
 
-            if (!context.LMSRoles.Any(r => r.Name == "Teacher"))
+            if (!context.LMSRoles.Any(r => r.Name == RoleConstants.Teacher))
             {
                 var store = new RoleStore<Role>(context);
                 var roleManager = new RoleManager<Role>(store);
 
-                roleManager.Create(new Role("Teacher"));
+                roleManager.Create(new Role(RoleConstants.Teacher));
             }
 
-            if (!context.LMSRoles.Any(r => r.Name == "Student"))
+            if (!context.LMSRoles.Any(r => r.Name == RoleConstants.Student))
             {
                 var store = new RoleStore<Role>(context);
                 var roleManager = new RoleManager<Role>(store);
 
-                roleManager.Create(new Role("Student"));
+                roleManager.Create(new Role(RoleConstants.Student));
             }
             #endregion
 
@@ -61,7 +61,7 @@ namespace LMS_Project.Migrations
                 var newuser = new User { UserName = "Admin", Email = "admin@mail.nu", BirthDate = DateTime.Now.ToString("yyyy/MM/dd") };
 
                 userManager.Create(newuser, "Admin-Password1");
-                userManager.AddToRole(newuser.Id, "Admin");
+                userManager.AddToRole(newuser.Id, RoleConstants.Admin);
             }
 
             if (!context.LMSUsers.Any(u => u.UserName == "Liam"))
@@ -71,7 +71,7 @@ namespace LMS_Project.Migrations
                 var newuser = new User { UserName = "Liam", Email = "liam@mail.nu", FirstName = "Liam", LastName = "B", BirthDate = DateTime.Now.ToString("yyyy/MM/dd") };
 
                 userManager.Create(newuser, "Teacher-Password1");
-                userManager.AddToRole(newuser.Id, "Teacher");
+                userManager.AddToRole(newuser.Id, RoleConstants.Teacher);
             }
 
             if (!context.LMSUsers.Any(u => u.UserName == "Student1"))
@@ -96,7 +96,7 @@ namespace LMS_Project.Migrations
                     };
 
                     userManager.Create(newuser, "Student-Password1");
-                    userManager.AddToRole(newuser.Id, "Student");
+                    userManager.AddToRole(newuser.Id, RoleConstants.Student);
                 }
 
                 for (int noTeacher = 1; noTeacher <= 10; noTeacher += 1)
@@ -114,7 +114,7 @@ namespace LMS_Project.Migrations
                     };
 
                     userManager.Create(newuser, "Teacher-Password1");
-                    userManager.AddToRole(newuser.Id, "Teacher");
+                    userManager.AddToRole(newuser.Id, RoleConstants.Teacher);
                 }
             }
 

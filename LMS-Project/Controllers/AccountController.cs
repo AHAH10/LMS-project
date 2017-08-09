@@ -164,7 +164,7 @@ namespace LMS_Project.Controllers
                     BirthDate = model.BirthDate.ToString("yyyy/MM/dd")
                 };
 
-                var result = await UserManager.CreateAsync(user, DefaultPassword.Password(model.RoleName));
+                var result = await UserManager.CreateAsync(user, RoleConstants.Password(model.RoleName));
                 if (result.Succeeded)
                 {
                     await UserManager.AddToRoleAsync(user.Id, model.RoleName);
