@@ -94,14 +94,14 @@ namespace LMS_Project.Controllers
                 string result = CreateDocument(viewModel, RoleConstants.Teacher);
 
                 if (result.Length == 0)
-                    return RedirectToAction("Index");
+                return RedirectToAction("Index");
                 else
                 {
                     ViewBag.ErrorMessage = result;
                     ViewBag.Courses = GetCourses(false);
 
                     return View(viewModel);
-                }
+            }
             }
 
             ViewBag.Courses = GetCourses(false);
@@ -125,14 +125,14 @@ namespace LMS_Project.Controllers
                 string result = CreateDocument(viewModel, RoleConstants.Student);
 
                 if (result.Length == 0)
-                    return RedirectToAction("Index");
+                return RedirectToAction("Index");
                 else
                 {
                     ViewBag.ErrorMessage = result;
                     ViewBag.Courses = GetCourses(false);
 
                     return View(viewModel);
-                }
+            }
             }
 
             ViewBag.Courses = GetCourses(false);
@@ -155,7 +155,7 @@ namespace LMS_Project.Controllers
                 string result = CreateDocument(viewModel, RoleConstants.Teacher);
 
                 if (result.Length == 0)
-                    return RedirectToAction("Index");
+                return RedirectToAction("Index");
                 else
                 {
                     ViewBag.ErrorMessage = result;
@@ -242,18 +242,18 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                Document document = new Document
-                {
-                    DocumentName = viewModel.File.FileName,
-                    ContentType = viewModel.File.ContentType,
-                    UploaderID = User.Identity.GetUserId(),
+            Document document = new Document
+            {
+                DocumentName = viewModel.File.FileName,
+                ContentType = viewModel.File.ContentType,
+                UploaderID = User.Identity.GetUserId(),
                     RoleID = new RolesRepository().RoleByName(roleVisibleTo).Id,
-                    UploadingDate = DateTime.Now,
-                    CourseID = viewModel.CourseID
-                };
+                UploadingDate = DateTime.Now,
+                CourseID = viewModel.CourseID
+            };
 
-                document.DocumentContent = new byte[viewModel.File.ContentLength];
-                viewModel.File.InputStream.Read(document.DocumentContent, 0, viewModel.File.ContentLength);
+            document.DocumentContent = new byte[viewModel.File.ContentLength];
+            viewModel.File.InputStream.Read(document.DocumentContent, 0, viewModel.File.ContentLength);
 
                 repository.Add(document);
 
