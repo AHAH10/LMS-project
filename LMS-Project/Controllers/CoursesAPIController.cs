@@ -64,7 +64,7 @@ namespace LMS_Project.Controllers
                     Name = c.Name,
                     ID = c.ID,
                     IsDeletable = c.Documents.Count() + c.Schedules.Count() == 0,
-                    //Binding data
+                //Binding data
                     Subject = tempS,
                     Teacher = tempT
                 };
