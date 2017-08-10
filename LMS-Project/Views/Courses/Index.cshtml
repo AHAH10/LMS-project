@@ -35,9 +35,13 @@
             <td>{{course.Subject.Name}}</td>
             <td>{{course.Teacher.FirstName}} {{course.Teacher.LastName}}</td>
             <td>
-                <a data-ng-href="@url1" ng-show="course.IsDeletable">Edit | </a>
+                <span ng-show="course.IsDeletable">
+                    <a data-ng-href="@url1">Edit</a> |
+                </span>
                 <a data-ng-href="@url2">Details</a>
-                <a data-ng-href="@url3" ng-show="course.IsDeletable"> | Remove</a>
+                <span ng-show="course.IsDeletable">
+                    | <a data-ng-href="@url3">Remove</a>
+                </span>
             </td>
         </tr>
     </table>

@@ -88,7 +88,7 @@
         }
 
         function displayCourse(course) {
-            return course.Subject.Name + ' (' + course.Teacher.FirstName + ' ' + course.Teacher.LastName + ')';
+            return course.Suject.Name + ' - ' + course.Name + ' (' + course.Teacher.FirstName + ' ' + course.Teacher.LastName + ')';
         }
 
         function displayClassroom(classroom) {

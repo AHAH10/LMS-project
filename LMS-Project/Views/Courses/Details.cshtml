@@ -1,11 +1,11 @@
-﻿@model LMS_Project.ViewModels.PartialCoursesVM
+﻿@model LMS_Project.Models.LMS.Course
 
 <div>
     <h4>CoursesVM</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Subject.Name)
+            @Html.DisplayNameFor(model => model.Subject)
         </dt>
 
         <dd>
@@ -13,16 +13,27 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Teacher.Email)
+            @Html.DisplayNameFor(model => model.Name)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Teacher.Email)
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Teacher)
+        </dt>
+
+        <dd>
+            @Html.DisplayName(Model.Teacher.ToString())
         </dd>
 
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @if (Model.Documents.Count() + Model.Schedules.Count() == 0)
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID })<text> | </text>
+    }
     @Html.ActionLink("Back to List", "Index")
 </p>

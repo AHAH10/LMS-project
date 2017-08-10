@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.TeacherID, "Teacher", htmlAttributes: new { ng_click = "orderByTeacher('LastName+FirstName')", @class = "control-label" })
+            @Html.LabelFor(model => model.Teacher.Id, "Teacher", htmlAttributes: new { ng_click = "orderByTeacher('LastName+FirstName')", @class = "control-label" })
             <div class="row">
                 <div class="col-md-10">
                     <select id="teachers" name="tID" class="form-control">

@@ -39,24 +39,14 @@ namespace LMS_Project.Controllers
         // GET: Course/Details/5
         public ActionResult Details(int? id)
         {
-            Course c = cRepo.Course(id) as Course;
-            if (c != null)
-            {
-                PartialCoursesVM cVM = new PartialCoursesVM
-                {
-                    ID = c.ID,
-                    Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name },
-                    Teacher = new PartialUserVM
-                    {
-                        Id = c.TeacherID,
-                        FirstName = c.Teacher.FirstName,
-                        LastName = c.Teacher.LastName,
-                        Email = c.Teacher.Email
-                    }
-                };
-                return View(cVM);
-            }
-            return RedirectToAction("Index");
+            if (id == null)
+                return RedirectToAction("Index");
+
+            Course c = cRepo.Course(id);
+            if (c == null)
+                return RedirectToAction("Index");
+
+            return View(c);
         }
 
         // GET: Course/Create
@@ -76,7 +66,7 @@ namespace LMS_Project.Controllers
                 int sId = int.Parse(sID);
                 bool success = cRepo.Add(new Course
                 {
-                    Name = new SubjectsRepository().Subject(sId).Name + " # " + name,
+                    Name = name,
                     SubjectID = sId,
                     TeacherID = tID
                 });
