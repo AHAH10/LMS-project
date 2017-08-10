@@ -12,6 +12,13 @@ namespace LMS_Project.Controllers
     [ValidateAntiForgeryToken]
     public class CoursesAPIController : ApiController
     {
+        [System.Web.Http.HttpGet]
+        public CoursesVM GetCourse(string subjectName)
+        {
+            Course _course = new CoursesRepository().Courses().Where(c => c.Subject.Name.ToLower() == subjectName.ToLower()).SingleOrDefault();
+            return new CoursesVM { ID = _course.ID, Name = _course.Name, DocumentCount = _course.Documents.Count(), ScheduleCount = _course.Schedules.Count(), TeacherID = _course.TeacherID, SubjectID = _course.SubjectID };
+            
+        }
         /// <summary>
         /// Return all courses
         /// </summary>
@@ -37,7 +44,8 @@ namespace LMS_Project.Controllers
 
                 tempS.ID = c.SubjectID;
                 tempS.Name = c.Subject.Name;
-
+          
+                tempC.Name = c.Name;
                 tempC.ID = c.ID;
                 tempC.DocumentCount = c.Documents.Count();
                 tempC.ScheduleCount = c.Schedules.Count();

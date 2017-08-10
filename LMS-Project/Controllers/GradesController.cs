@@ -1,5 +1,6 @@
 ﻿using LMS_Project.Models.LMS;
 using LMS_Project.Repositories;
+using LMS_Project.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,21 +37,21 @@ namespace LMS_Project.Controllers
             {
                 if (gRepo.Grades().Where(g => g.Document.ID == d.ID).Count() == 0)
                 {
-                    return View(new Grade { Document = d });
+                    return View(new Grade { ID=d.ID, Document=d });
                 }
             }
-            return RedirectToAction("index", "Documents");
+            return RedirectToAction("UngradedAssignments", "Teachers");
         }
 
         // POST: Grades/Create
         [HttpPost]
-        public ActionResult Grade(Grade grade)
+        public ActionResult Grade(Grade gradeVM)
         {
             try
             {
-                // TODO: Add insert logic here
-                gRepo.Add(grade);
-                return RedirectToAction("Index", "Documents");
+                gRepo.Add(gradeVM);
+
+                return RedirectToAction("UngradedAssignments", "Teachers");
             }
             catch
             {

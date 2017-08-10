@@ -16,9 +16,14 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
 
-            <div class="form-group">
+            <div class="form-group" ng-init="Start('@Html.ValueFor(m=>m.SubjectID)')">
                 @Html.LabelFor(model => model.Teacher.UserName, "Teacher", htmlAttributes: new { ng_click="orderByMe('LastName')", @class = "control-label col-md-2" })
-                <div class="row" ng-init="Start('@Html.ValueFor(m=>m.SubjectID)')">
+                <div class="row">
+                    <div class="col-md-10">
+                        <input name="name" value="@Html.ValueFor(m=>m.Name)" class="form-control" placeholder="Enter a course name here" required/>
+                    </div>
+                </div>               
+                <div class="row">
                     <div class="col-md-10">
 
                         <select name="tID" ng-model="selectedTeacher" class="form-control">

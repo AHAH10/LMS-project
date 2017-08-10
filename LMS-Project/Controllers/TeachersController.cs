@@ -70,7 +70,8 @@ namespace LMS_Project.Controllers
             // Gets the ungraded documents from the teacher's courses
             return View(new DocumentsRepository().Documents()
                                                  .Where(d => d.Course.TeacherID == User.Identity.GetUserId() &&
-                                                             d.VisibleFor.Name == RoleConstants.Teacher)
+                                                             d.VisibleFor.Name == RoleConstants.Teacher &&
+                                                             d.Grade == null) //Liam You forgot to check if d.Grade is null
                                                  .ToList());
         }
 
