@@ -238,6 +238,8 @@
     <Compile Include="ViewModels\DocumentsScheduleVM.cs" />
     <Compile Include="ViewModels\EnumWeekDayVM.cs" />
     <Compile Include="ViewModels\ExtendedUserVM.cs" />
+    <Compile Include="ViewModels\PartialScheduleVM.cs" />
+    <Compile Include="ViewModels\PartialUserVM.cs" />
     <Compile Include="ViewModels\UploadDocumentVM.cs" />
     <Compile Include="ViewModels\DetailedScheduleVM.cs" />
     <Compile Include="ViewModels\UsersScheduleVM.cs" />

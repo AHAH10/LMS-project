@@ -39,17 +39,20 @@
         <tbody>
             <tr ng-repeat="schedule in schedules | orderBy:propertyName:reverse" ng-test-end-waiting>
                 <td>
-                    {{schedule.Classroom.Name}}{{schedule.Classroom.Remarks == null ? '' : ' - ' + schedule.Classroom.Remarks}}
+                    {{schedule.Classroom}}
                 </td>
-                <td>{{schedule.Course.Subject.Name}}</td>
-                <td>{{schedule.Course.Teacher.FirstName}} {{schedule.Course.Teacher.LastName}}</td>
-                <td>{{weekDays[schedule.WeekDay].Value}}</td>
+                <td>{{schedule.SubjectName}}</td>
+                <td>{{schedule.TeacherName}}</td>
+                <td>{{schedule.WeekDay}}</td>
                 <td>{{schedule.BeginningTime}}</td>
                 <td>{{schedule.EndingTime}}</td>
                 <td>
                     <a href="/Schedules/Edit/{{schedule.ID}}">Edit</a> |
-                    <a href="/Schedules/Details/{{schedule.ID}}">Details</a> |
-                    <a href="/Schedules/Delete/{{schedule.ID}}">Delete</a>
+                    <a href="/Schedules/Details/{{schedule.ID}}">Details</a>
+                    <span ng-show="schedule.IsDeletable">
+                        |
+                        <a href="/Schedules/Delete/{{schedule.ID}}">Delete</a>
+                    </span>
                 </td>
             </tr>
         </tbody>

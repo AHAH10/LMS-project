@@ -57,9 +57,15 @@
 
         $scope.displayCourse = displayCourse;
         $scope.displayClassroom = displayClassroom;
-        $scope.getSchedules = getSchedules;
         $scope.getWeekDays = getWeekDays;
         $scope.orderBy = orderBy;
+
+        $scope.visibleStudents = [];
+        $scope.checkedAll = false;
+        $scope.checkAllVisibleStudents = checkAllVisibleStudents;
+
+        $scope.getSchedules = getSchedules;
+
         $scope.sendData = sendData;
 
         function getWeekDays() {
@@ -75,7 +81,7 @@
         }
 
         function getCourses() {
-            $http.get('/api/C_And_S_API/GetAllCourses')
+            $http.get('/api/CoursesAPI/GetAllCourses')
                 .then(function (response) {
                     $scope.courses = response.data;
                 });
@@ -105,6 +111,17 @@
                     var mybody = angular.element(document).find('body');
                     mybody.removeClass('waiting');
                 });
+        }
+
+        function checkAllVisibleStudents($event) {
+            for (var i = 0 ; i < $event.length ; i += 1) {
+                var index = $scope.students.indexOf($event[i]);
+                if (index > -1) {
+                    $scope.schedule.Students[index] = $event[i].Id;
+                }
+            }
+
+            $scope.checkedAll = false;
         }
 
         function getSchedules() {
@@ -209,7 +226,9 @@
 
     app.directive('ngTestEndWaiting', function () {
         return function (scope, element, attrs) {
-            if (scope.$last) {
+            console.log(scope.length);
+
+            if (scope.length == 0 || scope.$last) {
                 var mybody = angular.element(document).find('body');
                 mybody.removeClass('waiting');
             }

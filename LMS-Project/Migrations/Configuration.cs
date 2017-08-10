@@ -81,19 +81,34 @@ namespace LMS_Project.Migrations
 
                 Random rd = new Random();
 
+                List<string> phoneNumbers = new List<string>();
+
                 for (int noStudent = 1; noStudent <= 20; noStudent += 1)
                 {
                     int year = rd.Next(1990, 2010);
                     int month = rd.Next(1, 13);
                     DateTime birthDate = new DateTime(year, month, rd.Next(1, DateTime.DaysInMonth(year, month) + 1));
+
+                    string phoneNumber = string.Empty;
+
+                    do
+                    {
+                        phoneNumber = GeneratePhoneNumber(rd);
+                    }
+                    while (phoneNumbers.Contains(phoneNumber));
+
                     var newuser = new User
                     {
                         UserName = "Student" + noStudent.ToString(),
                         Email = "s" + noStudent.ToString() + "@mail.nu",
                         FirstName = "Student",
                         LastName = new string((char)((int)'A' + noStudent - 1), 5),
-                        BirthDate = birthDate.ToString("yyyy/MM/dd")
+                        BirthDate = birthDate.ToString("yyyy/MM/dd"),
+                        PhoneNumber = phoneNumber,
+                        PhoneNumberConfirmed = true
                     };
+
+                    phoneNumbers.Add(phoneNumber);
 
                     userManager.Create(newuser, "Student-Password1");
                     userManager.AddToRole(newuser.Id, RoleConstants.Student);
@@ -104,14 +119,27 @@ namespace LMS_Project.Migrations
                     int year = rd.Next(1960, 2001);
                     int month = rd.Next(1, 13);
                     DateTime birthDate = new DateTime(year, month, rd.Next(1, DateTime.DaysInMonth(year, month) + 1));
+
+                    string phoneNumber = string.Empty;
+
+                    do
+                    {
+                        phoneNumber = GeneratePhoneNumber(rd);
+                    }
+                    while (phoneNumbers.Contains(phoneNumber));
+
                     var newuser = new User
                     {
                         UserName = "Teacher" + noTeacher.ToString(),
                         Email = "t" + noTeacher.ToString() + "@mail.nu",
                         FirstName = "Teacher",
                         LastName = new string((char)((int)'A' + noTeacher - 1), 5),
-                        BirthDate = birthDate.ToString("yyyy/MM/dd")
+                        BirthDate = birthDate.ToString("yyyy/MM/dd"),
+                        PhoneNumber = phoneNumber,
+                        PhoneNumberConfirmed = true
                     };
+
+                    phoneNumbers.Add(phoneNumber);
 
                     userManager.Create(newuser, "Teacher-Password1");
                     userManager.AddToRole(newuser.Id, RoleConstants.Teacher);
@@ -306,6 +334,27 @@ namespace LMS_Project.Migrations
                 }
                 );
             #endregion
+        }
+
+        private string GeneratePhoneNumber(Random rd)
+        {
+            return string.Format("{0}-{1}-{2}",
+                                 GenerateSequence(rd, 3),
+                                 GenerateSequence(rd, 3),
+                                 GenerateSequence(rd, 4));
+        }
+
+        private string GenerateSequence(Random rd, int length)
+        {
+            string result = string.Empty;
+
+            while (length > 0)
+            {
+                result += rd.Next(0, 10).ToString();
+                length -= 1;
+            }
+
+            return result;
         }
     }
 }
