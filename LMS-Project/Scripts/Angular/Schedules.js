@@ -111,6 +111,10 @@
             $http.get('/api/SchedulesAPI/Get')
                 .then(function (response) {
                     $scope.schedules = response.data;
+                })
+                .catch(function (errorMessage) {
+                    var mybody = angular.element(document).find('body');
+                    mybody.removeClass('waiting');
                 });
         }
 

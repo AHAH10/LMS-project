@@ -46,11 +46,12 @@ namespace LMS_Project.Migrations
             #endregion
 
             #region Subjects
-            Subject subject = new Subject { Name = "French" };
+            Subject subject = new Subject { ID = 1, Name = "French" };
             #endregion
 
             #region Courses
-            Course course = new Course { Subject = subject };
+            Course course = new Course { ID = 1, Subject = subject };
+            subject.Courses = new List<Course> { course };
             #endregion
 
             #region Users
