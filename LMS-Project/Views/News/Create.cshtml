@@ -31,16 +31,18 @@
 
                 </div>
 
-                    <div class="form-group">
+                    <div class="form-group anonymous">
                         <div class="col-md-6 ">
-                            
-                            @Html.LabelFor(model => model.Title, "Anonymous Publisher")
+                            <label class="anonymous-title">
+                                Anonymous Publisher
+                            </label>
+                           
                             @Html.CheckBoxFor(model => model.AnonymousPublisher , htmlAttributes: new { @class = "checkbox" })
                             
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group creatbtn">
                         <div class=" col-md-6 ">
                             <input type="submit" value="Create" class="btn btn-primary" />
                         </div>

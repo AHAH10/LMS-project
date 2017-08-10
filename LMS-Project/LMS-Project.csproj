@@ -230,6 +230,7 @@
     </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\learning.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -337,6 +338,7 @@
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\Schedules\_StudentsSchedule.cshtml" />
     <Content Include="Views\Schedules\ViewSchedule.cshtml" />
+    <Content Include="Views\News\PublicIndex.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

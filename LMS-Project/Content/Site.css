@@ -30,5 +30,96 @@ textarea {
     text-align: center;
     vertical-align: central;
 }
+.anonymous{
+    float:left;
+    width:50%;
+}
+create-btn{
+    float:right;
+    width:50%;
+}
+
+.anonymous-title {
+    margin-left:30px;
+}
+
+#AnonymousPublisher{
+    margin-top:-35px;
+}
+
+/*Public News*/
+
+.news {
+    margin: 30px 40px;
+    border-bottom: 2px solid #278fe8;
+}
+
+.border{
+    border-top:5px solid #000;
+    padding:10px;
+}
+
+.news-post:last-child {
+    border-bottom: 5px solid #000;
     
+}
+.postDate {
+    border-right: thick solid #000;
+    margin-left: 0;
+    border-bottom: 0;
+    margin-right: 27px;
+    font-size:18px;
+    width:150px;
+}
+
+
+.news-title {
+    font-size:18px;
+    font-weight:400;
+    color:#000;
+    
+    
+}
+
+.news-content {
+    font-size: 1.2em;
+    padding-bottom: 40px;
+    
+    margin-bottom:20px;
+}
+.news-content a {
+    float:right;
+    
+}
+.news-post:hover {
+    background-color: rgba(0, 116, 204, 0.14);
+}
+
+
+.publisher {
+    float:right;
+    padding-top:10px;
+
+    
+}
+
+/*Read more*/
+.readMore{
+    padding-bottom:40px;
+}
+
+
+
+body::after {
+    background: url('img/learning.jpg') no-repeat;
+    background-size:cover;
+    content: "";
+    opacity: 0.5;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: -1;
+}
 
