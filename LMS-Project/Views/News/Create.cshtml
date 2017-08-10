@@ -9,53 +9,48 @@
         <div class="row">
             <div class="col-md-4 col-md-offset-4">
 
-                
                     <div class="newsHead">
                         <h1> Add News</h1>
                     </div>
-
-
                     <hr />
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                    
                      <div class="form-group ">
                          @Html.LabelFor(model => model.Title, "Title:")
                          @Html.TextBoxFor(model => model.Title, htmlAttributes: new { @class = "form-control", @placeholder = " News Titel" })
                          @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                      </div>
 
-                            
-
-                        
-
-
-                    
-
-                    
                 <div class="form-group">
-                    <label>Content:</label>
+                    
+                    @Html.LabelFor(model => model.Title, "Content")
                     @Html.TextAreaFor(model => model.Content, htmlAttributes: new { @class = "form-control ", rows = 4, @placeholder = "News Content"})
                     <div class="col-md-10">
-                        @*@Html.EditorFor(model => model.Content, new { htmlAttributes = new { @class = "form-control" } })*@
                         @Html.ValidationMessageFor(model => model.Content, "", new { @class = "text-danger" })
                     </div>
 
-
                 </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-6 col-md-4">
+
+                    <div class="form-group anonymous">
+                        <div class="col-md-6 ">
+                            <label class="anonymous-title">
+                                Anonymous Publisher
+                            </label>
+                           
+                            @Html.CheckBoxFor(model => model.AnonymousPublisher , htmlAttributes: new { @class = "checkbox" })
+                            
+                        </div>
+                    </div>
+
+                    <div class="form-group creatbtn">
+                        <div class=" col-md-6 ">
                             <input type="submit" value="Create" class="btn btn-primary" />
                         </div>
                     </div>
-                
-
-            
-
         </div>
     </div>
-
-    </div>
+            
+  </div>
 }
 
 <div>
