@@ -1,0 +1,47 @@
+﻿@model IEnumerable<LMS_Project.Models.LMS.Document>
+
+@{
+    ViewBag.Title = "Ungraded Assignments";
+}
+
+<h2>Ungraded Assignments</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DocumentName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Course)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UploadingDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Uploader)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.DocumentName, "Download", "Documents", new { id = item.ID }, null)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course.Subject.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UploadingDate)
+            </td>
+            <td>
+                @Html.DisplayName(item.Uploader.ToString())
+            </td>
+            <td>
+                @Html.ActionLink("Set a Grade", "Grade", "Grades", new { id = item.ID }, null)
+            </td>
+        </tr>
+    }
+
+</table>

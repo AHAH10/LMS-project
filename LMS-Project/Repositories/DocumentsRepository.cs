@@ -8,7 +8,7 @@ using System.Web;
 
 namespace LMS_Project.Repositories
 {
-    public class DocumentsRepository : IDisposable 
+    public class DocumentsRepository : IDisposable
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -17,6 +17,26 @@ namespace LMS_Project.Repositories
         public IEnumerable<Document> Documents()
         {
             return db.Documents;
+        }
+
+        /// <summary>
+        /// Returns the list of documents uploaded for a given course
+        /// </summary>
+        /// <param name="courseId">Course ID</param>
+        /// <returns></returns>
+        public IEnumerable<Document> Documents(int courseId)
+        {
+            return db.Documents.Where(d => d.CourseID == courseId);
+        }
+
+        /// <summary>
+        /// Returns the list of documents uploaded by a user
+        /// </summary>
+        /// <param name="userId">User's ID</param>
+        /// <returns></returns>
+        public IEnumerable<Document> Documents(string userId)
+        {
+            return db.Documents.Where(d => d.UploaderID == userId);
         }
 
         //Add
@@ -41,7 +61,6 @@ namespace LMS_Project.Repositories
                 db.SaveChanges();
             }
         }
-        
         private void SaveChanges()
         {
             db.SaveChanges();

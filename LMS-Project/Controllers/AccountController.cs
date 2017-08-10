@@ -143,7 +143,7 @@ namespace LMS_Project.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
-            return View(new RegisterViewModel { Roles = new RolesRepository().Roles().ToList() });
+            return View(new RegisterViewModel { BirthDate = DateTime.Now, Roles = new RolesRepository().Roles().ToList() });
         }
 
         //
@@ -160,14 +160,11 @@ namespace LMS_Project.Controllers
                     UserName = model.UserName,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
-                    Email = model.Email
+                    Email = model.Email,
+                    BirthDate = model.BirthDate.ToString("yyyy/MM/dd")
                 };
 
-                // By default, the user's firstname is equal to the username
-                if (user.FirstName.Length == 0)
-                    user.FirstName = user.UserName;
-
-                var result = await UserManager.CreateAsync(user, DefaultPassword.Password(model.RoleName));
+                var result = await UserManager.CreateAsync(user, RoleConstants.Password(model.RoleName));
                 if (result.Succeeded)
                 {
                     await UserManager.AddToRoleAsync(user.Id, model.RoleName);
@@ -217,7 +214,7 @@ namespace LMS_Project.Controllers
         // plus de détails, voir  https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,UserName,FirstName,LastName,Email,PhoneNumber")] User user, string roleName)
+        public ActionResult Edit([Bind(Include = "Id,UserName,FirstName,LastName,Email,PhoneNumber,BirthDate")] User user, string roleName)
         {
             if (ModelState.IsValid)
             {
@@ -232,6 +229,7 @@ namespace LMS_Project.Controllers
                 originalUser.UserName = user.UserName;
                 originalUser.FirstName = user.FirstName;
                 originalUser.LastName = user.LastName;
+                originalUser.BirthDate = user.BirthDate;
 
                 Role originalRole = repository.GetUserRole(user.Id);
 

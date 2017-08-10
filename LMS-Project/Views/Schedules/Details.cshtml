@@ -39,7 +39,7 @@
         </dt>
 
         <dd>
-            @Html.DisplayName(Model.Course.Teacher.ToString())
+            @Html.ActionLink(Model.Course.Teacher.ToString(), "Planning", "Teachers", new { teacherId = Model.Course.TeacherID }, null)
         </dd>
 
         <dt>
@@ -48,7 +48,7 @@
 
         <dd>
             @{string remarks = Model.Classroom.Remarks;
-            if (remarks.Length > 0)
+            if (remarks != null && remarks.Length > 0)
             {
                 remarks = " - " + remarks;
             }
@@ -64,10 +64,10 @@
         <dd>
             <div class="container" style="padding:0">
                 <ul class="list-group list-unstyled">
-                    @foreach (LMS_Project.Models.LMS.User student in Model.Students)
+                    @foreach (LMS_Project.Models.LMS.User student in Model.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
                     {
                         <li>
-                            @Html.DisplayName(student.ToString())
+                            @Html.ActionLink(student.ToString(), "Planning", "Students", new { studentId = student.Id }, null)
                         </li>
                     }
                 </ul>
@@ -76,7 +76,7 @@
     </dl>
 </div>
 <p>
-    @{if (this.User.IsInRole("Admin"))
+    @{if (this.User.IsInRole(LMS_Project.Models.LMS.RoleConstants.Admin))
     {
         @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) <text>|</text>
     }

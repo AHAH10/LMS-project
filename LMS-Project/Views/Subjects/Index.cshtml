@@ -1,27 +1,42 @@
 ﻿@model IEnumerable<LMS_Project.Models.LMS.Subject>
+<div ng-app="LMSApp" ng-controller="Subject_Index_Ctrl" ng-init="getData()" ng-cloak>
+    <p>
+        @Html.ActionLink("Create a new Subject", "Create")
+    </p>
+    <div class="left">
+        <form class="search glyphicon glyphicon-search" method="get">
+            <input type="text" class="round" name="Search" ng-model="searchTerm" placeholder="Free Search" style="width:160px; height:25px;font-family: Helvetica, Arial, sans-serif">
+        </form>
+    </div>
+    <table class="table">
+        <tr>
+            <th ng-click="orderByMe('Name')">@Html.DisplayNameFor(model => model.Name)</th>
+            <th></th>
+        </tr>
+        @{
+            var url1 = Url.Action("Edit", new { ID = "{{subject.ID}}" });
+            url1 = HttpUtility.UrlDecode(url1);
+        }
+        @{
+            var url2 = Url.Action("Details", new { ID = "{{subject.ID}}" });
+            url2 = HttpUtility.UrlDecode(url2);
+        }
+        @{
+            var url3 = Url.Action("Delete", new { ID = "{{subject.ID}}" });
+            url3 = HttpUtility.UrlDecode(url3);
+        }
+        <tr ng-repeat="subject in subjects | orderBy:myOrderBy:reverse | filter:searchTerm ">
+            <td>{{subject.Name}}</td>
+            <td>
+                <a data-ng-href="@url1"  ng-if="subject.Courses==null">Edit</a> |
+                <a data-ng-href="@url2">Details</a> |
+                <a data-ng-href="@url3" ng-if="subject.Courses==null">Remove</a>
+            </td>
+        </tr>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+    </table>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/angularsubjects")
 }
-
-</table>

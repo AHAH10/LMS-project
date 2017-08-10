@@ -1,11 +1,9 @@
 ﻿using LMS_Project.Models.LMS;
 using LMS_Project.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
 {
@@ -67,7 +65,24 @@ namespace LMS_Project.Controllers
             return View(nRepo.GetSpecificNews(id));
         }
 
-        
+        // POST: News/Edit/5
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public ActionResult Edit(int id, News news)
+        {
+            try
+            {
+                // TODO: Add update logic here
+                news.EditedByID = User.Identity.GetUserId();
+                news.EditedDate = DateTime.Now;
+                nRepo.Edit(news);
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
         // GET: News/Delete/5
         [Authorize(Roles = "Admin")]
@@ -91,6 +106,15 @@ namespace LMS_Project.Controllers
             {
                 return View();
             }
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                nRepo.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

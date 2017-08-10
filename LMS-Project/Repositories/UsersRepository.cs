@@ -19,18 +19,51 @@ namespace LMS_Project.Repositories
             return db.LMSUsers;
         }
 
+        /// <summary>
+        /// Returns the list of known teachers
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<User> Teachers()
+        {
+            return UsersInRole(RoleConstants.Teacher);
+        }
+
+        /// <summary>
+        /// Returns the list of known students
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<User> Students()
         {
-            return Users().Where(u => u.Roles.Join(db.LMSRoles, 
+            return UsersInRole(RoleConstants.Student);
+        }
+
+        /// <summary>
+        /// Returns the list of users having a given role
+        /// </summary>
+        /// <param name="roleName">Role the users should have</param>
+        /// <returns></returns>
+        private IEnumerable<User> UsersInRole(string roleName)
+        {
+            return Users().Where(u => u.Roles.Join(db.LMSRoles,
                                                    usrRole => usrRole.RoleId,
                                                    role => role.Id,
                                                    (usrRole, role) => role)
-                          .Any(r => r.Name.Equals("Student")));
+                          .Any(r => r.Name.Equals(roleName)));
         }
 
         public User User(string id)
         {
             return Users().FirstOrDefault(u => u.Id == id);
+        }
+
+        /// <summary>
+        /// Returns the list of available teachers for a given subject
+        /// </summary>
+        /// <param name="subjectId">Subject the teachers list is needed</param>
+        /// <returns></returns>
+        public IEnumerable<User> AvailableTeachers(int subjectId)
+        {
+            return Teachers().Where(t => !db.Courses.Where(c => c.SubjectID == subjectId).Select(c => c.TeacherID).Contains(t.Id));
         }
 
         public void Add(User user)
@@ -58,15 +91,24 @@ namespace LMS_Project.Repositories
             }
         }
 
-        public async Task ChangePassword(string userId)
+        /// <summary>
+        /// Allows the user to change their password or reset someone else's password
+        /// </summary>
+        /// <param name="userId">User ID which password is to be changed</param>
+        /// <param name="newPassword">New password, or if empty, default password</param>
+        /// <returns></returns>
+        public async Task ChangePassword(string userId, string newPassword = "")
         {
             User user = User(userId);
             if (user != null)
             {
                 UserStore<User> store = new UserStore<User>(db);
                 UserManager<User> userManager = new UserManager<User>(store);
-                string defaultPassord = DefaultPassword.Password(userManager.GetRoles(userId).First());
-                string hashedNewPassword = userManager.PasswordHasher.HashPassword(defaultPassord);
+
+                if (newPassword.Length == 0)
+                    newPassword = RoleConstants.Password(userManager.GetRoles(userId).First());
+
+                string hashedNewPassword = userManager.PasswordHasher.HashPassword(newPassword);
                 await store.SetPasswordHashAsync(user, hashedNewPassword);
                 await store.UpdateAsync(user);
             }

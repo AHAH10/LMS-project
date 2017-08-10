@@ -1,6 +1,7 @@
 ﻿using LMS_Project.Models;
 using LMS_Project.Models.LMS;
 using LMS_Project.Repositories;
+using LMS_Project.ViewModels;
 using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
@@ -10,23 +11,55 @@ using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
 {
-    [Authorize(Roles="Admin")]
+    [Authorize(Roles = "Admin")]
     public class CoursesController : Controller
     {
         private CoursesRepository cRepo = new CoursesRepository();
         // GET: Course
         public ActionResult Index()
         {
-            return View(cRepo.Courses().ToList());
+            List<PartialCoursesVM> _courses = new List<PartialCoursesVM>();
+            foreach (Course c in cRepo.Courses())
+            {
+                PartialCoursesVM tempC = new PartialCoursesVM();
+                tempC.ID = c.ID;
+                tempC.Teacher = new PartialUserVM
+                {
+                    Id = c.TeacherID,
+                    Email = c.Teacher.Email,
+                    FirstName = c.Teacher.FirstName,
+                    LastName = c.Teacher.LastName
+                };
+                tempC.TeacherID = c.TeacherID;
+                tempC.SubjectID = c.SubjectID;
+                tempC.Subject = new Subject { ID = c.Subject.ID, Name = c.Subject.Name };
+
+                _courses.Add(tempC);
+            }
+            return View(_courses);
         }
 
         // GET: Course/Details/5
         public ActionResult Details(int? id)
         {
-            Course c= cRepo.Course(id) as Course;
+            Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                return View(c);
+                PartialCoursesVM cVM = new PartialCoursesVM
+                {
+                    ID = c.ID,
+                    SubjectID = c.SubjectID,
+                    TeacherID = c.TeacherID,
+                    Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name },
+                    Teacher = new PartialUserVM
+                    {
+                        Id = c.TeacherID,
+                        FirstName = c.Teacher.FirstName,
+                        LastName = c.Teacher.LastName,
+                        Email = c.Teacher.Email
+                    }
+                };
+                return View(cVM);
             }
             return RedirectToAction("Index");
         }
@@ -34,26 +67,28 @@ namespace LMS_Project.Controllers
         // GET: Course/Create
         public ActionResult Create()
         {
-            //ViewBag.Teachers = cRepo.AvaibleTeachers("french"); //- Get AviableTeachers for a specific Subject
-            ViewBag.Teachers = cRepo.GetTeachers(); // - Get All Teachers
-            ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
-           
             return View();
         }
 
         // POST: Course/Create
         [HttpPost]
-        public ActionResult Create(Course course)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(string name, string tID, string sID)
         {
+            sID = sID.Substring(sID.IndexOf(':') + 1);
             try
             {
-                bool success=cRepo.Add(course);
+                int sId = int.Parse(sID);
+                bool success = cRepo.Add(new Course
+                {
+                    Name = new SubjectsRepository().Subject(sId).Name + " # " + name,
+                    SubjectID = sId,
+                    TeacherID = tID
+                });
                 if (success)
                 {
                     return RedirectToAction("Index");
                 }
-                ViewBag.Teachers = cRepo.GetTeachers();
-                ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
                 ViewBag.EMessage = "The Course You want to add already exists";
                 return View();
             }
@@ -66,59 +101,86 @@ namespace LMS_Project.Controllers
         // GET: Course/Edit/5
         public ActionResult Edit(int? id)
         {
-            ViewBag.Teachers = cRepo.GetTeachers();
-            ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
-            Course c=cRepo.Course(id) as Course;
+            Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                return View(cRepo.Course(id));
+                PartialCoursesVM cVM = new PartialCoursesVM
+                {
+                    Name = c.Name,
+                    ID = c.ID,
+                    SubjectID = c.SubjectID,
+                    TeacherID = c.TeacherID,
+                    Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name },
+                    Teacher = new PartialUserVM
+                    {
+                        Id = c.TeacherID,
+                        FirstName = c.Teacher.FirstName,
+                        LastName = c.Teacher.LastName,
+                        Email = c.Teacher.Email
+                    }
+                };
+                return View(cVM);
             }
-                return RedirectToAction("Index");
+            return RedirectToAction("Index");
         }
 
         // POST: Course/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, Course course)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, string tID, int sID, string name)
         {
-            try
+            // TODO: Add update logic here
+
+            Course cToEdit = new Course() { Name = name, SubjectID = sID, TeacherID = tID, ID = id };
+            bool success = cRepo.Edit(cToEdit);
+            if (success)
             {
-                ViewBag.Teachers = cRepo.GetTeachers();
-                ViewBag.Subjects = new SubjectsRepository().Subjects().ToList();
-                // TODO: Add update logic here
-                bool success=cRepo.Edit(course);
-                if (success)
-                {
-                    return RedirectToAction("Index");
-                }
-                ViewBag.EMessage = "Error 203: The teacher already have that subject";
-                return View();
+                return RedirectToAction("Index");
             }
-            catch
-            {
-                return View();
-            }
+            ViewBag.EMessage = "Error 203: The teacher already have that subject";
+            return View();
         }
 
         // GET: Course/Delete/5
         public ActionResult Delete(int? id)
         {
-            Course c=cRepo.Course(id) as Course;
+            Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                return View(cRepo.Course(id));
+                PartialCoursesVM cVM = new PartialCoursesVM
+                {
+                    ID = c.ID,
+                    SubjectID = c.SubjectID,
+                    TeacherID = c.TeacherID,
+                    Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name },
+                    Teacher = new PartialUserVM
+                    {
+                        Id = c.TeacherID,
+                        FirstName = c.Teacher.FirstName,
+                        LastName = c.Teacher.LastName,
+                        Email = c.Teacher.Email
+                    }
+                };
+                return View(cVM);
             }
             return RedirectToAction("Index");
         }
 
         // POST: Course/Delete/5
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, FormCollection collection)
         {
             try
             {
                 // TODO: Add delete logic here
-                cRepo.Delete(id);
-                return RedirectToAction("Index");
+                bool success = cRepo.Delete(id);
+                if (success)
+                {
+                    return RedirectToAction("Index");
+                }
+                ViewBag.EMessage = "Error 615: The course you want to delete can't be deleted. (Make sure that it have no documents or schedule to it.)";
+                return View();
             }
             catch
             {

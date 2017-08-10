@@ -8,7 +8,7 @@ using System.Web;
 
 namespace LMS_Project.Repositories
 {
-    public class SubjectsRepository:IDisposable
+    public class SubjectsRepository : IDisposable
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
@@ -29,12 +29,11 @@ namespace LMS_Project.Repositories
 
         public bool Add(Subject subject)
         {
-            var _subjects = this.Subjects().Where(s => s.Name.ToLower() == subject.Name.ToLower());
-            if(_subjects.Count()!=0)
+            if (db.Subjects.FirstOrDefault(s => string.Compare(s.Name, subject.Name, true) == 0) != null)
             {
-                _subjects = null;
                 return false;
             }
+
             db.Subjects.Add(subject);
             SaveChanges();
             return true;
@@ -42,33 +41,50 @@ namespace LMS_Project.Repositories
 
         public bool Edit(Subject subject)
         {
-            var _subjects = this.Subjects().Where(s => s.Name.ToLower() == subject.Name.ToLower() &&subject.ID!=s.ID);
-            if(_subjects.Count()!=0)
+            if (db.Subjects.FirstOrDefault(s => string.Compare(s.Name, subject.Name, true) == 0 && s.ID != subject.ID) != null)
             {
-                _subjects = null;
                 return false;
             }
+
             db.Entry(subject).State = EntityState.Modified;
             db.SaveChanges();
             return true;
         }
 
-        public void Delete(int? id)
+        public bool Delete(int? id)
         {
             Subject subject = Subject(id);
 
             if (subject != null)
             {
-                db.Subjects.Remove(subject);
-                SaveChanges();
+                if (subject.Courses.Where(c => c.Documents.Count() == 0 && c.SubjectID == id).Count() == 0)
+                {
+                    db.Subjects.Remove(subject);
+                    SaveChanges();
+                    return true;
+                }
             }
+            return false;
         }
+        public List<Subject> AvaibleSubjects(string user)
+        {
+            List<Subject> Subject_result = new List<Subject>();
 
+            foreach (Subject s in Subjects().ToList())
+            {
+                if (s.Courses.Count == 0 || s.Courses.Where(c => c.Teacher.UserName == user || c.TeacherID == user).Count() == 0)
+                {
+                    Subject_result.Add(s);
+                }
+            }
+
+            return Subject_result;
+        }
         private void SaveChanges()
         {
             db.SaveChanges();
         }
-        
+
         #region IDisposable Support
         private bool disposedValue = false;
 
@@ -86,5 +102,5 @@ namespace LMS_Project.Repositories
             Dispose(true);
         }
         #endregion
-    }  
+    }
 }

@@ -6,12 +6,12 @@
 
 @using (Html.BeginForm("UploadDocumentForMyself", "Documents", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    
+
     @Html.ValidationSummary(true)
-    
+
     @Html.Partial("_UploadDocument", Model)
 }
 
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-        }
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

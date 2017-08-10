@@ -1,0 +1,83 @@
+﻿@using Microsoft.AspNet.Identity
+@using LMS_Project.Models
+@using LMS_Project.Models.LMS
+@using Microsoft.AspNet.Identity.EntityFramework
+
+@model LMS_Project.ViewModels.UsersScheduleVM
+@{
+    ViewBag.Title = "Schedule";
+}
+
+<h2>Schedule for @Model.UserFullName</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedules.First().WeekDay)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedules.First().BeginningTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedules.First().EndingTime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedules.First().Course.Subject)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedules.First().Course.Teacher)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Schedules.First().Classroom)
+        </th>
+        @if (Model.ShowDocumentsLink || Model.ShowSchedulesLink)
+        {
+            <th></th>
+        }
+    </tr>
+
+    @foreach (var item in Model.Schedules)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.WeekDay)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BeginningTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EndingTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Course.Subject.Name)
+            </td>
+            <td>
+                @Html.DisplayName(item.Course.Teacher.ToString())
+            </td>
+            <td>
+                @{string remarks = item.Classroom.Remarks;
+                if (remarks != null && remarks.Length > 0)
+                {
+                    remarks = " - " + remarks;
+                }
+                }
+                @Html.DisplayName(item.Classroom.Name + " (" + item.Classroom.Location + ")" + remarks)
+            </td>
+            @if (Model.ShowDocumentsLink)
+            {
+                <td>
+                    @Html.ActionLink("See related documents", "Documents", "Schedules", new { id = item.ID }, null)
+                </td>
+            }
+            @if (Model.ShowSchedulesLink)
+            {
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Schedules", new { id = item.ID }, null) |
+                    @Html.ActionLink("Details", "Details", "Schedules", new { id = item.ID }, null) |
+                    @Html.ActionLink("Delete", "Delete", "Schedules", new { id = item.ID }, null)
+                </td>
+            }
+        </tr>
+    }
+
+</table>

@@ -4,51 +4,56 @@ namespace LMS_Project.Migrations
     using LMS_Project.Models.LMS;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
+    using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
+    using System.Data.Entity.Validation;
+    using System.Diagnostics;
     using System.Linq;
+    using System.Text;
 
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(ApplicationDbContext context)
         {
             #region Roles
-            if (!context.LMSRoles.Any(r => r.Name == "Admin"))
+            if (!context.LMSRoles.Any(r => r.Name == RoleConstants.Admin))
             {
                 var store = new RoleStore<Role>(context);
                 var roleManager = new RoleManager<Role>(store);
 
-                roleManager.Create(new Role("Admin"));
+                roleManager.Create(new Role(RoleConstants.Admin));
             }
 
-            if (!context.LMSRoles.Any(r => r.Name == "Teacher"))
+            if (!context.LMSRoles.Any(r => r.Name == RoleConstants.Teacher))
             {
                 var store = new RoleStore<Role>(context);
                 var roleManager = new RoleManager<Role>(store);
 
-                roleManager.Create(new Role("Teacher"));
+                roleManager.Create(new Role(RoleConstants.Teacher));
             }
 
-            if (!context.LMSRoles.Any(r => r.Name == "Student"))
+            if (!context.LMSRoles.Any(r => r.Name == RoleConstants.Student))
             {
                 var store = new RoleStore<Role>(context);
                 var roleManager = new RoleManager<Role>(store);
 
-                roleManager.Create(new Role("Student"));
+                roleManager.Create(new Role(RoleConstants.Student));
             }
             #endregion
 
             #region Subjects
-            Subject subject = new Subject { ID = 1, Name = "French" };
+            Subject subject = new Subject { Name = "French" };
             #endregion
 
             #region Courses
-            Course course = new Course { ID = 1, Subject = subject };
+            Course course = new Course { Subject = subject, Name = subject.Name + " # Group1" };
             #endregion
 
             #region Users
@@ -56,20 +61,105 @@ namespace LMS_Project.Migrations
             {
                 var store = new UserStore<User>(context);
                 var userManager = new UserManager<User>(store);
-                var newuser = new User { UserName = "Admin", Email = "admin@mail.nu" };
+                var newuser = new User { UserName = "Admin", Email = "admin@mail.nu", BirthDate = DateTime.Now.ToString("yyyy/MM/dd") };
 
                 userManager.Create(newuser, "Admin-Password1");
-                userManager.AddToRole(newuser.Id, "Admin");
+                userManager.AddToRole(newuser.Id, RoleConstants.Admin);
             }
+
+            Random rd = new Random();
+
+            List<string> phoneNumbers = new List<string>();
 
             if (!context.LMSUsers.Any(u => u.UserName == "Liam"))
             {
+                string phoneNumber = GeneratePhoneNumber(rd);
+
                 var store = new UserStore<User>(context);
                 var userManager = new UserManager<User>(store);
-                var newuser = new User { UserName = "Liam", Email = "liam@mail.nu", FirstName = "Liam", LastName = "B" };
+                var newuser = new User
+                {
+                    UserName = "Liam",
+                    Email = "liam@mail.nu",
+                    FirstName = "Liam",
+                    LastName = "B",
+                    BirthDate = DateTime.Now.ToString("yyyy/MM/dd"),
+                    PhoneNumber = phoneNumber,
+                    PhoneNumberConfirmed = true
+                };
+
+                phoneNumbers.Add(phoneNumber);
 
                 userManager.Create(newuser, "Teacher-Password1");
-                userManager.AddToRole(newuser.Id, "Teacher");
+                userManager.AddToRole(newuser.Id, RoleConstants.Teacher);
+            }
+
+            if (!context.LMSUsers.Any(u => u.UserName == "Student1"))
+            {
+                var store = new UserStore<User>(context);
+                var userManager = new UserManager<User>(store);
+
+                for (int noStudent = 1; noStudent <= 20; noStudent += 1)
+                {
+                    int year = rd.Next(1990, 2010);
+                    int month = rd.Next(1, 13);
+                    DateTime birthDate = new DateTime(year, month, rd.Next(1, DateTime.DaysInMonth(year, month) + 1));
+
+                    string phoneNumber = string.Empty;
+
+                    do
+                    {
+                        phoneNumber = GeneratePhoneNumber(rd);
+                    }
+                    while (phoneNumbers.Contains(phoneNumber));
+
+                    var newuser = new User
+                    {
+                        UserName = "Student" + noStudent.ToString(),
+                        Email = "s" + noStudent.ToString() + "@mail.nu",
+                        FirstName = "Student",
+                        LastName = new string((char)((int)'A' + noStudent - 1), 5),
+                        BirthDate = birthDate.ToString("yyyy/MM/dd"),
+                        PhoneNumber = phoneNumber,
+                        PhoneNumberConfirmed = true
+                    };
+
+                    phoneNumbers.Add(phoneNumber);
+
+                    userManager.Create(newuser, "Student-Password1");
+                    userManager.AddToRole(newuser.Id, RoleConstants.Student);
+                }
+
+                for (int noTeacher = 1; noTeacher <= 10; noTeacher += 1)
+                {
+                    int year = rd.Next(1960, 2001);
+                    int month = rd.Next(1, 13);
+                    DateTime birthDate = new DateTime(year, month, rd.Next(1, DateTime.DaysInMonth(year, month) + 1));
+
+                    string phoneNumber = string.Empty;
+
+                    do
+                    {
+                        phoneNumber = GeneratePhoneNumber(rd);
+                    }
+                    while (phoneNumbers.Contains(phoneNumber));
+
+                    var newuser = new User
+                    {
+                        UserName = "Teacher" + noTeacher.ToString(),
+                        Email = "t" + noTeacher.ToString() + "@mail.nu",
+                        FirstName = "Teacher",
+                        LastName = new string((char)((int)'A' + noTeacher - 1), 5),
+                        BirthDate = birthDate.ToString("yyyy/MM/dd"),
+                        PhoneNumber = phoneNumber,
+                        PhoneNumberConfirmed = true
+                    };
+
+                    phoneNumbers.Add(phoneNumber);
+
+                    userManager.Create(newuser, "Teacher-Password1");
+                    userManager.AddToRole(newuser.Id, RoleConstants.Teacher);
+                }
             }
 
             User user = context.LMSUsers.FirstOrDefault(u => u.Email == "liam@mail.nu");
@@ -260,6 +350,27 @@ namespace LMS_Project.Migrations
                 }
                 );
             #endregion
+        }
+
+        private string GeneratePhoneNumber(Random rd)
+        {
+            return string.Format("{0}-{1}-{2}",
+                                 GenerateSequence(rd, 3),
+                                 GenerateSequence(rd, 3),
+                                 GenerateSequence(rd, 4));
+        }
+
+        private string GenerateSequence(Random rd, int length)
+        {
+            string result = string.Empty;
+
+            while (length > 0)
+            {
+                result += rd.Next(0, 10).ToString();
+                length -= 1;
+            }
+
+            return result;
         }
     }
 }

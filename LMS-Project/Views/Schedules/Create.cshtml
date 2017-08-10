@@ -1,68 +1,23 @@
-﻿@model LMS_Project.ViewModels.CreateScheduleVM
-
-@{
+﻿@{
     ViewBag.Title = "Create";
 }
 
-<h2>Create</h2>
+<h2>Create a new Schedule</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<div class="form-horizontal"
+     ng-app="schedule"
+     ng-controller="schedulesController"
+     ng-init="init()">
 
-    <div class="form-horizontal">
-        <h4>Schedule</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.WeekDay, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EnumDropDownListFor(model => model.WeekDay, htmlAttributes: new { @class = "form-control", autofocus = "auto-focus" })
-                @Html.ValidationMessageFor(model => model.WeekDay, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.BeginningTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.BeginningTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BeginningTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndingTime, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndingTime, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.EndingTime, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CourseID, "CourseID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.CourseID, (IEnumerable<SelectListItem>)ViewBag.Courses, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CourseID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.ClassroomID, "ClassroomID", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ClassroomID, new SelectList(ViewBag.ClassRooms, "Id", "Name"), htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ClassroomID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        @Html.Partial("_StudentsSchedule", Model.Students)
+    @Html.Partial("_CreateEdit")
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <button type="button" class="btn btn-default" ng-click="sendData()">Create</button>
             </div>
         </div>
     </div>
-}
 
 <div>
     @Html.ActionLink("Back to List", "Index")
@@ -70,4 +25,6 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/angularschedules")
 }

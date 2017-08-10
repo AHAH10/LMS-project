@@ -27,6 +27,9 @@
             @Html.DisplayName("Phone Number")
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.User.BirthDate)
+        </th>
+        <th>
             @Html.DisplayName("Role")
         </th>
         <th></th>
@@ -49,6 +52,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.User.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.BirthDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RoleName)

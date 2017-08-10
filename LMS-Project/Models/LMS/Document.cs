@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
-
 namespace LMS_Project.Models.LMS
 {
     public class Document
@@ -15,17 +14,24 @@ namespace LMS_Project.Models.LMS
         public int ID { get; set; }
 
         [Required]
+        [Display(Name = "Document Name")]
         public string DocumentName { get; set; }
 
         [Required]
         public byte[] DocumentContent { get; set; }
 
+        public string ContentType { get; set; }
+
         [Required]
+        [Display(Name = "Uploaded")]
         public DateTime UploadingDate { get; set; }
 
         [Required]
         [ForeignKey("Uploader")]
-        public string UserID { get; set; }
+        [Display(Name = "By")]
+        public string UploaderID { get; set; }
+
+        [Display(Name = "By")]
         public virtual User Uploader { get; set; }
 
         [Required]
@@ -37,5 +43,9 @@ namespace LMS_Project.Models.LMS
         [ForeignKey("VisibleFor")]
         public string RoleID { get; set; }
         public virtual Role VisibleFor { get; set; }
+
+        [ForeignKey("Grade")]
+        public int? GradeID { get; set; }
+        public virtual Grade Grade { get; set; }
     }
 }

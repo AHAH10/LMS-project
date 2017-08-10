@@ -1,0 +1,82 @@
+﻿@using LMS_Project.Models.LMS;
+
+@model IEnumerable<Document>
+
+@{
+    ViewBag.Title = "My Uploaded Documents";
+}
+
+<h2>My Uploaded Documents</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Course)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DocumentName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UploadingDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.VisibleFor)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Grade)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Course.Subject.Name, "Download", "Documents", new { id = item.ID }, null)
+            </td>
+            <td>
+                @Html.ActionLink(item.DocumentName, "Download", "Documents", new { id = item.ID }, null)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UploadingDate)
+            </td>
+            <td>
+                @* Two cases: *@
+                @if (item.VisibleFor.Name == RoleConstants.Student)
+                {
+                    @* - The document is visible for all students *@
+                    @Html.DisplayName("The whole classroom")
+                }
+                else
+                {
+                    @* - The document is only visible for the teacher *@
+
+                    @* Two cases: *@
+                    if (User.IsInRole(RoleConstants.Student))
+                    {
+                        @* -- The uploader is a student *@
+                        @Html.DisplayName("The teacher (" + item.Course.Teacher.ToString() + ")")
+                    }
+                    else
+                    {
+                        @* -- The uploader is a teacher *@
+                        @Html.DisplayName("Myself")
+                    }
+                }
+            </td>
+            <td>
+                @if (item.Grade != null)
+                {
+                    @Html.DisplayFor(modeItem => item.Grade.AGrade)
+                }
+            </td>
+            <td>
+                @if (item.GradeID == null)
+                {
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                }
+            </td>
+        </tr>
+    }
+
+</table>

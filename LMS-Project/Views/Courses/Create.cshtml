@@ -1,64 +1,54 @@
-﻿@model LMS_Project.Models.LMS.Course
+﻿@model LMS_Project.ViewModels.PartialCoursesVM
 
-@{
-    ViewBag.Title = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+<form action="/Courses/Create/" method="POST">
 
-<h2>Create</h2>
-{{1+1}}
-
-@using (Html.BeginForm()) 
-{
     @Html.AntiForgeryToken()
-
-    <div class="form-horizontal" ng-controller="CourseCtrl">
+    <div class="form-horizontal" ng-app="LMSApp" ng-controller="Course_Create_Ctrl" ng-cloak>
         <h4>Course</h4>
-        {{data}}
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @if (ViewBag.Subjects != null)
-        {
-            <div class="form-group">
-                @Html.LabelFor(model => model.SubjectID, "SubjectID", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(m => m.SubjectID, new SelectList(ViewBag.Subjects, "Id", "Name"), htmlAttributes: new { @class = "form-control", @onchange = "Subjects()", @id = "selectedValue" })
-                    @Html.ValidationMessageFor(model => model.SubjectID, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        }
-        else
-        {
-            <h3>No Avaible Subjects for that teacher!</h3>
-        }
-        @if (ViewBag.Teachers != null)
-        {
-            <div class="form-group">
-                @Html.LabelFor(model => model.TeacherID, "TeacherID", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownListFor(m => m.TeacherID, new SelectList(ViewBag.Teachers, "Id", "UserName"), htmlAttributes: new { @class = "form-control", @onchange = "Teachers()", @id = "selectedValueT" })
-                    @Html.ValidationMessageFor(model => model.TeacherID, "", new { @class = "text-danger" })
-                </div>
-            </div>
-        }
-        else
-        {
-            <h3>No Avaible Teachers for that specific course!</h3>
-        }
         <div class="form-group">
-            @ViewBag.EMessage
+            @Html.LabelFor(model => model.Name, "Course Name", htmlAttributes: new { @class = "control-label" })
+            <div class="row">
+                <div class="col-md-10">
+                    <input type="text" name="name" required placeholder="Enter a name for the course here" class="form-control"/>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Subject, "Subject", htmlAttributes: new { ng_click = "orderBySubject('Name')", @class = "control-label" })
+            <div class="row">
+                <div class="col-md-10">
+                    <select id="subjects" name="sID" class="form-control" ng-model="subject" ng-change="update()" ng-options="subject.ID as subject.Name for subject in subjects | orderBy:TheOrderBySubject:Sreverse"></select>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.TeacherID, "Teacher", htmlAttributes: new { ng_click = "orderByTeacher('LastName+FirstName')", @class = "control-label" })
+            <div class="row">
+                <div class="col-md-10">
+                    <select id="teachers" name="tID" class="form-control">
+                        <option ng-repeat="teacher in teachers | orderBy:TheOrderByTeacher:Treverse" value="{{teacher.Id}}">{{teacher.FirstName}} {{teacher.LastName}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group" ng-init="Start()">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
+            @ViewBag.EMessage
         </div>
     </div>
-}
+</form>
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+    <div>
+        @Html.ActionLink("Back to List", "Index")
+    </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
-
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/angular")
+        @Scripts.Render("~/bundles/angularcourses")
+    }

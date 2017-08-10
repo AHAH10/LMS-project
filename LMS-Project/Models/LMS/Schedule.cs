@@ -7,6 +7,11 @@ using System.Web;
 
 namespace LMS_Project.Models.LMS
 {
+    public static class ScheduleConstants
+    {
+        public const string TIME_FORMAT = "HH:mm";
+    }
+
     public enum WeekDays
     {
         Monday,
@@ -45,12 +50,14 @@ namespace LMS_Project.Models.LMS
 
         public override string ToString()
         {
-            return string.Join(" ",
-                               new List<string> { WeekDay.ToString(), 
-                                                  BeginningTime + "-" + EndingTime,
-                                                  Course.Subject.Name,
-                                                  Course.Teacher.ToString(),
-                                                  Classroom.Name});
+            return string.Format("{0} {1}-{2}{3}{4} ({5}){3}{6}",
+                                 WeekDay.ToString(), 
+                                 BeginningTime,
+                                 EndingTime,
+                                 "\\",
+                                 Course.Subject.Name,
+                                 Course.Teacher.ToString(),
+                                 Classroom.Name);
         }
     }
 }

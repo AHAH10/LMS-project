@@ -7,7 +7,7 @@ using System.Web;
 
 namespace LMS_Project.Models.LMS
 {
-    public enum CourseGrade
+    public enum AssignmentGrade
     {
         A,
         B,
@@ -19,10 +19,17 @@ namespace LMS_Project.Models.LMS
     public class Grade
     {
         [Key]
-        public int ID { get; set; }
-        public CourseGrade CourseGrade { get; set; }
         [ForeignKey("Document")]
-        public virtual int DocumentID { get; set; }
+        public int ID { get; set; }
+        
+        [Required]
+        public DateTime Date { get; set; }
+        
+        [Required]
+        public AssignmentGrade AGrade { get; set; }
+        
+        public string Comment { get; set; }
+
         public virtual Document Document { get; set; }
     }
 }
