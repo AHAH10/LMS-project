@@ -14,7 +14,7 @@ namespace LMS_Project.Models.LMS
         public int ID { get; set; }
 
         [Required]
-        [Display(Name="Document Name")]
+        [Display(Name = "Document Name")]
         public string DocumentName { get; set; }
 
         [Required]
@@ -23,11 +23,15 @@ namespace LMS_Project.Models.LMS
         public string ContentType { get; set; }
 
         [Required]
+        [Display(Name = "Uploaded")]
         public DateTime UploadingDate { get; set; }
 
         [Required]
         [ForeignKey("Uploader")]
+        [Display(Name = "By")]
         public string UploaderID { get; set; }
+
+        [Display(Name = "By")]
         public virtual User Uploader { get; set; }
 
         [Required]

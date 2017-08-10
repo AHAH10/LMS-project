@@ -14,5 +14,23 @@ namespace LMS_Project.Controllers
         {
             return new UsersRepository().Students().ToList();
         }
+        //To get User information about teacher - An Validate Token must be needed - Security
+        [System.Web.Mvc.ValidateAntiForgeryToken]
+        public List<User> GetAvailableTeachers(int subjectID)
+        {
+            List<User> _teachers = new List<User>();
+            foreach (var t in new UsersRepository().AvailableTeachers(subjectID))
+            {
+                //Some data shouldn't be sent! , that's why a new instane of the User is created
+                User tempT = new User();
+                tempT.Id = t.Id;
+                tempT.FirstName = t.FirstName;
+                tempT.LastName = t.LastName;
+
+                _teachers.Add(tempT);
+                tempT = null;
+            }
+            return _teachers;
+        }
     }
 }

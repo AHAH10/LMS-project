@@ -1,19 +1,19 @@
-﻿@model IEnumerable<LMS_Project.Models.LMS.Course>
+﻿@model IEnumerable<LMS_Project.ViewModels.CoursesVM>
 
-<div ng-app="LMSApp" ng-controller="Course_Index_Ctrl" ng-init="getData()">
+<div ng-app="LMSApp" ng-controller="Course_Index_Ctrl" ng-init="getData()" ng-cloak>
     <p>
         @Html.ActionLink("Create New", "Create")
     </p>
     <div class="left">
         <form class="glyphicon glyphicon-search" method="get">
-            <input type="text" name="Search" ng-model="searchTerm" placeholder="Free Search" style="width:120px; height:25px;font-family: Helvetica, Arial, sans-serif">
+            <input type="text" name="Search" ng-model="searchTerm" placeholder="Search Field" style="width:120px; height:25px;font-family: Helvetica, Arial, sans-serif">
         </form>
     </div>
     <table class="table">
         <tr>
-            <th ng-click="orderByMe('Subject.Name')">@Html.DisplayNameFor(model => model.Subject.Name)</th>
-            <th ng-click="orderByMe('Teacher.LastName+Teacher.FirstName')">@Html.DisplayNameFor(model => model.Teacher)</th>
-            <th></th>
+            <th ng-click="orderByMe('Name')"><b>Course Name</b></th>
+            <th ng-click="orderByMe('Subject.Name')"><b>Subject</b></th>
+            <th ng-click="orderByMe('Teacher.UserName')"><b>Teacher</b></th>
         </tr>
         @{
             var url1 = Url.Action("Edit", new { ID = "{{course.ID}}" });
@@ -28,14 +28,31 @@
             url3 = HttpUtility.UrlDecode(url3);
         }
         <tr ng-repeat="course in courses | orderBy:myOrderBy:reverse | filter:searchTerm ">
+            <td>{{course.Name}}</td>
             <td>{{course.Subject.Name}}</td>
-            <td>{{course.Teacher.FirstName}} {{course.Teacher.LastName}}</td>
+            <td>{{course.Teacher.UserName}}</td> <!--UserName is replaced with a fullName if the api is working-->
             <td>
-                <a data-ng-href="@url1">Edit</a> |
-                <a data-ng-href="@url2">Details</a> |
-                <a data-ng-href="@url3">Delete</a>
+                <a data-ng-href="@url1" ng-hide="course.DocumentCount > 0 && course.Name!='' || course.ScheduleCount > 0 && course.Name!=''">Edit</a>
+                <a data-ng-href="@url2">Details</a>
+                <a data-ng-href="@url3" ng-hide="course.DocumentCount > 0 || course.ScheduleCount > 0">Remove</a>
             </td>
         </tr>
+        <!--Replace the ng-repeat with this if we don't like angular - That means a new sorting system and search must be re created-->
+        @*@foreach (var item in Model) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subject.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayName(item.Teacher.ToString())
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+                        @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+                        @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+                    </td>
+                </tr>
+            }*@
     </table>
 </div>
 @section Scripts {

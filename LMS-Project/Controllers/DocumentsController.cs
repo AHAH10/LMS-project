@@ -1,17 +1,12 @@
-﻿using System;
+﻿using LMS_Project.Models.LMS;
+using LMS_Project.Repositories;
+using LMS_Project.ViewModels;
+using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
-using LMS_Project.Models;
-using LMS_Project.Models.LMS;
-using LMS_Project.Repositories;
-using Microsoft.AspNet.Identity;
-using LMS_Project.ViewModels;
-using System.IO;
 
 namespace LMS_Project.Controllers
 {
@@ -19,38 +14,6 @@ namespace LMS_Project.Controllers
     public class DocumentsController : Controller
     {
         private DocumentsRepository repository = new DocumentsRepository();
-
-        // GET: Documents
-        public ActionResult Index(int? courseId)
-        {
-            if (courseId == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            Course course = new CoursesRepository().Course(courseId);
-            if (course == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            return View(repository.Documents((int)courseId).ToList());
-        }
-
-        // GET: Documents/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Document document = repository.Document(id);
-            if (document == null)
-            {
-                return HttpNotFound();
-            }
-            return View(document);
-        }
 
         // GET: Documents/Delete/5
         public ActionResult Delete(int? id)
@@ -73,7 +36,7 @@ namespace LMS_Project.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             repository.Delete(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("MyDocuments");
         }
 
         // UploadDocument Methods
@@ -94,14 +57,14 @@ namespace LMS_Project.Controllers
                 string result = CreateDocument(viewModel, RoleConstants.Teacher);
 
                 if (result.Length == 0)
-                return RedirectToAction("Index");
+                    return RedirectToAction("MyDocuments");
                 else
                 {
                     ViewBag.ErrorMessage = result;
                     ViewBag.Courses = GetCourses(false);
 
                     return View(viewModel);
-            }
+                }
             }
 
             ViewBag.Courses = GetCourses(false);
@@ -125,14 +88,14 @@ namespace LMS_Project.Controllers
                 string result = CreateDocument(viewModel, RoleConstants.Student);
 
                 if (result.Length == 0)
-                return RedirectToAction("Index");
+                    return RedirectToAction("MyDocuments");
                 else
                 {
                     ViewBag.ErrorMessage = result;
                     ViewBag.Courses = GetCourses(false);
 
                     return View(viewModel);
-            }
+                }
             }
 
             ViewBag.Courses = GetCourses(false);
@@ -155,11 +118,11 @@ namespace LMS_Project.Controllers
                 string result = CreateDocument(viewModel, RoleConstants.Teacher);
 
                 if (result.Length == 0)
-                return RedirectToAction("Index");
+                    return RedirectToAction("MyDocuments");
                 else
                 {
                     ViewBag.ErrorMessage = result;
-                    ViewBag.Courses = GetCourses(false);
+                    ViewBag.Courses = GetCourses(true);
 
                     return View(viewModel);
                 }
@@ -185,11 +148,11 @@ namespace LMS_Project.Controllers
                 string result = CreateDocument(viewModel, RoleConstants.Student);
 
                 if (result.Length == 0)
-                    return RedirectToAction("Index");
+                    return RedirectToAction("MyDocuments");
                 else
                 {
                     ViewBag.ErrorMessage = result;
-                    ViewBag.Courses = GetCourses(false);
+                    ViewBag.Courses = GetCourses(true);
 
                     return View(viewModel);
                 }
@@ -211,49 +174,39 @@ namespace LMS_Project.Controllers
             return File(fileToRetrieve.DocumentContent, fileToRetrieve.ContentType, fileToRetrieve.DocumentName);
         }
 
-        private List<SelectListItem> GetCourses(bool forAStudent)
+        private List<SelectListItem> GetCourses(bool fromAStudent)
         {
-            if (forAStudent)
-                return new UsersRepository().User(User.Identity.GetUserId())
-                                            .Schedules
-                                            .Select(s => s.Course)
-                                            .OrderBy(c => c.Subject.Name)
-                                            .ThenBy(c => c.Teacher.ToString())
-                                            .Select(c => new SelectListItem
-                                            {
-                                                Text = c.Subject.Name + " (" + c.Teacher.ToString() + ")",
-                                                Value = c.ID.ToString()
-                                            })
-                                            .ToList();
+            IEnumerable<Course> courses = null;
+
+            if (fromAStudent)
+                courses = new CoursesRepository().StudentCourses(User.Identity.GetUserId());
             else
-                return new UsersRepository().User(User.Identity.GetUserId())
-                                            .Courses
-                                            .OrderBy(c => c.Subject.Name)
-                                            .ThenBy(c => c.Teacher.ToString())
-                                            .Select(c => new SelectListItem
-                                            {
-                                                Text = c.Subject.Name + " (" + c.Teacher.ToString() + ")",
-                                                Value = c.ID.ToString()
-                                            })
-                                            .ToList();
+                courses = new CoursesRepository().TeacherCourse(User.Identity.GetUserId());
+
+            return courses.Select(c => new SelectListItem
+            {
+                Text = c.Subject.Name + (fromAStudent ? " (" + c.Teacher.ToString() + ")" : string.Empty),
+                Value = c.ID.ToString()
+            })
+            .ToList();
         }
 
         private string CreateDocument(UploadDocumentVM viewModel, string roleVisibleTo)
         {
             try
             {
-            Document document = new Document
-            {
-                DocumentName = viewModel.File.FileName,
-                ContentType = viewModel.File.ContentType,
-                UploaderID = User.Identity.GetUserId(),
+                Document document = new Document
+                {
+                    DocumentName = viewModel.File.FileName,
+                    ContentType = viewModel.File.ContentType,
+                    UploaderID = User.Identity.GetUserId(),
                     RoleID = new RolesRepository().RoleByName(roleVisibleTo).Id,
-                UploadingDate = DateTime.Now,
-                CourseID = viewModel.CourseID
-            };
+                    UploadingDate = DateTime.Now,
+                    CourseID = viewModel.CourseID
+                };
 
-            document.DocumentContent = new byte[viewModel.File.ContentLength];
-            viewModel.File.InputStream.Read(document.DocumentContent, 0, viewModel.File.ContentLength);
+                document.DocumentContent = new byte[viewModel.File.ContentLength];
+                viewModel.File.InputStream.Read(document.DocumentContent, 0, viewModel.File.ContentLength);
 
                 repository.Add(document);
 

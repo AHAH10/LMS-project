@@ -1,36 +1,84 @@
-﻿@model IEnumerable<LMS_Project.Models.LMS.Document>
+﻿@using LMS_Project.Models.LMS
+
+@model IEnumerable<LMS_Project.ViewModels.DocumentsScheduleVM>
 
 @{
     ViewBag.Title = "Documents";
+
+    <h2>Documents related to @Model.First().Document.Course.Subject.Name</h2>
+
+    IEnumerable<Document> teachersDocuments = Model.Where(vm => vm.UploadersRole == RoleConstants.Teacher).Select(vm => vm.Document);
+    IEnumerable<Document> studentsDocuments = Model.Where(vm => vm.UploadersRole == RoleConstants.Student).Select(vm => vm.Document);
+
+    if (teachersDocuments.Count() > 0)
+    {
+        <hr />
+        <h3>Documents uploaded by @teachersDocuments.First().Course.Teacher.ToString()</h3>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Document.UploadingDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Document.DocumentName)
+                </th>
+            </tr>
+
+            @foreach (var item in teachersDocuments)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UploadingDate)
+                    </td>
+                    <td>
+                        @Html.ActionLink(item.DocumentName, "Download", "Documents", new { item.ID }, null)
+                    </td>
+                </tr>
+            }
+
+        </table>
+    }
+
+    if (studentsDocuments.Count() > 0)
+    {
+        <hr />
+        <h3>Documents uploaded by the students</h3>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Document.UploadingDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Document.Uploader)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Document.DocumentName)
+                </th>
+            </tr>
+
+            @foreach (var item in studentsDocuments)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UploadingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayName(item.Uploader.ToString())
+                    </td>
+                    <td>
+                        @Html.ActionLink(item.DocumentName, "Download", "Documents", new { item.ID }, null)
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+
+    if (User.IsInRole(RoleConstants.Teacher))
+    {
+        @Html.ActionLink("Back to Schedule", "Planning", "Teachers")
+    }
+    else
+    {
+        @Html.ActionLink("Back to Schedule", "Planning", "Students")
+    }
 }
-
-<h2>Documents related to @Model.First().Course.Subject.Name</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName("Uploaded")
-        </th>
-        <th>
-            @Html.DisplayName("By")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DocumentName)
-        </th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.UploadingDate)
-        </td>
-        <td>
-            @Html.DisplayName(item.Uploader.ToString())
-        </td>
-        <td>
-            @Html.ActionLink(item.DocumentName, "Download", "Documents", new { item.ID }, null)
-        </td>
-    </tr>
-}
-
-</table>

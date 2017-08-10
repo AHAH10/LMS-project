@@ -114,7 +114,8 @@ namespace LMS_Project.Controllers
             string userId = User.Identity.GetUserId();
             List<Document> documents = schedule.Course.Documents.ToList();
 
-            string roleName = new UsersRepository().GetUserRole(userId).Name;
+            UsersRepository usersRepo = new UsersRepository();
+            string roleName = usersRepo.GetUserRole(userId).Name;
             if (roleName == RoleConstants.Student)
             {
                 // Any student is allowed to see documents for the current course, as long as the
@@ -144,7 +145,11 @@ namespace LMS_Project.Controllers
             if (documents.Count == 0)
                 return RedirectToAction("Index", "Home");
 
-            return View(documents);
+            return View(documents.Select(d => new DocumentsScheduleVM
+            {
+                Document = d,
+                UploadersRole = usersRepo.GetUserRole(d.Uploader.Id).Name
+            }));
         }
 
         protected override void Dispose(bool disposing)
