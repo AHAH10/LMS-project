@@ -199,9 +199,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201708091650558_Initial.cs" />
-    <Compile Include="Migrations\201708091650558_Initial.Designer.cs">
-      <DependentUpon>201708091650558_Initial.cs</DependentUpon>
+    <Compile Include="Migrations\201708101124037_Initial.cs" />
+    <Compile Include="Migrations\201708101124037_Initial.Designer.cs">
+      <DependentUpon>201708101124037_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -230,7 +230,7 @@
     <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ChangePasswordVM.cs" />
-    <Compile Include="ViewModels\CoursesVM.cs" />
+    <Compile Include="ViewModels\PartialCoursesVM.cs" />
     <Compile Include="ViewModels\CreateEditScheduleVM.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -381,8 +381,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708091650558_Initial.resx">
-      <DependentUpon>201708091650558_Initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201708101124037_Initial.resx">
+      <DependentUpon>201708101124037_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

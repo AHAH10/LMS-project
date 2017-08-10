@@ -8,43 +8,46 @@ using LMS_Project.ViewModels;
 
 namespace LMS_Project.Controllers
 {
-    [System.Web.Http.Authorize(Roles="Admin")] //Only an Admin can access the api
+    [System.Web.Http.Authorize(Roles = "Admin")] //Only an Admin can access the api
     [ValidateAntiForgeryToken]
     public class CoursesAPIController : ApiController
     {
         [System.Web.Http.HttpGet]
-        public CoursesVM GetCourse(string subjectName)
+        public PartialCoursesVM GetCourse(string subjectName)
         {
             Course _course = new CoursesRepository().Courses().Where(c => c.Subject.Name.ToLower() == subjectName.ToLower()).SingleOrDefault();
-            return new CoursesVM { ID = _course.ID, Name = _course.Name, DocumentCount = _course.Documents.Count(), ScheduleCount = _course.Schedules.Count(), TeacherID = _course.TeacherID, SubjectID = _course.SubjectID };
-            
+            return new PartialCoursesVM { ID = _course.ID, Name = _course.Name, DocumentCount = _course.Documents.Count(), ScheduleCount = _course.Schedules.Count(), TeacherID = _course.TeacherID, SubjectID = _course.SubjectID };
+
         }
+
         /// <summary>
         /// Return all courses
         /// </summary>
         /// <returns></returns>
         [System.Web.Http.HttpGet]
-        public List<CoursesVM> GetAllCourses()
+        public List<PartialCoursesVM> GetAllCourses()
         {
             //On visual studio 2017, access violation might occur than we are sending the whole user through the api.
             //return new CoursesRepository().Courses() works fine on vs 13 with the api
             //Guess that microsoft want us to avoid sending security information.
-            List<CoursesVM> _courses = new List<CoursesVM>();
+            List<PartialCoursesVM> _courses = new List<PartialCoursesVM>();
             foreach (Course c in new CoursesRepository().Courses())
             {
                 //Create new objects
-                CoursesVM tempC = new CoursesVM();
+                PartialCoursesVM tempC = new PartialCoursesVM();
                 Subject tempS = new Subject();
-                User tempT = new User();
-                //Set data that are needed
-                tempT.Id = c.TeacherID;
-                tempT.UserName=c.Teacher.FirstName+" "+c.Teacher.LastName;
-                tempT.FirstName = c.Teacher.FirstName;
-                tempT.LastName = c.Teacher.LastName;
+                PartialUserVM tempT = new PartialUserVM
+                {
+                    //Set data that are needed
+                    Id = c.TeacherID,
+                    FirstName = c.Teacher.FirstName,
+                    LastName = c.Teacher.LastName,
+                    Email = c.Teacher.Email
+                };
 
                 tempS.ID = c.SubjectID;
                 tempS.Name = c.Subject.Name;
-          
+
                 tempC.Name = c.Name;
                 tempC.ID = c.ID;
                 tempC.DocumentCount = c.Documents.Count();

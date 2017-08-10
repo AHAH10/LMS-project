@@ -18,15 +18,21 @@ namespace LMS_Project.Controllers
         // GET: Course
         public ActionResult Index()
         {
-            List<CoursesVM> _courses = new List<CoursesVM>();
+            List<PartialCoursesVM> _courses = new List<PartialCoursesVM>();
             foreach (Course c in cRepo.Courses())
             {
-                CoursesVM tempC = new CoursesVM();
+                PartialCoursesVM tempC = new PartialCoursesVM();
                 tempC.ID = c.ID;
-                tempC.Teacher = new User { Id = c.TeacherID, UserName = c.Teacher.UserName, Email = c.Teacher.Email, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName };
-                tempC.TeacherID=c.TeacherID;
-                tempC.SubjectID=c.SubjectID;
-                tempC.Subject=new Subject{ ID=c.Subject.ID, Name=c.Subject.Name};
+                tempC.Teacher = new PartialUserVM
+                {
+                    Id = c.TeacherID,
+                    Email = c.Teacher.Email,
+                    FirstName = c.Teacher.FirstName,
+                    LastName = c.Teacher.LastName
+                };
+                tempC.TeacherID = c.TeacherID;
+                tempC.SubjectID = c.SubjectID;
+                tempC.Subject = new Subject { ID = c.Subject.ID, Name = c.Subject.Name };
 
                 _courses.Add(tempC);
             }
@@ -39,7 +45,20 @@ namespace LMS_Project.Controllers
             Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                CoursesVM cVM = new CoursesVM { ID = c.ID, SubjectID = c.SubjectID, TeacherID = c.TeacherID, Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name }, Teacher = new User { Id = c.TeacherID, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName, UserName = c.Teacher.UserName, Email = c.Teacher.Email } };
+                PartialCoursesVM cVM = new PartialCoursesVM
+                {
+                    ID = c.ID,
+                    SubjectID = c.SubjectID,
+                    TeacherID = c.TeacherID,
+                    Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name },
+                    Teacher = new PartialUserVM
+                    {
+                        Id = c.TeacherID,
+                        FirstName = c.Teacher.FirstName,
+                        LastName = c.Teacher.LastName,
+                        Email = c.Teacher.Email
+                    }
+                };
                 return View(cVM);
             }
             return RedirectToAction("Index");
@@ -54,13 +73,18 @@ namespace LMS_Project.Controllers
         // POST: Course/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(string name,string tID, string sID)
+        public ActionResult Create(string name, string tID, string sID)
         {
-            sID = sID.Substring(sID.IndexOf(':')+1);
+            sID = sID.Substring(sID.IndexOf(':') + 1);
             try
             {
                 int sId = int.Parse(sID);
-                bool success = cRepo.Add(new Course {  Name=new SubjectsRepository().Subject(sId).Name+" # "+name, SubjectID=sId, TeacherID=tID});
+                bool success = cRepo.Add(new Course
+                {
+                    Name = new SubjectsRepository().Subject(sId).Name + " # " + name,
+                    SubjectID = sId,
+                    TeacherID = tID
+                });
                 if (success)
                 {
                     return RedirectToAction("Index");
@@ -80,7 +104,21 @@ namespace LMS_Project.Controllers
             Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                CoursesVM cVM = new CoursesVM {  Name=c.Name,ID = c.ID, SubjectID = c.SubjectID, TeacherID = c.TeacherID, Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name }, Teacher = new User { Id = c.TeacherID, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName, UserName = c.Teacher.UserName, Email = c.Teacher.Email } };
+                PartialCoursesVM cVM = new PartialCoursesVM
+                {
+                    Name = c.Name,
+                    ID = c.ID,
+                    SubjectID = c.SubjectID,
+                    TeacherID = c.TeacherID,
+                    Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name },
+                    Teacher = new PartialUserVM
+                    {
+                        Id = c.TeacherID,
+                        FirstName = c.Teacher.FirstName,
+                        LastName = c.Teacher.LastName,
+                        Email = c.Teacher.Email
+                    }
+                };
                 return View(cVM);
             }
             return RedirectToAction("Index");
@@ -89,18 +127,18 @@ namespace LMS_Project.Controllers
         // POST: Course/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id,string tID, int sID, string name)
+        public ActionResult Edit(int id, string tID, int sID, string name)
         {
-                // TODO: Add update logic here
+            // TODO: Add update logic here
 
-                Course cToEdit = new Course() { Name=name, SubjectID = sID, TeacherID = tID, ID = id };
-                bool success = cRepo.Edit(cToEdit);
-                if (success)
-                {
-                    return RedirectToAction("Index");
-                }
-                ViewBag.EMessage = "Error 203: The teacher already have that subject";
-                return View();
+            Course cToEdit = new Course() { Name = name, SubjectID = sID, TeacherID = tID, ID = id };
+            bool success = cRepo.Edit(cToEdit);
+            if (success)
+            {
+                return RedirectToAction("Index");
+            }
+            ViewBag.EMessage = "Error 203: The teacher already have that subject";
+            return View();
         }
 
         // GET: Course/Delete/5
@@ -109,7 +147,20 @@ namespace LMS_Project.Controllers
             Course c = cRepo.Course(id) as Course;
             if (c != null)
             {
-                CoursesVM cVM = new CoursesVM { ID = c.ID, SubjectID = c.SubjectID, TeacherID = c.TeacherID, Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name }, Teacher = new User { Id = c.TeacherID, FirstName = c.Teacher.FirstName, LastName = c.Teacher.LastName, UserName = c.Teacher.UserName, Email = c.Teacher.Email } };
+                PartialCoursesVM cVM = new PartialCoursesVM
+                {
+                    ID = c.ID,
+                    SubjectID = c.SubjectID,
+                    TeacherID = c.TeacherID,
+                    Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name },
+                    Teacher = new PartialUserVM
+                    {
+                        Id = c.TeacherID,
+                        FirstName = c.Teacher.FirstName,
+                        LastName = c.Teacher.LastName,
+                        Email = c.Teacher.Email
+                    }
+                };
                 return View(cVM);
             }
             return RedirectToAction("Index");

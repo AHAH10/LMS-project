@@ -7,7 +7,10 @@ namespace LMS_Project.Migrations
     using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
+    using System.Data.Entity.Validation;
+    using System.Diagnostics;
     using System.Linq;
+    using System.Text;
 
     internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
@@ -50,7 +53,7 @@ namespace LMS_Project.Migrations
             #endregion
 
             #region Courses
-            Course course = new Course { Subject = subject };
+            Course course = new Course { Subject = subject, Name = subject.Name + " # Group1" };
             #endregion
 
             #region Users
@@ -64,11 +67,28 @@ namespace LMS_Project.Migrations
                 userManager.AddToRole(newuser.Id, RoleConstants.Admin);
             }
 
+            Random rd = new Random();
+
+            List<string> phoneNumbers = new List<string>();
+
             if (!context.LMSUsers.Any(u => u.UserName == "Liam"))
             {
+                string phoneNumber = GeneratePhoneNumber(rd);
+
                 var store = new UserStore<User>(context);
                 var userManager = new UserManager<User>(store);
-                var newuser = new User { UserName = "Liam", Email = "liam@mail.nu", FirstName = "Liam", LastName = "B", BirthDate = DateTime.Now.ToString("yyyy/MM/dd") };
+                var newuser = new User
+                {
+                    UserName = "Liam",
+                    Email = "liam@mail.nu",
+                    FirstName = "Liam",
+                    LastName = "B",
+                    BirthDate = DateTime.Now.ToString("yyyy/MM/dd"),
+                    PhoneNumber = phoneNumber,
+                    PhoneNumberConfirmed = true
+                };
+
+                phoneNumbers.Add(phoneNumber);
 
                 userManager.Create(newuser, "Teacher-Password1");
                 userManager.AddToRole(newuser.Id, RoleConstants.Teacher);
@@ -78,10 +98,6 @@ namespace LMS_Project.Migrations
             {
                 var store = new UserStore<User>(context);
                 var userManager = new UserManager<User>(store);
-
-                Random rd = new Random();
-
-                List<string> phoneNumbers = new List<string>();
 
                 for (int noStudent = 1; noStudent <= 20; noStudent += 1)
                 {
