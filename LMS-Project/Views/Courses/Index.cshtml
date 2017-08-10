@@ -32,9 +32,9 @@
             <td>{{course.Subject.Name}}</td>
             <td>{{course.Teacher.UserName}}</td> <!--UserName is replaced with a fullName if the api is working-->
             <td>
-                <a data-ng-href="@url1" ng-hide="course.DocumentCount > 0 && course.Name!='' || course.ScheduleCount > 0 && course.Name!=''">Edit</a>
+                <a data-ng-href="@url1" ng-if="course.DocumentCount == 0 && course.Name!='' || course.ScheduleCount == 0">Edit</a>
                 <a data-ng-href="@url2">Details</a>
-                <a data-ng-href="@url3" ng-hide="course.DocumentCount > 0 || course.ScheduleCount > 0">Remove</a>
+                <a data-ng-href="@url3" ng-if="course.DocumentCount == 0 || course.ScheduleCount == 0">Remove</a>
             </td>
         </tr>
         <!--Replace the ng-repeat with this if we don't like angular - That means a new sorting system and search must be re created-->

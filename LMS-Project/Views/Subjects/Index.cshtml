@@ -28,31 +28,11 @@
         <tr ng-repeat="subject in subjects | orderBy:myOrderBy:reverse | filter:searchTerm ">
             <td>{{subject.Name}}</td>
             <td>
-                <a data-ng-href="@url1">Edit</a> |
+                <a data-ng-href="@url1"  ng-if="subject.Courses==null">Edit</a> |
                 <a data-ng-href="@url2">Details</a> |
-                <a data-ng-href="@url3">CheckOut</a>
+                <a data-ng-href="@url3" ng-if="subject.Courses==null">Remove</a>
             </td>
         </tr>
-
-        @*<tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                    <th></th>
-                </tr>
-
-            @foreach (var item in Model) {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-                        @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-                        @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-                    </td>
-                </tr>
-            }*@
 
     </table>
 </div>

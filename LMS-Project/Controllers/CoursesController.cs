@@ -60,7 +60,7 @@ namespace LMS_Project.Controllers
             try
             {
                 int sId = int.Parse(sID);
-                bool success = cRepo.Add(new Course {  Name=name, SubjectID=sId, TeacherID=tID});
+                bool success = cRepo.Add(new Course {  Name=new SubjectsRepository().Subject(sId).Name+" # "+name, SubjectID=sId, TeacherID=tID});
                 if (success)
                 {
                     return RedirectToAction("Index");

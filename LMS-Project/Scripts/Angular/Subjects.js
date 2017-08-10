@@ -12,7 +12,8 @@
             $http.get('/api/SubjectsAPI/GetAllSubjects')
                 .then(function (response) {
                     $scope.subjects = JSON.parse(JSON.stringify(response.data));
-                })
+                });
         };
+
     }]);
 }());
