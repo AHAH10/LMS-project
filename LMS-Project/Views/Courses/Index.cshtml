@@ -33,11 +33,11 @@
         <tr ng-repeat="course in courses | orderBy:myOrderBy:reverse | filter:searchTerm ">
             <td>{{course.Name}}</td>
             <td>{{course.Subject.Name}}</td>
-            <td>{{course.Teacher.FirstName}} {{course.Teacher.LastName}}</td>  
+            <td>{{course.Teacher.FirstName}} {{course.Teacher.LastName}}</td>
             <td>
-                <a data-ng-href="@url1" ng-if="course.IsDeletable">Edit</a>
+                <a data-ng-href="@url1" ng-show="course.IsDeletable">Edit | </a>
                 <a data-ng-href="@url2">Details</a>
-                <a data-ng-href="@url3" ng-if="course.IsDeletable">Remove</a>
+                <a data-ng-href="@url3" ng-show="course.IsDeletable"> | Remove</a>
             </td>
         </tr>
     </table>
