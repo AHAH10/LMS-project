@@ -16,7 +16,7 @@ namespace LMS_Project.Controllers
         public PartialCoursesVM GetCourse(string subjectName)
         {
             Course _course = new CoursesRepository().Courses().Where(c => c.Subject.Name.ToLower() == subjectName.ToLower()).SingleOrDefault();
-            return new PartialCoursesVM { ID = _course.ID, Name = _course.Name, DocumentCount = _course.Documents.Count(), ScheduleCount = _course.Schedules.Count(), TeacherID = _course.TeacherID, SubjectID = _course.SubjectID };
+            return new PartialCoursesVM { ID = _course.ID, Name = _course.Name, IsDeletable=_course.Documents.Count()==0&&_course.Schedules.Count()==0, TeacherID = _course.TeacherID, SubjectID = _course.SubjectID };
 
         }
 
@@ -50,8 +50,7 @@ namespace LMS_Project.Controllers
 
                 tempC.Name = c.Name;
                 tempC.ID = c.ID;
-                tempC.DocumentCount = c.Documents.Count();
-                tempC.ScheduleCount = c.Schedules.Count();
+                tempC.IsDeletable = c.Documents.Count() == 0 && c.Schedules.Count() == 0;
                 //Binding data
                 tempC.SubjectID = c.SubjectID;
                 tempC.TeacherID = c.TeacherID;

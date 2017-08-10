@@ -12,8 +12,8 @@ namespace LMS_Project.ViewModels
         public PartialUserVM Teacher { get; set; }
         public string TeacherID { get; set; }
         public int SubjectID { get; set; }
-        public int DocumentCount { get; set; }
-        public int ScheduleCount { get; set; }
+        public bool IsDeletable { get; set; }
+
 
     }
 }
