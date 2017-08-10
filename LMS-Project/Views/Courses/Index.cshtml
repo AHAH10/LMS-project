@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LMS_Project.ViewModels.CoursesVM>
+﻿@model IEnumerable<LMS_Project.ViewModels.PartialCoursesVM>
 
 <div ng-app="LMSApp" ng-controller="Course_Index_Ctrl" ng-init="getData()" ng-cloak>
     <p>
@@ -34,12 +34,10 @@
             <td>{{course.Name}}</td>
             <td>{{course.Subject.Name}}</td>
             <td>{{course.Teacher.FirstName}} {{course.Teacher.LastName}}</td>
-            <td>{{course.DocumentCount}}</td>
-            <td>{{course.ScheduleCount}}</td>  
             <td>
-                <a data-ng-href="@url1" ng-if="course.DocumentCount == 0 && course.Name!='' || course.ScheduleCount == 0">Edit</a>
+                <a data-ng-href="@url1" ng-show="course.IsDeletable">Edit |</a>
                 <a data-ng-href="@url2">Details</a>
-                <a data-ng-href="@url3" ng-if="course.DocumentCount == 0 || course.ScheduleCount == 0">Remove</a>
+                <a data-ng-href="@url3" ng-show="course.IsDeletable">| Remove</a>
             </td>
         </tr>
     </table>

@@ -16,7 +16,19 @@ namespace LMS_Project.Controllers
         public PartialCoursesVM GetCourse(string subjectName)
         {
             Course _course = new CoursesRepository().Courses().Where(c => c.Subject.Name.ToLower() == subjectName.ToLower()).SingleOrDefault();
-            return new PartialCoursesVM { ID = _course.ID, Name = _course.Name, DocumentCount = _course.Documents.Count(), ScheduleCount = _course.Schedules.Count(), TeacherID = _course.TeacherID, SubjectID = _course.SubjectID };
+            return new PartialCoursesVM
+            {
+                ID = _course.ID,
+                Name = _course.Name,
+                IsDeletable = _course.Documents.Count() + _course.Schedules.Count() == 0,
+                Teacher = new PartialUserVM
+                {
+                    Id = _course.Teacher.Id,
+                    FirstName = _course.Teacher.FirstName,
+                    LastName = _course.Teacher.LastName
+                },
+                Subject = _course.Subject
+            };
 
         }
 
@@ -34,7 +46,6 @@ namespace LMS_Project.Controllers
             foreach (Course c in new CoursesRepository().Courses())
             {
                 //Create new objects
-                PartialCoursesVM tempC = new PartialCoursesVM();
                 Subject tempS = new Subject();
                 PartialUserVM tempT = new PartialUserVM
                 {
@@ -48,16 +59,15 @@ namespace LMS_Project.Controllers
                 tempS.ID = c.SubjectID;
                 tempS.Name = c.Subject.Name;
 
-                tempC.Name = c.Name;
-                tempC.ID = c.ID;
-                tempC.DocumentCount = c.Documents.Count();
-                tempC.ScheduleCount = c.Schedules.Count();
-                //Binding data
-                tempC.SubjectID = c.SubjectID;
-                tempC.TeacherID = c.TeacherID;
-
-                tempC.Subject = tempS;
-                tempC.Teacher = tempT;
+                PartialCoursesVM tempC = new PartialCoursesVM
+                {
+                    Name = c.Name,
+                    ID = c.ID,
+                    IsDeletable = c.Documents.Count() + c.Schedules.Count() == 0,
+                    //Binding data
+                    Subject = tempS,
+                    Teacher = tempT
+                };
                 //Add to course list
                 _courses.Add(tempC);
                 //Clear memory

@@ -18,25 +18,22 @@ namespace LMS_Project.Controllers
         // GET: Course
         public ActionResult Index()
         {
-            List<PartialCoursesVM> _courses = new List<PartialCoursesVM>();
-            foreach (Course c in cRepo.Courses())
+            return View(cRepo.Courses().Select(c => new PartialCoursesVM
             {
-                PartialCoursesVM tempC = new PartialCoursesVM();
-                tempC.ID = c.ID;
-                tempC.Teacher = new PartialUserVM
+                ID = c.ID,
+                Teacher = new PartialUserVM
+            {
+                Id = c.TeacherID,
+                Email = c.Teacher.Email,
+                FirstName = c.Teacher.FirstName,
+                LastName = c.Teacher.LastName
+            },
+                Subject = new Subject
                 {
-                    Id = c.TeacherID,
-                    Email = c.Teacher.Email,
-                    FirstName = c.Teacher.FirstName,
-                    LastName = c.Teacher.LastName
-                };
-                tempC.TeacherID = c.TeacherID;
-                tempC.SubjectID = c.SubjectID;
-                tempC.Subject = new Subject { ID = c.Subject.ID, Name = c.Subject.Name };
-
-                _courses.Add(tempC);
-            }
-            return View(_courses);
+                    ID = c.Subject.ID,
+                    Name = c.Subject.Name
+                }
+            }));
         }
 
         // GET: Course/Details/5
@@ -48,8 +45,6 @@ namespace LMS_Project.Controllers
                 PartialCoursesVM cVM = new PartialCoursesVM
                 {
                     ID = c.ID,
-                    SubjectID = c.SubjectID,
-                    TeacherID = c.TeacherID,
                     Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name },
                     Teacher = new PartialUserVM
                     {
@@ -108,8 +103,6 @@ namespace LMS_Project.Controllers
                 {
                     Name = c.Name,
                     ID = c.ID,
-                    SubjectID = c.SubjectID,
-                    TeacherID = c.TeacherID,
                     Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name },
                     Teacher = new PartialUserVM
                     {
@@ -150,8 +143,6 @@ namespace LMS_Project.Controllers
                 PartialCoursesVM cVM = new PartialCoursesVM
                 {
                     ID = c.ID,
-                    SubjectID = c.SubjectID,
-                    TeacherID = c.TeacherID,
                     Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name },
                     Teacher = new PartialUserVM
                     {
