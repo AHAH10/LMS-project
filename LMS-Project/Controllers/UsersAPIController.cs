@@ -1,5 +1,6 @@
 ﻿using LMS_Project.Models.LMS;
 using LMS_Project.Repositories;
+using LMS_Project.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -9,28 +10,41 @@ namespace LMS_Project.Controllers
     [Authorize(Roles = "Admin")]
     public class UsersAPIController : ApiController
     {
+        UsersRepository repository = new UsersRepository();
+
         // GET: Users
-        public List<User> GetStudents()
+        public List<PartialUserVM> GetStudents()
         {
-            return new UsersRepository().Students().ToList();
+            return repository.Students().Select(s => new PartialUserVM
+            {
+                Id = s.Id,
+                FirstName = s.FirstName,
+                LastName = s.LastName,
+                BirthDate = s.BirthDate,
+                Email = s.Email,
+                PhoneNumber = s.PhoneNumber
+            }).ToList();
         }
+
         //To get User information about teacher - An Validate Token must be needed - Security
         [System.Web.Mvc.ValidateAntiForgeryToken]
-        public List<User> GetAvailableTeachers(int subjectID)
+        public List<PartialUserVM> GetAvailableTeachers(int subjectID)
         {
-            List<User> _teachers = new List<User>();
-            foreach (var t in new UsersRepository().AvailableTeachers(subjectID))
+            return repository.AvailableTeachers(subjectID).Select(t => new PartialUserVM
             {
-                //Some data shouldn't be sent! , that's why a new instane of the User is created
-                User tempT = new User();
-                tempT.Id = t.Id;
-                tempT.FirstName = t.FirstName;
-                tempT.LastName = t.LastName;
+                Id = t.Id,
+                FirstName = t.FirstName,
+                LastName = t.LastName
+            }).ToList();
+        }
 
-                _teachers.Add(tempT);
-                tempT = null;
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                repository.Dispose();
             }
-            return _teachers;
+            base.Dispose(disposing);
         }
     }
 }

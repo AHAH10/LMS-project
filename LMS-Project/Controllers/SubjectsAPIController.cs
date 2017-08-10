@@ -14,11 +14,26 @@ namespace LMS_Project.Controllers
         public List<Subject> GetAllSubjects() //VS 17 returns access violation if a User is returned through api, Courses contains a teacher...
         {
             List<Subject> _subjects = new List<Subject>();
-            foreach(Subject s in new SubjectsRepository().Subjects())
+            foreach (Subject s in new SubjectsRepository().Subjects())
             {
                 Subject tempS = new Subject();
                 tempS.ID = s.ID;
                 tempS.Name = s.Name;
+
+                if(s.Courses.Count()>0)
+                {
+                    List<Course> tList = new List<Course>();
+
+                    foreach(Course c in s.Courses)
+                    {
+                        Course cTemp = new Course();
+                        cTemp.ID = c.ID;
+                        tList.Add(cTemp);
+                        cTemp = null;
+                    }
+                    tempS.Courses = tList;
+                    tList = null;
+                }
                 _subjects.Add(tempS);
                 tempS = null;
             }

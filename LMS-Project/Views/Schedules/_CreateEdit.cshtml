@@ -59,27 +59,73 @@
 <table class="table" ng-start-waiting>
     <thead>
         <tr>
-            <th></th>
-            <th ng-click="orderBy('FirstName')">
-                First Name
+            <th>
+                <input type="checkbox"
+                       name="checkAll"
+                       ng-model="checkedAll"
+                       ng-click="checkAllVisibleStudents(visibleStudents)"
+                       style="top:0" />Check all
             </th>
-            <th ng-click="orderBy('LastName')">
-                Last Name
+            <th>
+                <p ng-click="orderBy('FirstName')">
+                    First Name
+                </p>
+                <input type="text"
+                       class="round-in-table"
+                       name="Search"
+                       ng-model="searchTerm.FirstName"
+                       placeholder="Free Search"
+                       style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
             </th>
-            <th ng-click="orderBy('BirthDate')">
-                Birth Date
+            <th>
+                <p ng-click="orderBy('LastName')">
+                    Last Name
+                </p>
+                <input type="text"
+                       class="round-in-table"
+                       name="Search"
+                       ng-model="searchTerm.LastName"
+                       placeholder="Free Search"
+                       style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
             </th>
-            <th ng-click="orderBy('Email')">
-                Email Address
+            <th>
+                <p ng-click="orderBy('BirthDate')">
+                    Birth Date
+                </p>
+                <input type="text"
+                       class="round-in-table"
+                       name="Search"
+                       ng-model="searchTerm.BirthDate"
+                       placeholder="Free Search"
+                       style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
             </th>
-            <th ng-click="orderBy('PhoneNumber')">
-                Phone Number
+            <th>
+                <p ng-click="orderBy('Email')">
+                    Email Address
+                </p>
+                <input type="text"
+                       class="round-in-table"
+                       name="Search"
+                       ng-model="searchTerm.Email"
+                       placeholder="Free Search"
+                       style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
+            </th>
+            <th>
+                <p ng-click="orderBy('PhoneNumber')">
+                    Phone Number
+                </p>
+                <input type="text"
+                       class="round-in-table"
+                       name="Search"
+                       ng-model="searchTerm.PhoneNumber"
+                       placeholder="Free Search"
+                       style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
             </th>
         </tr>
     </thead>
 
     <tbody>
-        <tr ng-repeat="student in students | orderBy:propertyName:reverse"
+        <tr ng-repeat="student in visibleStudents = (students | orderBy:propertyName:reverse | filter:searchTerm)"
             ng-test-end-waiting>
             <td class="editor-field">
                 <div class="form-group">

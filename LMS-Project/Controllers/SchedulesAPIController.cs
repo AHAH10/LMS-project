@@ -29,9 +29,19 @@ namespace LMS_Project.Controllers
             return result;
         }
 
-        public List<Schedule> Get()
+        public List<PartialScheduleVM> Get()
         {
-            return repository.Schedules().ToList();
+            return repository.Schedules().Select(s => new PartialScheduleVM
+            {
+                ID = s.ID,
+                Classroom = s.Classroom.Name + (s.Classroom.Remarks == null ? "" : " - " + s.Classroom.Remarks),
+                SubjectName = s.Course.Subject.Name,
+                TeacherName = s.Course.Teacher.ToString(),
+                WeekDay = s.WeekDay.ToString(),
+                BeginningTime = s.BeginningTime,
+                EndingTime = s.EndingTime,
+                IsDeletable = s.Course.Documents.Count == 0
+            }).ToList();
         }
 
         /// <summary>
@@ -59,6 +69,18 @@ namespace LMS_Project.Controllers
                 ClassroomID = schedule.ClassroomID,
                 Students = schedule.Students.Select(s => s.Id).ToArray()
             };
+        }
+
+        public bool IsDeletable(int? id)
+        {
+            if (id == null)
+                return false;
+
+            Schedule schedule = repository.Schedule(id);
+            if (schedule == null)
+                return false;
+
+            return schedule.Course.Documents.Count == 0;
         }
 
         // POST: api/SchedulesAPI
@@ -120,7 +142,7 @@ namespace LMS_Project.Controllers
             int nbStudents = model.Students.Where(s => s != null).Count();
             if (classroom.AmountStudentsMax < nbStudents)
                 return Request.CreateErrorResponse(HttpStatusCode.NotAcceptable,
-                                                   new HttpError("The selected classroom is too small for the amount of users.\\"+
+                                                   new HttpError("The selected classroom is too small for the amount of users.\\" +
                                                                  classroom.AmountStudentsMax.ToString() + " places for " + nbStudents.ToString() + " students."));
 
             return Request.CreateResponse(HttpStatusCode.OK);

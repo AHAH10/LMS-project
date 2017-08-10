@@ -13,6 +13,17 @@ namespace LMS_Project.Controllers
         // GET: News
         public ActionResult Index()
         {
+            if (User.IsInRole("Admin"))
+            {
+                return View(nRepo.News().ToList());
+            }
+
+            return RedirectToAction("PublicIndex");
+  
+        }
+        // GET: Public News
+        public ActionResult PublicIndex()
+        {
             return View(nRepo.News().ToList());
         }
         // GET: News/Details/5

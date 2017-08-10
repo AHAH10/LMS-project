@@ -1,4 +1,4 @@
-﻿@model LMS_Project.ViewModels.CoursesVM
+﻿@model LMS_Project.ViewModels.PartialCoursesVM
 
 <form action="/Courses/Create/" method="POST">
 
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.TeacherID, "Teacher", htmlAttributes: new { ng_click = "orderByTeacher('LastName')", @class = "control-label" })
+            @Html.LabelFor(model => model.Teacher.Id, "Teacher", htmlAttributes: new { ng_click = "orderByTeacher('LastName+FirstName')", @class = "control-label" })
             <div class="row">
                 <div class="col-md-10">
                     <select id="teachers" name="tID" class="form-control">
