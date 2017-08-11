@@ -31,5 +31,9 @@ namespace LMS_Project.Models.LMS
         public string Comment { get; set; }
 
         public virtual Document Document { get; set; }
+
+        [ForeignKey("Notification")]
+        public int? NotificationID { get; set; }
+        public virtual Notification Notification { get; set; }
     }
 }

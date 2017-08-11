@@ -71,6 +71,35 @@ namespace LMS_Project.Migrations
                 .Index(t => t.RoleID);
             
             CreateTable(
+                "dbo.Grades",
+                c => new
+                    {
+                        ID = c.Int(nullable: false),
+                        Date = c.DateTime(nullable: false),
+                        AGrade = c.Int(nullable: false),
+                        Comment = c.String(),
+                        NotificationID = c.Int(),
+                        User_Id = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => t.ID)
+                .ForeignKey("dbo.Documents", t => t.ID)
+                .ForeignKey("dbo.AspNetUsers", t => t.User_Id)
+                .Index(t => t.ID)
+                .Index(t => t.User_Id);
+            
+            CreateTable(
+                "dbo.Notifications",
+                c => new
+                    {
+                        ID = c.Int(nullable: false),
+                        SendingDate = c.DateTime(nullable: false),
+                        ReadingDate = c.DateTime(),
+                    })
+                .PrimaryKey(t => t.ID)
+                .ForeignKey("dbo.Grades", t => t.ID)
+                .Index(t => t.ID);
+            
+            CreateTable(
                 "dbo.AspNetUsers",
                 c => new
                     {
@@ -106,21 +135,6 @@ namespace LMS_Project.Migrations
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.AspNetUsers", t => t.UserId, cascadeDelete: true)
                 .Index(t => t.UserId);
-            
-            CreateTable(
-                "dbo.Grades",
-                c => new
-                    {
-                        ID = c.Int(nullable: false, identity: true),
-                        CourseGrade = c.Int(nullable: false),
-                        DocumentID = c.Int(nullable: false),
-                        User_Id = c.String(maxLength: 128),
-                    })
-                .PrimaryKey(t => t.ID)
-                .ForeignKey("dbo.Documents", t => t.DocumentID, cascadeDelete: true)
-                .ForeignKey("dbo.AspNetUsers", t => t.User_Id)
-                .Index(t => t.DocumentID)
-                .Index(t => t.User_Id);
             
             CreateTable(
                 "dbo.AspNetUserLogins",
@@ -214,14 +228,15 @@ namespace LMS_Project.Migrations
             DropForeignKey("dbo.Courses", "TeacherID", "dbo.AspNetUsers");
             DropForeignKey("dbo.Courses", "SubjectID", "dbo.Subjects");
             DropForeignKey("dbo.Documents", "RoleID", "dbo.AspNetRoles");
-            DropForeignKey("dbo.Documents", "UserID", "dbo.AspNetUsers");
+            DropForeignKey("dbo.Documents", "UploaderID", "dbo.AspNetUsers");
             DropForeignKey("dbo.UserSchedules", "Schedule_ID", "dbo.Schedules");
             DropForeignKey("dbo.UserSchedules", "User_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.News", "User_Id", "dbo.AspNetUsers");
             DropForeignKey("dbo.News", "PublisherID", "dbo.AspNetUsers");
             DropForeignKey("dbo.News", "EditedByID", "dbo.AspNetUsers");
             DropForeignKey("dbo.Grades", "User_Id", "dbo.AspNetUsers");
-            DropForeignKey("dbo.Grades", "DocumentID", "dbo.Documents");
+            DropForeignKey("dbo.Grades", "ID", "dbo.Documents");
+            DropForeignKey("dbo.Notifications", "ID", "dbo.Grades");
             DropForeignKey("dbo.Documents", "CourseID", "dbo.Courses");
             DropForeignKey("dbo.Schedules", "ClassroomID", "dbo.Classrooms");
             DropIndex("dbo.UserSchedules", new[] { "Schedule_ID" });
@@ -233,13 +248,14 @@ namespace LMS_Project.Migrations
             DropIndex("dbo.News", new[] { "EditedByID" });
             DropIndex("dbo.News", new[] { "PublisherID" });
             DropIndex("dbo.AspNetUserLogins", new[] { "UserId" });
-            DropIndex("dbo.Grades", new[] { "User_Id" });
-            DropIndex("dbo.Grades", new[] { "DocumentID" });
             DropIndex("dbo.AspNetUserClaims", new[] { "UserId" });
             DropIndex("dbo.AspNetUsers", "UserNameIndex");
+            DropIndex("dbo.Notifications", new[] { "ID" });
+            DropIndex("dbo.Grades", new[] { "User_Id" });
+            DropIndex("dbo.Grades", new[] { "ID" });
             DropIndex("dbo.Documents", new[] { "RoleID" });
             DropIndex("dbo.Documents", new[] { "CourseID" });
-            DropIndex("dbo.Documents", new[] { "UserID" });
+            DropIndex("dbo.Documents", new[] { "UploaderID" });
             DropIndex("dbo.Courses", new[] { "TeacherID" });
             DropIndex("dbo.Courses", new[] { "SubjectID" });
             DropIndex("dbo.Schedules", new[] { "ClassroomID" });
@@ -250,9 +266,10 @@ namespace LMS_Project.Migrations
             DropTable("dbo.AspNetUserRoles");
             DropTable("dbo.News");
             DropTable("dbo.AspNetUserLogins");
-            DropTable("dbo.Grades");
             DropTable("dbo.AspNetUserClaims");
             DropTable("dbo.AspNetUsers");
+            DropTable("dbo.Notifications");
+            DropTable("dbo.Grades");
             DropTable("dbo.Documents");
             DropTable("dbo.Courses");
             DropTable("dbo.Schedules");

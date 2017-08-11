@@ -53,7 +53,8 @@ namespace LMS_Project.Migrations
             #endregion
 
             #region Courses
-            Course course = new Course { Subject = subject, Name = "Group1" };
+            Course course = new Course { Subject = subject, Name = subject.Name + " # Group1" };
+            subject.Courses = new List<Course> { course };
             #endregion
 
             #region Users
