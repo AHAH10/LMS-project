@@ -31,7 +31,7 @@ namespace LMS_Project.Repositories
         {
             Add(new Notification
             {
-                Grade = new GradesRepository().Grade(gID),
+                Grade = db.Grades.FirstOrDefault(g => g.ID == gID),
                 SendingDate = DateTime.Now
             });
         }

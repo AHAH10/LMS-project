@@ -5,18 +5,28 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
 
 namespace LMS_Project.Controllers
 {
-    [Authorize(Roles = "Teacher , Admin")]
+    [Authorize(Roles = "Teacher , Admin, Student")]
     public class GradesController : Controller
     {
         private GradesRepository gRepo = new GradesRepository();
         // GET: Grades
         public ActionResult Index()
         {
-            return View(gRepo.Grades());
+            if (User.IsInRole("Admin"))
+            {
+                return View(gRepo.Grades().ToList());
+            }
+            else if (User.IsInRole("Teacher"))
+            {
+                return View(new UsersRepository().UserById(User.Identity.GetUserId()).Grades.ToList());
+            }
+            return View(gRepo.GetStudentGrades(User.Identity.GetUserId()));
+
         }
 
         // GET: Grades/Details/5
@@ -49,7 +59,7 @@ namespace LMS_Project.Controllers
         {
             try
             {
-                gRepo.Add(gradeVM);
+                gRepo.Add(gradeVM,User.Identity.GetUserId());
 
                 return RedirectToAction("UngradedAssignments", "Teachers");
             }
