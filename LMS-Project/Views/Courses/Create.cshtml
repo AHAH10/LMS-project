@@ -7,14 +7,7 @@
         <h4>Course</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, "Course Name", htmlAttributes: new { @class = "control-label" })
-            <div class="row">
-                <div class="col-md-10">
-                    <input type="text" name="name" required placeholder="Enter a name for the course here" class="form-control"/>
-                </div>
-            </div>
-        </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.Subject, "Subject", htmlAttributes: new { ng_click = "orderBySubject('Name')", @class = "control-label" })
             <div class="row">
