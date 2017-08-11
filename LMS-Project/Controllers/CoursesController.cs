@@ -58,7 +58,7 @@ namespace LMS_Project.Controllers
         // POST: Course/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(string name, string tID, string sID)
+        public ActionResult Create(string tID, string sID)
         {
             sID = sID.Substring(sID.IndexOf(':') + 1);
             try
@@ -66,7 +66,6 @@ namespace LMS_Project.Controllers
                 int sId = int.Parse(sID);
                 bool success = cRepo.Add(new Course
                 {
-                    Name = name,
                     SubjectID = sId,
                     TeacherID = tID
                 });
@@ -91,7 +90,6 @@ namespace LMS_Project.Controllers
             {
                 PartialCoursesVM cVM = new PartialCoursesVM
                 {
-                    Name = c.Name,
                     ID = c.ID,
                     Subject = new Subject { ID = c.SubjectID, Name = c.Subject.Name },
                     Teacher = new PartialUserVM
@@ -110,11 +108,11 @@ namespace LMS_Project.Controllers
         // POST: Course/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, string tID, int sID, string name)
+        public ActionResult Edit(int id, string tID, int sID)
         {
             // TODO: Add update logic here
 
-            Course cToEdit = new Course() { Name = name, SubjectID = sID, TeacherID = tID, ID = id };
+            Course cToEdit = new Course() { SubjectID = sID, TeacherID = tID, ID = id };
             bool success = cRepo.Edit(cToEdit);
             if (success)
             {

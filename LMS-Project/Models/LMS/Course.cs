@@ -9,9 +9,6 @@ namespace LMS_Project.Models.LMS
         [Key]
         public int ID { get; set; }
 
-        [Required]
-        public string Name { get; set; }
-
         [ForeignKey("Subject")]
         public int SubjectID { get; set; }
         public virtual Subject Subject { get; set; }
