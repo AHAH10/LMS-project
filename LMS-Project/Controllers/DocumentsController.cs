@@ -185,7 +185,7 @@ namespace LMS_Project.Controllers
 
             return courses.Select(c => new SelectListItem
             {
-                Text = c.Subject.Name + (fromAStudent ? " (" + c.Teacher.ToString() + ")" : string.Empty),
+                Text =c.Subject.Name + (fromAStudent ? " (" + c.Teacher.ToString() + ")" : string.Empty),
                 Value = c.ID.ToString()
             })
             .ToList();

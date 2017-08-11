@@ -10,10 +10,9 @@ namespace LMS_Project.Models.LMS
     public class Notification
     {
         [Key]
+        [ForeignKey("Grade")]
         public int ID { get; set; }
 
-        [ForeignKey("Grade")]
-        public int GradeID { get; set; }
         public virtual Grade Grade { get; set; }
 
         public DateTime SendingDate { get; set; }

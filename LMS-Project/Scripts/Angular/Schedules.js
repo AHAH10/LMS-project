@@ -1,5 +1,5 @@
 ﻿(function () {
-    var app = angular.module('schedule', ["checklist-model"]);
+    var app = angular.module('schedule', ["checklist-model", "waiting-load"]);
 
     app.controller('schedulesController', ['$scope', '$http', '$window', function ($scope, $http, $window) {
         //ScopeVariable for Collection Data
@@ -88,7 +88,7 @@
         }
 
         function displayCourse(course) {
-            return course.Suject.Name + ' - ' + course.Name + ' (' + course.Teacher.FirstName + ' ' + course.Teacher.LastName + ')';
+            return course.FullName + ' (' + course.Teacher.FirstName + ' ' + course.Teacher.LastName + ')';
         }
 
         function displayClassroom(classroom) {
@@ -128,6 +128,10 @@
             $http.get('/api/SchedulesAPI/Get')
                 .then(function (response) {
                     $scope.schedules = response.data;
+                })
+                .catch(function (errorMessage) {
+                    var mybody = angular.element(document).find('body');
+                    mybody.removeClass('waiting');
                 });
         }
 
@@ -144,7 +148,8 @@
                 $http.put('/api/SchedulesAPI/Put/', $scope.schedule)
                     .then(function (response) {
                         $window.location.href = "/Schedules/Index";
-                    }, function (error) {
+                    },
+                    function (error) {
                         var split = error.data['Message'].split("\\");
                         $scope.errorHead = '';
                         $scope.errorMessage = [];
@@ -168,7 +173,8 @@
                 $http.post('/api/SchedulesAPI/Post/', $scope.schedule)
                     .then(function (response) {
                         $window.location.href = "/Schedules/Index";
-                    }, function (error) {
+                    },
+                    function (error) {
                         var split = error.data['Message'].split("\\");
                         $scope.errorHead = '';
                         $scope.errorMessage = [];
@@ -198,10 +204,7 @@
         $scope.timeRange = [];
         $scope.initTimePicker = initTimePicker();
 
-        function initTimePicker(hourMin, minuteMin, hourMax, minuteMax) {
-            if (hourMax === undefined) {
-                hourMax = 19;
-            }
+        function initTimePicker() {
             // For hours dropdown (7 - 19)
             for (var h = 7; h < 20; h++) {
                 // For minutes dropdown (0 - 55)
@@ -216,22 +219,4 @@
             }
         }
     }]);
-
-    app.directive('ngStartWaiting', function () {
-        return function (scope, element, attrs) {
-            var mybody = angular.element(document).find('body');
-            mybody.addClass('waiting');
-        };
-    });
-
-    app.directive('ngTestEndWaiting', function () {
-        return function (scope, element, attrs) {
-            console.log(scope.length);
-
-            if (scope.length == 0 || scope.$last) {
-                var mybody = angular.element(document).find('body');
-                mybody.removeClass('waiting');
-            }
-        };
-    });
 }());

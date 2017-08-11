@@ -24,23 +24,13 @@
             @Html.DisplayFor(model => model.Subject.Name)
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, "Course name", htmlAttributes: new { @class = "control-label col-md-2" })
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-10">
-                <input name="name" value="@Html.ValueFor(m=>m.Name)" class="form-control" placeholder="Enter a course name here" required />
-            </div>
-        </div>
-
         <div class="form-group" ng-init="Start('@Html.ValueFor(m=>m.Subject.ID)')">
             @Html.LabelFor(model => model.Teacher, "Teacher", htmlAttributes: new { ng_click = "orderByMe('LastName')", @class = "control-label col-md-2" })
         </div>
 
         <div class="row">
             <div class="col-md-10">
-                <select name="tID" ng-model="selectedTeacher" class="form-control">
+                <select name="tID" class="form-control">
                     <option ng-repeat="teacher in teachers | orderBy:myOrderBy:reverse" value="{{teacher.Id}}">{{teacher.FirstName}} {{teacher.LastName}}</option>
                 </select>
                 <input type="hidden" name="sID" value="@Html.ValueFor(m=>m.Subject.ID)" />

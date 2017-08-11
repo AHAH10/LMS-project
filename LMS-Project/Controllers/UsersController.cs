@@ -1,6 +1,7 @@
 ﻿using LMS_Project.Models.LMS;
 using LMS_Project.Repositories;
 using LMS_Project.ViewModels;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -32,14 +33,26 @@ namespace LMS_Project.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
-            User user = repository.User(id);
+            User user = repository.UserById(id);
             if (user == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index");
             }
-            return View(user);
+            return View(new PartialUserVM
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                BirthDate = user.BirthDate,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Role = repository.GetUserRole(user.Id).Name,
+                Courses = user.Courses.Select(c=>c.Subject.Name).ToList(),
+                IsEditable = user.Id != User.Identity.GetUserId()
+            });
         }
 
         // GET: Users/Delete/5
@@ -49,7 +62,7 @@ namespace LMS_Project.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            User user = repository.User(id);
+            User user = repository.UserById(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -77,7 +90,7 @@ namespace LMS_Project.Controllers
             {
                 return RedirectToAction("Index");
             }
-            User user = repository.User(id);
+            User user = repository.UserById(id);
             if (user == null)
             {
                 return RedirectToAction("Index");

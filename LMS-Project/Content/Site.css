@@ -118,6 +118,20 @@ body::after {
     z-index: -1;
 }
 
+.round {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+}
+
+.round-in-table {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    padding: 6px 12px;
+    font-weight: normal;
+}
 
 .search {
     position: relative;

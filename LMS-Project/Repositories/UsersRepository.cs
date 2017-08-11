@@ -51,9 +51,14 @@ namespace LMS_Project.Repositories
                           .Any(r => r.Name.Equals(roleName)));
         }
 
-        public User User(string id)
+        public User UserById(string id)
         {
             return Users().FirstOrDefault(u => u.Id == id);
+        }
+
+        public User UserByUsername(string userName)
+        {
+            return Users().FirstOrDefault(u => string.Compare(u.UserName, userName, true) == 0);
         }
 
         /// <summary>
@@ -83,7 +88,7 @@ namespace LMS_Project.Repositories
 
         public void Delete(string id)
         {
-            User user = User(id);
+            User user = UserById(id);
             if (user != null)
             {
                 db.Users.Remove(user);
@@ -99,7 +104,7 @@ namespace LMS_Project.Repositories
         /// <returns></returns>
         public async Task ChangePassword(string userId, string newPassword = "")
         {
-            User user = User(userId);
+            User user = UserById(userId);
             if (user != null)
             {
                 UserStore<User> store = new UserStore<User>(db);
@@ -116,7 +121,7 @@ namespace LMS_Project.Repositories
 
         public Role GetUserRole(string userId)
         {
-            User user = User(userId);
+            User user = UserById(userId);
             Role role = null;
 
             foreach (IdentityUserRole userRole in user.Roles)
