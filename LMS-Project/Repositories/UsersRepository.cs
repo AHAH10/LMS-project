@@ -61,6 +61,11 @@ namespace LMS_Project.Repositories
             return Users().FirstOrDefault(u => string.Compare(u.UserName, userName, true) == 0);
         }
 
+        public IEnumerable<User> UsersByUsersname(string userName)
+        {
+            return Users().Where(u => (u.FirstName + u.LastName).ToLower().Contains(userName.ToLower()));
+        }
+
         /// <summary>
         /// Returns the list of available teachers for a given subject
         /// </summary>

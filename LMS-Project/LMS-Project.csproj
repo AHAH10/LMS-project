@@ -41,17 +41,29 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <HintPath>..\packages\EntityFramework.6.1.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.1\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -128,32 +140,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.AspNet.Identity.Core">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.1.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.EntityFramework">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.1.0\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="Owin">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin">
-      <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Owin.Host.SystemWeb">
       <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security">
-      <HintPath>..\packages\Microsoft.Owin.Security.3.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Owin.Security.Facebook">
       <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.0\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Owin.Security.Cookies">
-      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Security.OAuth">
       <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
@@ -188,9 +185,8 @@
     <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SchedulesAPIController.cs" />
-    <Compile Include="Controllers\SchedulesController.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Controllers\SchedulesController.cs" />
+    <Compile Include="Controllers\StudentsAPIController.cs" />
     <Compile Include="Controllers\StudentsController.cs" />
     <Compile Include="Controllers\SubjectsAPIController.cs" />
     <Compile Include="Controllers\SubjectsController.cs" />
@@ -201,111 +197,54 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountViewModels.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\IdentityModels.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\LMS\Classroom.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\LMS\Course.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\LMS\Document.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\LMS\Grade.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\LMS\News.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\LMS\Notification.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\LMS\Role.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\LMS\Schedule.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\LMS\Subject.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\LMS\User.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Models\ManageViewModels.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\LMS\Course.cs" />
+    <Compile Include="Models\LMS\Classroom.cs" />
+    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\LMS\Document.cs" />
+    <Compile Include="Models\LMS\Grade.cs" />
+    <Compile Include="Models\LMS\News.cs" />
+    <Compile Include="Models\LMS\Notification.cs" />
+    <Compile Include="Models\LMS\Role.cs" />
+    <Compile Include="Models\LMS\Schedule.cs" />
+    <Compile Include="Models\LMS\User.cs" />
+    <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\LMS\Subject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ClassroomsRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Repositories\CoursesRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Repositories\DocumentsRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Repositories\GradesRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Repositories\NewsRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Repositories\NotificationRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Repositories\RolesRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Repositories\SchedulesRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Repositories\SubjectsRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Repositories\UsersRepository.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="Repositories\ClassroomsRepository.cs" />
+    <Compile Include="Repositories\CoursesRepository.cs" />
+    <Compile Include="Repositories\DocumentsRepository.cs" />
+    <Compile Include="Repositories\GradesRepository.cs" />
+    <Compile Include="Repositories\NewsRepository.cs" />
+    <Compile Include="Repositories\NotificationRepository.cs" />
+    <Compile Include="Repositories\RolesRepository.cs" />
+    <Compile Include="Repositories\SchedulesRepository.cs" />
+    <Compile Include="Repositories\SubjectsRepository.cs" />
+    <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="ViewModels\ChangePasswordVM.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ViewModels\CreateEditScheduleVM.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ViewModels\CreateScheduleVM.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ViewModels\DetailedScheduleVM.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ViewModels\DocumentsScheduleVM.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ViewModels\EnumWeekDayVM.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ViewModels\ExtendedUserVM.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="ViewModels\ChangePasswordVM.cs" />
+    <Compile Include="ViewModels\CreateEditScheduleVM.cs" />
+    <Compile Include="ViewModels\CreateScheduleVM.cs" />
+    <Compile Include="ViewModels\DetailedScheduleVM.cs" />
+    <Compile Include="ViewModels\DocumentsScheduleVM.cs" />
+    <Compile Include="ViewModels\EnumWeekDayVM.cs" />
+    <Compile Include="ViewModels\ExtendedUserVM.cs" />
+    <Compile Include="ViewModels\LastLessonVM.cs" />
     <Compile Include="ViewModels\PartialCoursesVM.cs" />
     <Compile Include="ViewModels\PartialScheduleVM.cs" />
     <Compile Include="ViewModels\PartialUserVM.cs" />
-    <Compile Include="ViewModels\UploadDocumentVM.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="ViewModels\UsersScheduleVM.cs">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="ViewModels\UploadDocumentVM.cs" />
+    <Compile Include="ViewModels\UsersScheduleVM.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-LMS-Project-20170724014225.mdf" />
+    <Content Include="App_Data\aspnet-LMS-Project-20170724014225_log.ldf">
+      <DependentUpon>aspnet-LMS-Project-20170724014225.mdf</DependentUpon>
+    </Content>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\img\learning.jpg" />
+    <Content Include="Content\bootstrap-Slate.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -315,12 +254,16 @@
     <Content Include="Scripts\Angular\MainAngular.js" />
     <Content Include="Scripts\Angular\Schedules.js" />
     <Content Include="Scripts\Angular\Subjects.js" />
+    <Content Include="Scripts\Angular\Students.js" />
+    <Content Include="Scripts\Angular\Users.js" />
+    <Content Include="Scripts\Angular\waiting-load.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\checklist-model.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -328,9 +271,21 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
-    <None Include="Scripts\_references.js" />
+    <Content Include="Scripts\_references.js" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
-    <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
@@ -341,91 +296,79 @@
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />
     <Content Include="Views\Account\VerifyCode.cshtml" />
-    <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
-    <Content Include="Views\Classrooms\Create.cshtml" />
-    <Content Include="Views\Classrooms\Delete.cshtml" />
-    <Content Include="Views\Classrooms\Details.cshtml" />
-    <Content Include="Views\Classrooms\Edit.cshtml" />
-    <Content Include="Views\Classrooms\Index.cshtml" />
-    <Content Include="Views\Courses\Create.cshtml" />
-    <Content Include="Views\Courses\Delete.cshtml" />
-    <Content Include="Views\Courses\Details.cshtml" />
-    <Content Include="Views\Courses\Edit.cshtml" />
-    <Content Include="Views\Courses\Index.cshtml" />
-    <Content Include="Views\Documents\Delete.cshtml" />
-    <Content Include="Views\Documents\MyDocuments.cshtml" />
-    <Content Include="Views\Documents\UploadDocumentForAssignments.cshtml" />
-    <Content Include="Views\Documents\UploadDocumentForClassroom.cshtml" />
-    <Content Include="Views\Documents\UploadDocumentForMyself.cshtml" />
-    <Content Include="Views\Documents\UploadDocumentForSpecificCourse.cshtml" />
-    <Content Include="Views\Documents\_UploadDocument.cshtml" />
-    <Content Include="Views\Grades\Delete.cshtml" />
-    <Content Include="Views\Grades\Details.cshtml" />
-    <Content Include="Views\Grades\Grade.cshtml" />
-    <Content Include="Views\Grades\Index.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Manage\AddPhoneNumber.cshtml" />
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\Index.cshtml" />
     <Content Include="Views\Manage\ManageLogins.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
-    <Content Include="Views\News\Create.cshtml" />
-    <Content Include="Views\News\Delete.cshtml" />
-    <Content Include="Views\News\Details.cshtml" />
-    <Content Include="Views\News\Edit.cshtml" />
-    <Content Include="Views\News\Index.cshtml" />
-    <Content Include="Views\Notifications\Create.cshtml" />
-    <Content Include="Views\Notifications\Delete.cshtml" />
-    <Content Include="Views\Notifications\Details.cshtml" />
-    <Content Include="Views\Notifications\Edit.cshtml" />
-    <Content Include="Views\Notifications\Index.cshtml" />
+    <Content Include="Views\Shared\Lockout.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Classrooms\Create.cshtml" />
+    <Content Include="Views\Classrooms\Delete.cshtml" />
+    <Content Include="Views\Classrooms\Details.cshtml" />
+    <Content Include="Views\Classrooms\Edit.cshtml" />
+    <Content Include="Views\Classrooms\Index.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
+    <Content Include="Views\Users\Details.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
+    <Content Include="Views\Shared\_LayoutStudent.cshtml" />
+    <Content Include="Views\Shared\_LayoutTeacher.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Delete.cshtml" />
     <Content Include="Views\Roles\Details.cshtml" />
     <Content Include="Views\Roles\Edit.cshtml" />
     <Content Include="Views\Roles\Index.cshtml" />
-    <Content Include="Views\Schedules\Create.cshtml">
-      <SubType>Code</SubType>
-    </Content>
+    <Content Include="Views\Users\ResetPassword.cshtml" />
+    <Content Include="Views\Courses\Create.cshtml" />
+    <Content Include="Views\Courses\Details.cshtml" />
+    <Content Include="Views\Courses\Index.cshtml" />
+    <Content Include="Views\Documents\Delete.cshtml" />
+    <Content Include="Views\Subjects\Create.cshtml" />
+    <Content Include="Views\Subjects\Index.cshtml" />
+    <Content Include="Views\Schedules\Create.cshtml" />
     <Content Include="Views\Schedules\Delete.cshtml" />
     <Content Include="Views\Schedules\Details.cshtml" />
-    <Content Include="Views\Schedules\Documents.cshtml" />
     <Content Include="Views\Schedules\Edit.cshtml" />
     <Content Include="Views\Schedules\Index.cshtml" />
-    <Content Include="Views\Schedules\_CreateEdit.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_Footer.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
-    <Content Include="Views\Shared\_LayoutStudent.cshtml" />
-    <Content Include="Views\Shared\_LayoutTeacher.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Students\Notifications.cshtml" />
-    <Content Include="Views\Students\Planning.cshtml" />
-    <Content Include="Views\Subjects\Create.cshtml" />
+    <Content Include="Views\Courses\Delete.cshtml" />
+    <Content Include="Views\Courses\Edit.cshtml" />
+    <Content Include="Views\Documents\UploadDocumentForMyself.cshtml" />
     <Content Include="Views\Subjects\Delete.cshtml" />
     <Content Include="Views\Subjects\Details.cshtml" />
     <Content Include="Views\Subjects\Edit.cshtml" />
-    <Content Include="Views\Subjects\Index.cshtml" />
+    <Content Include="Views\Documents\_UploadDocument.cshtml" />
+    <Content Include="Views\Documents\UploadDocumentForSpecificCourse.cshtml" />
+    <Content Include="Views\Documents\UploadDocumentForAssignments.cshtml" />
+    <Content Include="Views\Documents\UploadDocumentForClassroom.cshtml" />
+    <Content Include="Views\News\Create.cshtml" />
+    <Content Include="Views\News\Delete.cshtml" />
+    <Content Include="Views\News\Details.cshtml" />
+    <Content Include="Views\News\Edit.cshtml" />
+    <Content Include="Views\News\Index.cshtml" />
+    <Content Include="Views\News\PublicIndex.cshtml" />
+    <Content Include="Views\Documents\MyDocuments.cshtml" />
+    <Content Include="Views\Grades\Delete.cshtml" />
+    <Content Include="Views\Grades\Details.cshtml" />
+    <Content Include="Views\Grades\Grade.cshtml" />
+    <Content Include="Views\Grades\Index.cshtml" />
+    <Content Include="Views\Notifications\Create.cshtml" />
+    <Content Include="Views\Notifications\Delete.cshtml" />
+    <Content Include="Views\Notifications\Details.cshtml" />
+    <Content Include="Views\Notifications\Edit.cshtml" />
+    <Content Include="Views\Notifications\Index.cshtml" />
+    <Content Include="Views\Schedules\_CreateEdit.cshtml" />
+    <Content Include="Views\Schedules\Documents.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Students\Notifications.cshtml" />
+    <Content Include="Views\Students\Planning.cshtml" />
     <Content Include="Views\Teachers\DetailedSchedule.cshtml" />
     <Content Include="Views\Teachers\Planning.cshtml" />
     <Content Include="Views\Teachers\UngradedAssignments.cshtml" />
-    <Content Include="Views\Users\Delete.cshtml" />
-    <Content Include="Views\Users\Details.cshtml" />
-    <Content Include="Views\Users\Index.cshtml" />
-    <Content Include="Views\Users\ResetPassword.cshtml" />
-    <Content Include="Views\Web.config" />
-    <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Web.config" />
-    <Content Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </Content>
-    <Content Include="Views\News\PublicIndex.cshtml" />
+    <Content Include="Views\Students\LastLesson.cshtml" />
+    <Content Include="Views\Students\DetailedSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -433,12 +376,8 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

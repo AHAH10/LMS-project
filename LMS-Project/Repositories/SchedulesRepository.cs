@@ -70,7 +70,7 @@ namespace LMS_Project.Repositories
                                                           schStudent => schStudent.Id,
                                                           student => student.Id,
                                                           (schStudent, student) => student)
-                              .Any(student => student.Id.Equals(studentId)))
+                                                    .Any(student => student.Id.Equals(studentId)))
                               .OrderBy(s => s.BeginningTime)
                               .FirstOrDefault(s => s.WeekDay == weekDay &&
                                                    (string.Compare(s.BeginningTime, beginningTime) != 1 && string.Compare(s.EndingTime, beginningTime) != -1 ||
@@ -110,13 +110,15 @@ namespace LMS_Project.Repositories
         /// <param name="studentId">Student ID</param>
         /// <param name="id">Schedule ID</param>
         /// <returns></returns>
-        internal bool TakesPart(string studentId, int id)
+        public bool TakesPart(string studentId, int id)
         {
-            return Schedules().Where(s => s.Students.Join(db.LMSUsers,
+            return Schedules().Where(s => s.ID == id &&
+                                          s.Students.Join(db.LMSUsers,
                                                           schStudent => schStudent.Id,
                                                           student => student.Id,
                                                           (schStudent, student) => student)
-                              .Any(student => student.Id.Equals(studentId))).Count() > 0;
+                                                    .Any(student => student.Id.Equals(studentId)))
+                              .Count() > 0;
         }
 
         /// <summary>
@@ -125,7 +127,7 @@ namespace LMS_Project.Repositories
         /// <param name="teacherId">Teacher ID</param>
         /// <param name="id">Schedule ID</param>
         /// <returns></returns>
-        internal bool IsInCharge(string teacherId, int id)
+        public bool IsInCharge(string teacherId, int id)
         {
             Schedule schedule = Schedule(id);
 
@@ -133,6 +135,57 @@ namespace LMS_Project.Repositories
                 return false;
 
             return schedule.Course.TeacherID == teacherId;
+        }
+
+        /// <summary>
+        /// Returns the last lesson (if any) for tthe day, for a given student
+        /// </summary>
+        /// <param name="studentId">Student's ID</param>
+        /// <param name="weekDay">Day of the week</param>
+        /// <returns></returns>
+        public Schedule LastLesson(string studentId, WeekDays weekDay)
+        {
+            return Schedules().Where(s => s.WeekDay == weekDay &&
+                                          s.Students.Join(db.LMSUsers,
+                                                          schStudent => schStudent.Id,
+                                                          student => student.Id,
+                                                          (schStudent, student) => student)
+                                                    .Any(student => student.Id.Equals(studentId)))
+                              .OrderByDescending(s => s.EndingTime)
+                              .FirstOrDefault();
+        }
+
+        public WeekDays GetCurrentDay()
+        {
+            WeekDays weekDay;
+
+            // Cast DayOfWeek into WeekDays: DayOfWeek starts at Sunday, whereas Weekdays starts at Monday
+            switch (DateTime.Now.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    weekDay = WeekDays.Monday;
+                    break;
+                case DayOfWeek.Tuesday:
+                    weekDay = WeekDays.Tuesday;
+                    break;
+                case DayOfWeek.Wednesday:
+                    weekDay = WeekDays.Wednesday;
+                    break;
+                case DayOfWeek.Thursday:
+                    weekDay = WeekDays.Thursday;
+                    break;
+                case DayOfWeek.Friday:
+                    weekDay = WeekDays.Friday;
+                    break;
+                case DayOfWeek.Saturday:
+                    weekDay = WeekDays.Saturday;
+                    break;
+                default:
+                    weekDay = WeekDays.Sunday;
+                    break;
+            }
+
+            return weekDay;
         }
 
         public void Add(Schedule schedule)

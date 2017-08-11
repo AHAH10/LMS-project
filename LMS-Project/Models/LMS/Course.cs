@@ -12,7 +12,7 @@ namespace LMS_Project.Models.LMS
         [ForeignKey("Subject")]
         public int SubjectID { get; set; }
         public virtual Subject Subject { get; set; }
-        
+
         [ForeignKey("Teacher")]
         public string TeacherID { get; set; }
         public virtual User Teacher { get; set; }

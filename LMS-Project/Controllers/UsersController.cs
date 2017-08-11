@@ -50,7 +50,7 @@ namespace LMS_Project.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Role = repository.GetUserRole(user.Id).Name,
-                Courses = user.Courses.Select(c=>c.Subject.Name).ToList(),
+                Courses = user.Courses.Select(c => c.Subject.Name).ToList(),
                 IsEditable = user.Id != User.Identity.GetUserId()
             });
         }

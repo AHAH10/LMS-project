@@ -1,0 +1,43 @@
+﻿@model IEnumerable<LMS_Project.ViewModels.PartialScheduleVM>
+
+@{
+    ViewBag.Title = "Detailed Schedule";
+}
+
+<h2>Detailed Schedule for @ViewBag.StudentsName on @Model.First().WeekDay</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SubjectName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TeacherName)
+        </th>
+        <th>
+            @Html.DisplayName("Time")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Classroom)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SubjectName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TeacherName)
+            </td>
+            <td>
+                @Html.DisplayName(item.BeginningTime + " - "+ item.EndingTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Classroom)
+            </td>
+        </tr>
+    }
+
+</table>
