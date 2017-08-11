@@ -32,6 +32,9 @@ namespace LMS_Project
             bundles.Add(new ScriptBundle("~/bundles/angularusers").Include(
                         "~/Scripts/Angular/Users.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/angularstudents").Include(
+                        "~/Scripts/Angular/Students.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(

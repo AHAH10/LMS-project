@@ -17,7 +17,5 @@ namespace LMS_Project.Models.LMS
 
         public DateTime SendingDate { get; set; }
         public DateTime? ReadingDate { get; set; }
-
-
     }
 }

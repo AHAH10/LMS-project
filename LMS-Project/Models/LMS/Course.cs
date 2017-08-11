@@ -17,6 +17,9 @@ namespace LMS_Project.Models.LMS
         {
             get
             {
+                if (Name == null)
+                    return string.Empty;
+
                 return Subject.Name + " - " + Name;
             }
             private set { }

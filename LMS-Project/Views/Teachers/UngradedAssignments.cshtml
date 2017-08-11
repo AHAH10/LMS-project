@@ -30,7 +30,7 @@
                 @Html.ActionLink(item.DocumentName, "Download", "Documents", new { id = item.ID }, null)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Course.FullName)
+                @Html.DisplayFor(modelItem => item.Course.Subject.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.UploadingDate)

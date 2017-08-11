@@ -7,7 +7,7 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
-    <meta name="description" content="The description of my page"/>
+    <meta name="description" content="The description of my page" />
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -21,10 +21,12 @@
                 @Html.ActionLink("News", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Search 1", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Search 2", "About", "Home")</li>
-                </ul>
+                <form id="frmsearch" action="~/Students/LastLesson" methond="get">
+                    <ul class="nav navbar-nav">
+                        <li class="search" style="margin:10px 10px;"><input class="round" type="text" name="studentName" placeholder="Enter student's name" /></li>
+                        <li style="margin:10px 10px;"><input type="submit" class="btn btn-default" /></li>
+                    </ul>
+                </form>
                 @Html.Partial("_LoginPartial")
             </div>
         </div>

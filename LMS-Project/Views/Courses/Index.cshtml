@@ -16,7 +16,7 @@
     </div>
     <table class="table">
         <tr>
-            <th ng-click="orderByMe('Name')"><b>Course Name</b></th>
+            <th ng-click="orderByMe('FullName')"><b>Course Name</b></th>
             <th ng-click="orderByMe('Subject.Name')"><b>Subject</b></th>
             <th ng-click="orderByMe('Teacher.LastName+Teacher.FirstName')"><b>Teacher</b></th>
         </tr>
@@ -31,7 +31,7 @@
             url3 = HttpUtility.UrlDecode(url3);
         }
         <tr ng-repeat="course in courses | orderBy:myOrderBy:reverse | filter:searchTerm ">
-            <td>{{course.Name}}</td>
+            <td>{{course.FullName}}</td>
             <td>{{course.Subject.Name}}</td>
             <td>{{course.Teacher.FirstName}} {{course.Teacher.LastName}}</td>
             <td>

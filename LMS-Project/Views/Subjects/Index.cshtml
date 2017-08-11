@@ -28,9 +28,9 @@
         <tr ng-repeat="subject in subjects | orderBy:myOrderBy:reverse | filter:searchTerm ">
             <td>{{subject.Name}}</td>
             <td>
-                <a data-ng-href="@url1"  ng-if="subject.Courses==null">Edit</a> |
-                <a data-ng-href="@url2">Details</a> |
-                <a data-ng-href="@url3" ng-if="subject.Courses==null">Remove</a>
+                <span ng-show="subject.Courses == null"><a data-ng-href="@url1">Edit</a> |</span>
+                <a data-ng-href="@url2">Details</a>
+                <span ng-show="subject.Courses==null"> | <a data-ng-href="@url3">Remove</a>                </span> 
             </td>
         </tr>
 

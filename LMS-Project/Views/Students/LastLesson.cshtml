@@ -1,0 +1,58 @@
+﻿@{
+    ViewBag.Title = "Last Lesson";
+}
+
+<h2>Last Lesson</h2>
+
+<div class="form-horizontal"
+     ng-app="student"
+     ng-controller="studentsController"
+     ng-init="getStudents(@Json.Encode(ViewBag.UsersName))">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <p ng-click="orderBy('Student.LastName+Student.FirstName')">
+                        Student's Name
+                    </p>
+                </th>
+                <th>
+                    <p ng-click="orderBy('Subject')">
+                        Subject
+                    </p>
+                </th>
+                <th>
+                    <p ng-click="orderBy('Classroom.Name')">
+                        Classroom
+                    </p>
+                </th>
+                <th>
+                    <p ng-click="orderBy('EndingTime')">
+                        Ending Time
+                    </p>
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="student in students | orderBy:propertyName:reverse">
+                <td>
+                    <a href="/Students/DetailedSchedule?studentId={{student.Student.Id}}">
+                        {{student.Student.FirstName}} {{student.Student.LastName}}
+                    </a>
+                </td>
+                <td>{{student.SubjectName}}</td>
+                <td>
+                    {{student.Classroom.Name}} ({{student.Classroom.Location}})
+                </td>
+                <td>{{student.EndingTime}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/angularstudents")
+}
