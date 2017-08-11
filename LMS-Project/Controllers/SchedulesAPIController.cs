@@ -35,7 +35,7 @@ namespace LMS_Project.Controllers
             {
                 ID = s.ID,
                 Classroom = s.Classroom.Name + (s.Classroom.Remarks == null ? "" : " - " + s.Classroom.Remarks),
-                SubjectName = s.Course.Subject.Name,
+                CourseName = s.Course.FullName,
                 TeacherName = s.Course.Teacher.ToString(),
                 WeekDay = s.WeekDay.ToString(),
                 BeginningTime = s.BeginningTime,
@@ -198,7 +198,7 @@ namespace LMS_Project.Controllers
 
                 if (availability != null && availability.ID != schedule.ID)
                 {
-                    return new List<string> { new UsersRepository().User(studentId).ToString() + " is not available at the given day and times:",
+                    return new List<string> { new UsersRepository().UserById(studentId).ToString() + " is not available at the given day and times:",
                                               availability.ToString() };
                 }
             }

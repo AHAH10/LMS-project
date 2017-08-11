@@ -4,14 +4,17 @@
     ViewBag.Title = "Edit";
 }
 
-<h2>Edit</h2>
+<h2>Edit @Model.User.UserName</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
+    <div class="alert-danger form-group">
+        <p style="margin:0">@ViewBag.ErrorMessage</p>
+    </div>
+
     <div class="form-horizontal">
-        <h4>@Model.User.UserName</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.User.Id)

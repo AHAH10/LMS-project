@@ -174,6 +174,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ClassroomsAPIController.cs" />
     <Compile Include="Controllers\ClassroomsController.cs" />
     <Compile Include="Controllers\CoursesAPIController.cs" />
     <Compile Include="Controllers\CoursesController.cs" />
@@ -182,17 +183,18 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
+    <Compile Include="Controllers\NotificationsController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
+    <Compile Include="Controllers\SchedulesAPIController.cs" />
     <Compile Include="Controllers\SchedulesController.cs" />
+    <Compile Include="Controllers\StudentsController.cs" />
+    <Compile Include="Controllers\SubjectsAPIController.cs" />
     <Compile Include="Controllers\SubjectsController.cs" />
+    <Compile Include="Controllers\TeachersController.cs" />
+    <Compile Include="Controllers\UsersAPIController.cs" />
     <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
-    <Compile Include="Helpers\RoleHelpers.cs" />
-    <Compile Include="Migrations\201708030948390_Initial.cs" />
-    <Compile Include="Migrations\201708030948390_Initial.Designer.cs">
-      <DependentUpon>201708030948390_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -202,6 +204,7 @@
     <Compile Include="Models\LMS\Document.cs" />
     <Compile Include="Models\LMS\Grade.cs" />
     <Compile Include="Models\LMS\News.cs" />
+    <Compile Include="Models\LMS\Notification.cs" />
     <Compile Include="Models\LMS\Role.cs" />
     <Compile Include="Models\LMS\Schedule.cs" />
     <Compile Include="Models\LMS\User.cs" />
@@ -213,15 +216,24 @@
     <Compile Include="Repositories\DocumentsRepository.cs" />
     <Compile Include="Repositories\GradesRepository.cs" />
     <Compile Include="Repositories\NewsRepository.cs" />
+    <Compile Include="Repositories\NotificationRepository.cs" />
     <Compile Include="Repositories\RolesRepository.cs" />
     <Compile Include="Repositories\SchedulesRepository.cs" />
     <Compile Include="Repositories\SubjectsRepository.cs" />
     <Compile Include="Repositories\UsersRepository.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\ChangePasswordVM.cs" />
+    <Compile Include="ViewModels\CreateEditScheduleVM.cs" />
     <Compile Include="ViewModels\CreateScheduleVM.cs" />
+    <Compile Include="ViewModels\DetailedScheduleVM.cs" />
+    <Compile Include="ViewModels\DocumentsScheduleVM.cs" />
+    <Compile Include="ViewModels\EnumWeekDayVM.cs" />
     <Compile Include="ViewModels\ExtendedUserVM.cs" />
+    <Compile Include="ViewModels\PartialCoursesVM.cs" />
+    <Compile Include="ViewModels\PartialScheduleVM.cs" />
+    <Compile Include="ViewModels\PartialUserVM.cs" />
     <Compile Include="ViewModels\UploadDocumentVM.cs" />
+    <Compile Include="ViewModels\UsersScheduleVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\aspnet-LMS-Project-20170724014225.mdf" />
@@ -238,9 +250,14 @@
     <Content Include="Scripts\Angular\angular.min.js" />
     <Content Include="Scripts\Angular\Courses.js" />
     <Content Include="Scripts\Angular\MainAngular.js" />
+    <Content Include="Scripts\Angular\Schedules.js" />
+    <Content Include="Scripts\Angular\Subjects.js" />
+    <Content Include="Scripts\Angular\Users.js" />
+    <Content Include="Scripts\Angular\waiting-load.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\checklist-model.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -263,9 +280,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -299,7 +313,6 @@
     <Content Include="Views\Shared\_LayoutAdmin.cshtml" />
     <Content Include="Views\Shared\_LayoutStudent.cshtml" />
     <Content Include="Views\Shared\_LayoutTeacher.cshtml" />
-    <Content Include="Views\Users\EditorTemplates\Roles.cshtml" />
     <Content Include="Views\Roles\Create.cshtml" />
     <Content Include="Views\Roles\Delete.cshtml" />
     <Content Include="Views\Roles\Details.cshtml" />
@@ -309,11 +322,7 @@
     <Content Include="Views\Courses\Create.cshtml" />
     <Content Include="Views\Courses\Details.cshtml" />
     <Content Include="Views\Courses\Index.cshtml" />
-    <Content Include="Views\Documents\Create.cshtml" />
     <Content Include="Views\Documents\Delete.cshtml" />
-    <Content Include="Views\Documents\Details.cshtml" />
-    <Content Include="Views\Documents\Edit.cshtml" />
-    <Content Include="Views\Documents\Index.cshtml" />
     <Content Include="Views\Subjects\Create.cshtml" />
     <Content Include="Views\Subjects\Index.cshtml" />
     <Content Include="Views\Schedules\Create.cshtml" />
@@ -336,9 +345,25 @@
     <Content Include="Views\News\Details.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
-    <Content Include="Views\Schedules\_StudentsSchedule.cshtml" />
-    <Content Include="Views\Schedules\ViewSchedule.cshtml" />
     <Content Include="Views\News\PublicIndex.cshtml" />
+    <Content Include="Views\Documents\MyDocuments.cshtml" />
+    <Content Include="Views\Grades\Delete.cshtml" />
+    <Content Include="Views\Grades\Details.cshtml" />
+    <Content Include="Views\Grades\Grade.cshtml" />
+    <Content Include="Views\Grades\Index.cshtml" />
+    <Content Include="Views\Notifications\Create.cshtml" />
+    <Content Include="Views\Notifications\Delete.cshtml" />
+    <Content Include="Views\Notifications\Details.cshtml" />
+    <Content Include="Views\Notifications\Edit.cshtml" />
+    <Content Include="Views\Notifications\Index.cshtml" />
+    <Content Include="Views\Schedules\_CreateEdit.cshtml" />
+    <Content Include="Views\Schedules\Documents.cshtml" />
+    <Content Include="Views\Shared\_Footer.cshtml" />
+    <Content Include="Views\Students\Notifications.cshtml" />
+    <Content Include="Views\Students\Planning.cshtml" />
+    <Content Include="Views\Teachers\DetailedSchedule.cshtml" />
+    <Content Include="Views\Teachers\Planning.cshtml" />
+    <Content Include="Views\Teachers\UngradedAssignments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -346,14 +371,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Grades\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201708030948390_Initial.resx">
-      <DependentUpon>201708030948390_Initial.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

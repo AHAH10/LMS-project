@@ -12,10 +12,20 @@ namespace LMS_Project.Models.LMS
         [Required]
         public string Name { get; set; }
 
+        [NotMapped]
+        public string FullName
+        {
+            get
+            {
+                return Subject.Name + " - " + Name;
+            }
+            private set { }
+        }
+
         [ForeignKey("Subject")]
         public virtual int SubjectID { get; set; }
         public virtual Subject Subject { get; set; }
-        
+
         [ForeignKey("Teacher")]
         public virtual string TeacherID { get; set; }
         public virtual User Teacher { get; set; }

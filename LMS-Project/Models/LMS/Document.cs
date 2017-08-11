@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNet.Identity.EntityFramework;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web;
 
 namespace LMS_Project.Models.LMS
 {
@@ -28,9 +24,7 @@ namespace LMS_Project.Models.LMS
 
         [Required]
         [ForeignKey("Uploader")]
-        [Display(Name = "By")]
         public string UploaderID { get; set; }
-
         [Display(Name = "By")]
         public virtual User Uploader { get; set; }
 

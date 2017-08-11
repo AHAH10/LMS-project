@@ -1,6 +1,4 @@
-﻿@model IEnumerable<LMS_Project.ViewModels.ExtendedUserVM>
-
-@{
+﻿@{
     ViewBag.Title = "Users";
 }
 
@@ -9,63 +7,121 @@
 <p>
     @Html.ActionLink("Create New User", "Register", "Account", null, null)
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.User.UserName)
-        </th>
-        <th>
-            @Html.DisplayName("First Name")
-        </th>
-        <th>
-            @Html.DisplayName("Last Name")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.Email)
-        </th>
-        <th>
-            @Html.DisplayName("Phone Number")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.User.BirthDate)
-        </th>
-        <th>
-            @Html.DisplayName("Role")
-        </th>
-        <th></th>
-    </tr>
 
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.BirthDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoleName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit","Account", new { id = item.User.Id }, null) |
-                @Html.ActionLink("Details", "Details", new { id = item.User.Id }) |
-                @Html.ActionLink("Reset password", "ResetPassword", new { id = item.User.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.User.Id })
-            </td>
-        </tr>
-    }
+<div class="form-horizontal"
+     ng-app="user"
+     ng-controller="usersController"
+     ng-init="getUsers()">
+    <table class="table" my-start-waiting>
+        <thead>
+            <tr>
+                <th>
+                    <p ng-click="orderBy('UserName')">
+                        Username
+                    </p>
+                    <input type="text"
+                           class="round-in-table"
+                           name="Search"
+                           ng-model="searchTerm.UserName"
+                           placeholder="Free Search"
+                           style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
+                </th>
+                <th>
+                    <p ng-click="orderBy('FirstName')">
+                        First Name
+                    </p>
+                    <input type="text"
+                           class="round-in-table"
+                           name="Search"
+                           ng-model="searchTerm.FirstName"
+                           placeholder="Free Search"
+                           style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
+                </th>
+                <th>
+                    <p ng-click="orderBy('LastName')">
+                        Last Name
+                    </p>
+                    <input type="text"
+                           class="round-in-table"
+                           name="Search"
+                           ng-model="searchTerm.LastName"
+                           placeholder="Free Search"
+                           style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
+                </th>
+                <th>
+                    <p ng-click="orderBy('BirthDate')">
+                        Birth Date
+                    </p>
+                    <input type="text"
+                           class="round-in-table"
+                           name="Search"
+                           ng-model="searchTerm.BirthDate"
+                           placeholder="Free Search"
+                           style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
+                </th>
+                <th>
+                    <p ng-click="orderBy('Email')">
+                        Email Address
+                    </p>
+                    <input type="text"
+                           class="round-in-table"
+                           name="Search"
+                           ng-model="searchTerm.Email"
+                           placeholder="Free Search"
+                           style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
+                </th>
+                <th>
+                    <p ng-click="orderBy('PhoneNumber')">
+                        Phone Number
+                    </p>
+                    <input type="text"
+                           class="round-in-table"
+                           name="Search"
+                           ng-model="searchTerm.PhoneNumber"
+                           placeholder="Free Search"
+                           style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
+                </th>
+                <th>
+                    <p ng-click="orderBy('Role')">
+                        Role
+                    </p>
+                    <input type="text"
+                           class="round-in-table"
+                           name="Search"
+                           ng-model="searchTerm.Role"
+                           placeholder="Free Search"
+                           style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
+                </th>
+                <th></th>
+            </tr>
+        </thead>
 
-</table>
+        <tbody>
+            <tr ng-repeat="user in users | orderBy:propertyName:reverse | filter:searchTerm"
+                my-test-end-waiting>
+                <td>{{user.UserName}}</td>
+                <td>{{user.FirstName}}</td>
+                <td>{{user.LastName}}</td>
+                <td>{{user.BirthDate}}</td>
+                <td>{{user.Email}}</td>
+                <td>{{user.PhoneNumber}}</td>
+                <td>{{user.Role}}</td>
+                <td>
+                    <span ng-show="user.IsEditable">
+                        <a data-ng-href="/Account/Edit/{{user.Id}}">Edit</a> |
+                    </span>
+                    <a data-ng-href="/Users/Details/{{user.Id}}">Details</a>
+                    <span ng-show="user.IsEditable">
+                        | <a data-ng-href="/Users/Delete/{{user.Id}}">Remove</a>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/angularusers")
+}

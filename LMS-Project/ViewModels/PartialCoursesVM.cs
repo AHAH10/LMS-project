@@ -8,6 +8,7 @@ namespace LMS_Project.ViewModels
         public int? ID { get; set; }
         [Required]
         public string Name { get; set; }
+        public string FullName { get; set; }
         public Subject Subject { get; set; }
         public PartialUserVM Teacher { get; set; }
         public bool IsDeletable { get; set; }

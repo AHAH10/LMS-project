@@ -55,7 +55,7 @@ namespace LMS_Project.Models.LMS
                                  BeginningTime,
                                  EndingTime,
                                  "\\",
-                                 Course.Subject.Name,
+                                 Course.FullName,
                                  Course.Teacher.ToString(),
                                  Classroom.Name);
         }

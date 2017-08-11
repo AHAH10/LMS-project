@@ -1,6 +1,6 @@
-﻿using LMS_Project.Models.LMS;
-using LMS_Project.Repositories;
+﻿using LMS_Project.Repositories;
 using LMS_Project.ViewModels;
+using Microsoft.AspNet.Identity;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -13,6 +13,23 @@ namespace LMS_Project.Controllers
         UsersRepository repository = new UsersRepository();
 
         // GET: Users
+        public List<PartialUserVM> GetUsers()
+        {
+            return repository.Users().Select(u => new PartialUserVM
+            {
+                Id = u.Id,
+                UserName = u.UserName,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                BirthDate = u.BirthDate,
+                Email = u.Email,
+                PhoneNumber = u.PhoneNumber,
+                Role = repository.GetUserRole(u.Id).Name,
+                IsEditable = u.Id != User.Identity.GetUserId()
+            }).ToList();
+        }
+
+        // GET: Students
         public List<PartialUserVM> GetStudents()
         {
             return repository.Students().Select(s => new PartialUserVM
