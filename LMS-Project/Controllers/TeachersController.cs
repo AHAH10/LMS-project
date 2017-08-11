@@ -23,7 +23,7 @@ namespace LMS_Project.Controllers
 
             if (usersRepo.GetUserRole(teacherId).Name == RoleConstants.Teacher)
             {
-                User user = usersRepo.User(teacherId);
+                User user = usersRepo.UserById(teacherId);
 
                 List<Schedule> schedules = schedRepo.TeacherSchedules(teacherId).ToList();
 

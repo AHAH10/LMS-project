@@ -56,7 +56,7 @@
     </div>
 </div>
 
-<table class="table" ng-start-waiting>
+<table class="table" my-start-waiting>
     <thead>
         <tr>
             <th>
@@ -126,7 +126,7 @@
 
     <tbody>
         <tr ng-repeat="student in visibleStudents = (students | orderBy:propertyName:reverse | filter:searchTerm)"
-            ng-test-end-waiting>
+            my-test-end-waiting>
             <td class="editor-field">
                 <div class="form-group">
                     <input type="checkbox"
