@@ -1,12 +1,13 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    margin: 25px 0 100px; /* bottom = footer height */
+    padding: 25px;
 }
 
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    
     
 }
 
@@ -39,6 +40,12 @@ textarea {
     padding: 6px 12px;
 }
 
+.news {
+    padding-bottom:10px;
+    color:#fff;
+    padding-bottom:20px;
+    
+}
 
 .news-post {
     border-top: 5px solid #000;
@@ -61,22 +68,26 @@ textarea {
 .news-title {
     font-size: 18px;
     font-weight: 400;
-    color: #000;
+    color: #fff;
     margin-left: 164px;
     margin-top: -25px;
 }
 
 .news-content {
     font-size: 1.2em;
+    color:#fff;
     padding-bottom: 40px;
-    margin-bottom:20px;
+    
+    padding:28px;
 }
 .news-content a {
     float:right;
     
+    
+    
 }
 .news-post:hover {
-    background-color: hsla(210, 16%, 36%, 0.3);
+    background-color: rgba(30, 36, 41, 0.5);
 }
 
 
@@ -84,13 +95,11 @@ textarea {
     float:right;
     padding-top:10px;
 
-    
 }
 
 /*Read more*/
 .readMore{
-    padding-bottom:40px;
-    color:#000;
+    padding-bottom:70px;
 }
 
 
@@ -114,4 +123,16 @@ body::after {
     position: relative;
     width: 230px;
     height: 30px;
+}
+
+
+footer {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem;
+    background-color: #808080;
+    text-align: center;
+    color:#000;
 }
