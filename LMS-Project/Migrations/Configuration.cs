@@ -54,7 +54,6 @@ namespace LMS_Project.Migrations
 
             #region Courses
             Course course = new Course { Subject = subject };
-            subject.Courses = new List<Course> { course };
             #endregion
 
             #region Users

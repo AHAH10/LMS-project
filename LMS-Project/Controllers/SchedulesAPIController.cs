@@ -35,7 +35,7 @@ namespace LMS_Project.Controllers
             {
                 ID = s.ID,
                 Classroom = s.Classroom.Name + (s.Classroom.Remarks == null ? "" : " - " + s.Classroom.Remarks),
-                CourseName = s.Course.FullName,
+                CourseName = s.Course.Subject.Name,
                 TeacherName = s.Course.Teacher.ToString(),
                 WeekDay = s.WeekDay.ToString(),
                 BeginningTime = s.BeginningTime,
