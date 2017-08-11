@@ -23,7 +23,7 @@ namespace LMS_Project.Controllers
 
             if (usersRepo.GetUserRole(studentId).Name == RoleConstants.Student)
             {
-                User user = usersRepo.User(studentId);
+                User user = usersRepo.UserById(studentId);
 
                 List<Schedule> schedules = schedRepo.StudentSchedules(studentId).ToList();
 

@@ -48,11 +48,11 @@
             <td>
                 @if (Model.ShowCoursesLink)
                 {
-                @Html.ActionLink(item.Course.Subject.Name, "DetailedSchedule", "Teachers", new { scheduleId = item.ID }, null)
+                @Html.ActionLink(item.Course.FullName, "DetailedSchedule", "Teachers", new { scheduleId = item.ID }, null)
                 }
                 else
                 {
-                    @Html.DisplayFor(modelItem => item.Course.Subject.Name)
+                    @Html.DisplayFor(modelItem => item.Course.FullName)
                 }
             </td>
             <td>

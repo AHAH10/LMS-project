@@ -186,7 +186,7 @@ namespace LMS_Project.Controllers
             {
                 return RedirectToAction("Index", "Users");
             }
-            User user = new UsersRepository().User(id);
+            User user = new UsersRepository().UserById(id);
             if (user == null)
             {
                 return HttpNotFound();
@@ -218,12 +218,21 @@ namespace LMS_Project.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Checks that the UserName is still unique
+                UsersRepository repository = new UsersRepository();
+                User originalUser = repository.UserById(user.Id);
+
+                if (repository.UserByUsername(user.UserName).Id != user.Id)
+                {
+                    user.UserName = originalUser.UserName;
+                    ViewBag.ErrorMessage = "A user with the same username already exists!";
+                    ViewBag.Roles = new RolesRepository().Roles();
+                    return View(new ExtendedUserVM { User = user, RoleName = roleName });
+                }
+
                 // The unedited fields of the 'user' variable are set to default values
                 // Therefore it's needed to replace the initial values of the only editable fields with the
                 // new values
-                UsersRepository repository = new UsersRepository();
-                User originalUser = repository.User(user.Id);
-
                 originalUser.Email = user.Email;
                 originalUser.PhoneNumber = user.PhoneNumber;
                 originalUser.UserName = user.UserName;

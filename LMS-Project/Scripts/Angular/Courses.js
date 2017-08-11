@@ -20,7 +20,6 @@
         $scope.reverse = true;
 
         $scope.orderByMe = function (type) {
-            alert(type);
             $scope.myOrderBy = type;
             $scope.reverse = ($scope.myOrderBy === type) ? !$scope.reverse : false;
         };

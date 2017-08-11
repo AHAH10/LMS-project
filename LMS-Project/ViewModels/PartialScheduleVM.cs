@@ -8,7 +8,7 @@ namespace LMS_Project.ViewModels
     public class PartialScheduleVM
     {
         public int ID { get; set; }
-        public string SubjectName { get; set; }
+        public string CourseName { get; set; }
         public string Classroom { get; set; }
         public string TeacherName { get; set; }
         public string WeekDay { get; set; }

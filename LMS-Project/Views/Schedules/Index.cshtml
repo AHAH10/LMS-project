@@ -12,7 +12,7 @@
      ng-app="schedule"
      ng-controller="schedulesController"
      ng-init="getSchedules(); getWeekDays()">
-    <table class="table" ng-start-waiting>
+    <table class="table" my-start-waiting>
         <thead>
             <tr>
                 <th ng-click="orderBy('Classroom.Name')">
@@ -37,11 +37,11 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="schedule in schedules | orderBy:propertyName:reverse" ng-test-end-waiting>
+            <tr ng-repeat="schedule in schedules | orderBy:propertyName:reverse" my-test-end-waiting>
                 <td>
                     {{schedule.Classroom}}
                 </td>
-                <td>{{schedule.SubjectName}}</td>
+                <td>{{schedule.CourseName}}</td>
                 <td>{{schedule.TeacherName}}</td>
                 <td>{{schedule.WeekDay}}</td>
                 <td>{{schedule.BeginningTime}}</td>

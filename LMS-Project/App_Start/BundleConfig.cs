@@ -16,6 +16,7 @@ namespace LMS_Project
           
             bundles.Add(new ScriptBundle("~/bundles/angular").Include(
                         "~/Scripts/Angular/angular.min.js",
+                        "~/Scripts/Angular/waiting-load.js",
                         "~/Scripts/Angular/MainAngular.js"));
             
             bundles.Add(new ScriptBundle("~/bundles/angularcourses").Include(
@@ -27,6 +28,9 @@ namespace LMS_Project
             bundles.Add(new ScriptBundle("~/bundles/angularschedules").Include(
                         "~/Scripts/checklist-model.js",
                         "~/Scripts/Angular/Schedules.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/angularusers").Include(
+                        "~/Scripts/Angular/Users.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.

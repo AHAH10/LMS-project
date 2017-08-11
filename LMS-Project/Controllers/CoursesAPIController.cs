@@ -12,26 +12,6 @@ namespace LMS_Project.Controllers
     [ValidateAntiForgeryToken]
     public class CoursesAPIController : ApiController
     {
-        [System.Web.Http.HttpGet]
-        public PartialCoursesVM GetCourse(string subjectName)
-        {
-            Course _course = new CoursesRepository().Courses().Where(c => c.Subject.Name.ToLower() == subjectName.ToLower()).SingleOrDefault();
-            return new PartialCoursesVM
-            {
-                ID = _course.ID,
-                Name = _course.Name,
-                IsDeletable = _course.Documents.Count() + _course.Schedules.Count() == 0,
-                Teacher = new PartialUserVM
-                {
-                    Id = _course.Teacher.Id,
-                    FirstName = _course.Teacher.FirstName,
-                    LastName = _course.Teacher.LastName
-                },
-                Subject = _course.Subject
-            };
-
-        }
-
         /// <summary>
         /// Return all courses
         /// </summary>
@@ -61,7 +41,6 @@ namespace LMS_Project.Controllers
 
                 PartialCoursesVM tempC = new PartialCoursesVM
                 {
-                    Name = c.Name,
                     ID = c.ID,
                     IsDeletable = c.Documents.Count() + c.Schedules.Count() == 0,
                 //Binding data
