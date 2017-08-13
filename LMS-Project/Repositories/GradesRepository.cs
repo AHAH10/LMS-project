@@ -16,17 +16,21 @@ namespace LMS_Project.Repositories
             return db.Grades;
         }
 
+        public IEnumerable<Grade> GetStudentGrades(string studentID) {
+            return db.Grades.Where(g => g.Document.UploaderID == studentID);
+        }
+
         public Grade Grade(int? id)
         {
             return Grades().FirstOrDefault(g => g.ID == id);
         }
 
-        public void Add(Grade grade)
+        public void Add(Grade grade,string teacherID)
         {
             grade.Date = DateTime.Now;
             db.Grades.Add(grade);
             SaveChanges();
-            new NotificationRepository().Create(grade.ID);
+            new NotificationRepository().Create(grade.ID);           
         }
 
         public void Edit(Grade grade)
