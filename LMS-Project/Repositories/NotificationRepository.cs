@@ -2,6 +2,7 @@
 using LMS_Project.Models.LMS;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
@@ -39,7 +40,10 @@ namespace LMS_Project.Repositories
         //Confirmation that Notification is read by student
         public void NotificationRead(int? id)
         {
-            db.Notifications.Where(N => N.ID == id).SingleOrDefault().ReadingDate = DateTime.Now;
+            Notification n = db.Notifications.Where(N => N.ID == id).SingleOrDefault();
+            n.ReadingDate = DateTime.Now;
+            db.Entry(n).State = EntityState.Modified;
+            SaveChanges();
         }
         //Add
         public void Add(Notification notification)

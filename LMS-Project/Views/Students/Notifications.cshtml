@@ -1,67 +1,25 @@
-﻿@model IEnumerable<LMS_Project.Models.LMS.Notification>
+﻿@using Microsoft.AspNet.Identity;
+@using LMS_Project.Models.LMS;
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
+<table class="table" ng-app="LMSApp" ng-controller="NotificationsController" ng-init="Initial('@User.Identity.GetUserId()')">
     <tr>
-        <th>
-            <b>Teacher</b>
-        </th>
-        <th>
-            <b>Grade</b>
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Grade.Comment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.SendingDate)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ReadingDate)
-        </th>
         <th></th>
+        <th ng-click="orderByMe('Course.Teacher.FirstName'+'Course.Teacher.LastName')">From</th>
+        <th ng-click="orderByMe('SendingDate')">Sent</th>
+        <th ng-click="orderByMe('Course.Subject.Name')">Subject</th>
+        <th ng-click="orderByMe('Document.DocumentName')">Document</th>
+        <th ng-click="orderByMe('Grade')">Grade</th>
+        <th ng-click="orderByMe('Comment')">Comment</th>
     </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        @if (item.ReadingDate != null)
-        {
-            <td>
-                @Html.DisplayFor(modelItem => item.Grade.Document.Course.Teacher.FirstName) @Html.DisplayFor(modelItem => item.Grade.Document.Course.Teacher.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Grade.AGrade)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Grade.Comment)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SendingDate)
-            </td>
-            <td>
-                 @Html.DisplayFor(modelItem => item.ReadingDate)
-            </td>
-        }
-        else
-        {
-            <td>
-                @Html.DisplayFor(modelItem => item.Grade.Document.Course.Teacher.FirstName) @Html.DisplayFor(modelItem => item.Grade.Document.Course.Teacher.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Grade.AGrade)
-            </td>
-            <td>
-               <b>@Html.DisplayFor(modelItem => item.Grade.Comment)</b>
-            </td>
-            <td>
-                <b>@Html.DisplayFor(modelItem => item.SendingDate)</b>
-            </td>
-            <td>
-                <b>@Html.DisplayFor(modelItem => item.ReadingDate)</b>
-            </td>
-        }
+    <tr ng-repeat="notification in notifications | orderBy:myOrderBy:reverse">
+        <td><b ng-if="notification.ReadingDate==null">New!</b></td>
+        <td>{{notification.Course.Teacher.FirstName}} {{notification.Course.Teacher.LastName}}</td>
+        <td>{{notification.SendingDate}}</td>
+        <td>{{notification.Course.Subject.Name}}</td>
+        <td>{{notification.Document.DocumentName}}</td>
+        <td>{{notification.Grade}}</td>
+        <td>{{notification.Comment}}</td>
     </tr>
-}
-
 </table>
+@Scripts.Render("~/bundles/angular")
+@Scripts.Render("~/bundles/angularnotifications")

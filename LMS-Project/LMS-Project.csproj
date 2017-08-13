@@ -182,7 +182,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\NewsController.cs" />
-    <Compile Include="Controllers\NotificationsController.cs" />
+    <Compile Include="Controllers\NotificationsAPIController.cs" />
     <Compile Include="Controllers\SchedulesAPIController.cs" />
     <Compile Include="Controllers\SchedulesController.cs" />
     <Compile Include="Controllers\StudentsAPIController.cs" />
@@ -235,6 +235,7 @@
     <Compile Include="ViewModels\LastLessonVM.cs" />
     <Compile Include="ViewModels\MyDocumentsVM.cs" />
     <Compile Include="ViewModels\PartialCoursesVM.cs" />
+    <Compile Include="ViewModels\PartialNotificationVM.cs" />
     <Compile Include="ViewModels\PartialScheduleVM.cs" />
     <Compile Include="ViewModels\PartialUserVM.cs" />
     <Compile Include="ViewModels\UploadDocumentVM.cs" />
@@ -256,6 +257,7 @@
     <Content Include="Scripts\Angular\angular.min.js" />
     <Content Include="Scripts\Angular\Courses.js" />
     <Content Include="Scripts\Angular\MainAngular.js" />
+    <Content Include="Scripts\Angular\Notifications.js" />
     <Content Include="Scripts\Angular\Schedules.js" />
     <Content Include="Scripts\Angular\Subjects.js" />
     <Content Include="Scripts\Angular\Students.js" />
