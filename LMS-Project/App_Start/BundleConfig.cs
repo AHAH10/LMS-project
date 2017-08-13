@@ -18,7 +18,10 @@ namespace LMS_Project
                         "~/Scripts/Angular/angular.min.js",
                         "~/Scripts/Angular/waiting-load.js",
                         "~/Scripts/Angular/MainAngular.js"));
-            
+
+            bundles.Add(new ScriptBundle("~/bundles/angularclassrooms").Include(
+                        "~/Scripts/Angular/Classrooms.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/angularcourses").Include(
                         "~/Scripts/Angular/Courses.js"));
 

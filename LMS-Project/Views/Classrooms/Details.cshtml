@@ -1,41 +1,62 @@
 ﻿@model LMS_Project.Models.LMS.Classroom
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = @Model.Name + " - Details";
 }
 
-<h2>Details</h2>
+<h2>Details for classroom @Model.Name</h2>
 
 <div>
-    <h4>Classroom</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Location)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Location)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Schedules)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Schedules)
-        </dd>
-    </dl>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Location)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AmountStudentsMax)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Remarks)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Schedules)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.AmountStudentsMax)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Remarks)
+                </td>
+                <td>
+                    <table class="table-condensed">
+                        @foreach (LMS_Project.Models.LMS.Schedule schedule in Model.Schedules)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(model => schedule.WeekDay)</td>
+                                <td>@Html.DisplayName(schedule.BeginningTime + "-" + schedule.EndingTime)</td>
+                                <td>@Html.DisplayName(schedule.Course.Subject.Name +
+                                                      " (" + schedule.Course.Teacher.ToString() + ")")</td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (Model.Schedules.Count() == 0)
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID })<text> | </text>
+    }
+    @Html.ActionLink("Back to Classrooms", "Index")
 </p>

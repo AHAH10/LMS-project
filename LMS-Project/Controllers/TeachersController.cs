@@ -39,6 +39,17 @@ namespace LMS_Project.Controllers
                 return RedirectToAction("Index", "Home");
         }
 
+        public ActionResult NextLecture()
+        {
+            Schedule schedule = schedRepo.NextLecture(User.Identity.GetUserId());
+
+            return View(new DetailedScheduleVM
+            {
+                Schedule = schedule,
+                Documents = AvailableDocuments(schedule)
+            });
+        }
+
         public ActionResult DetailedSchedule(int? scheduleId)
         {
             if (scheduleId == null)
@@ -53,15 +64,12 @@ namespace LMS_Project.Controllers
                 return RedirectToAction("Planning");
             }
 
-            // Get the list of available documents for the course
-            List<Document>documents = schedule.Course
-                                              .Documents
-                                              .Where(d => d.VisibleFor.Name == RoleConstants.Student ||
-                                                          d.UploaderID == User.Identity.GetUserId())
-                                              .OrderBy(d => d.UploadingDate)
-                                              .ToList();
-
-            return View(new DetailedScheduleVM { Schedule = schedule, Documents = documents });
+            return View(new DetailedScheduleVM
+            {
+                Schedule = schedule,
+                // Get the list of available documents for the course
+                Documents = AvailableDocuments(schedule)
+            });
         }
 
         [Authorize(Roles = "Teacher")]
@@ -71,8 +79,22 @@ namespace LMS_Project.Controllers
             return View(new DocumentsRepository().Documents()
                                                  .Where(d => d.Course.TeacherID == User.Identity.GetUserId() &&
                                                              d.VisibleFor.Name == RoleConstants.Teacher &&
+                                                             d.UploaderID != d.Course.TeacherID &&
                                                              d.Grade == null) //Liam You forgot to check if d.Grade is null
                                                  .ToList());
+        }
+
+        private List<Document> AvailableDocuments(Schedule schedule)
+        {
+            if (schedule == null)
+                return new List<Document>();
+            else
+                return schedule.Course
+                               .Documents
+                               .Where(d => d.VisibleFor.Name == RoleConstants.Student ||
+                                           d.UploaderID == User.Identity.GetUserId())
+                               .OrderBy(d => d.UploadingDate)
+                               .ToList();
         }
 
         protected override void Dispose(bool disposing)

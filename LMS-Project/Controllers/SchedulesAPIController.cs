@@ -34,8 +34,10 @@ namespace LMS_Project.Controllers
             return repository.Schedules().Select(s => new PartialScheduleVM
             {
                 ID = s.ID,
+                ClassroomID = s.Classroom.ID,
                 Classroom = s.Classroom.Name + (s.Classroom.Remarks == null ? "" : " - " + s.Classroom.Remarks),
                 SubjectName = s.Course.Subject.Name,
+                TeacherID = s.Course.TeacherID,
                 TeacherName = s.Course.Teacher.ToString(),
                 WeekDay = s.WeekDay.ToString(),
                 BeginningTime = s.BeginningTime,

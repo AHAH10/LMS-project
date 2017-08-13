@@ -2,10 +2,10 @@
     ViewBag.Title = "Users";
 }
 
-<h2>Users actually registered</h2>
+<h2>Users currently registered</h2>
 
 <p>
-    @Html.ActionLink("Create New User", "Register", "Account", null, null)
+    @Html.ActionLink("Create a new User", "Register", "Account", null, null)
 </p>
 
 <div class="form-horizontal"
@@ -38,7 +38,7 @@
                            style="width:160px; height:25px; font-family: Helvetica, Arial, sans-serif">
                 </th>
                 <th>
-                    <p ng-click="orderBy('LastName')">
+                    <p ng-click="orderBy('LastName+FirstName')">
                         Last Name
                     </p>
                     <input type="text"
@@ -107,13 +107,12 @@
                 <td>{{user.PhoneNumber}}</td>
                 <td>{{user.Role}}</td>
                 <td>
-                    <span ng-show="user.IsEditable">
-                        <a data-ng-href="/Account/Edit/{{user.Id}}">Edit</a> |
-                    </span>
+                    <a data-ng-href="/Account/Edit/{{user.Id}}">Edit</a> |
                     <a data-ng-href="/Users/Details/{{user.Id}}">Details</a>
-                    <span ng-show="user.IsEditable">
-                        | <a data-ng-href="/Users/Delete/{{user.Id}}">Remove</a>
+                    <span ng-show="user.IsDeletable">
+                        | <a data-ng-href="/Users/Delete/{{user.Id}}">Delete</a>
                     </span>
+                    | <a data-ng-href="/Users/ResetPassword/{{user.Id}}">Reset Password</a>
                 </td>
             </tr>
         </tbody>

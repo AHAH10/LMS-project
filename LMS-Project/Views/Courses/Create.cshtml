@@ -1,10 +1,15 @@
 ﻿@model LMS_Project.ViewModels.PartialCoursesVM
 
+@{
+    ViewBag.Title = "Create a Course";
+}
+
+<h2>Create a new Course</h2>
+
 <form action="/Courses/Create/" method="POST">
 
     @Html.AntiForgeryToken()
     <div class="form-horizontal" ng-app="LMSApp" ng-controller="Course_Create_Ctrl" ng-cloak>
-        <h4>Course</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
@@ -37,7 +42,7 @@
 </form>
 
     <div>
-        @Html.ActionLink("Back to List", "Index")
+        @Html.ActionLink("Back to Courses", "Index")
     </div>
 
     @section Scripts {

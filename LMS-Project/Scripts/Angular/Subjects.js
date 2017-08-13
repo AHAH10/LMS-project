@@ -2,11 +2,12 @@
     var app = angular.module("LMSApp");
     //index
     app.controller("Subject_Index_Ctrl", ["$scope", "$http", function ($scope, $http) {
-        $scope.reverse = true;
+        $scope.reverse = false;
+        $scope.myOrderBy = 'Name';
 
         $scope.orderByMe = function (type) {
-            $scope.myOrderBy = type;
             $scope.reverse = ($scope.myOrderBy === type) ? !$scope.reverse : false;
+            $scope.myOrderBy = type;
         };
         $scope.getData = function () {
             $http.get('/api/SubjectsAPI/GetAllSubjects')

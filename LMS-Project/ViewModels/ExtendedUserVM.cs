@@ -7,6 +7,8 @@ namespace LMS_Project.ViewModels
     {
         public User User { get; set; }
         [Required]
+        [Display(Name ="Role")]
         public string RoleName { get; set; }
+        public bool IsRoleEditable { get; set; }
     }
 }

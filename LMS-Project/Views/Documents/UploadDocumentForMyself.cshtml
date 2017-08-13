@@ -1,8 +1,10 @@
 ﻿@model LMS_Project.ViewModels.UploadDocumentVM
 
 @{
-    ViewBag.Title = "UploadDocumentForMyself";
+    ViewBag.Title = "Upload a Document for Myself";
 }
+
+<h2>Upload a Document for myself</h2>
 
 @using (Html.BeginForm("UploadDocumentForMyself", "Documents", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {

@@ -7,79 +7,75 @@
 <h2>Details</h2>
 
 <div>
-    <h4>Schedule</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.WeekDay)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.WeekDay)
-        </dd>
-
-        <dt>
-            @Html.DisplayName("Time")
-        </dt>
-
-        <dd>
-            @Html.DisplayName(Model.BeginningTime + "-" + Model.EndingTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Course)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Course.Subject.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Course.Teacher)
-        </dt>
-
-        <dd>
-            @Html.ActionLink(Model.Course.Teacher.ToString(), "Planning", "Teachers", new { teacherId = Model.Course.TeacherID }, null)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Classroom)
-        </dt>
-
-        <dd>
-            @{string remarks = Model.Classroom.Remarks;
-            if (remarks != null && remarks.Length > 0)
-            {
-                remarks = " - " + remarks;
-            }
-            }
-            @Html.DisplayName(Model.Classroom.Name + " (" + Model.Classroom.Location + ")" + remarks)
-        </dd>
-
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Students)
-        </dt>
-
-        <dd>
-            <div class="container" style="padding:0">
-                <ul class="list-group list-unstyled">
-                    @foreach (LMS_Project.Models.LMS.User student in Model.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
-                    {
-                        <li>
-                            @Html.ActionLink(student.ToString(), "Planning", "Students", new { studentId = student.Id }, null)
-                        </li>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.WeekDay)
+                </th>
+                <th>
+                    @Html.DisplayName("Time")
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Course)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Course.Teacher)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Classroom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Students)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.WeekDay)
+                </td>
+                <td>
+                    @Html.DisplayName(Model.BeginningTime + "-" + Model.EndingTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Course.Subject.Name)
+                </td>
+                <td>
+                    @Html.ActionLink(Model.Course.Teacher.ToString(), "Planning", "Teachers", new { teacherId = Model.Course.TeacherID }, null)
+                </td>
+                <td>
+                    @{
+                        string remarks = Model.Classroom.Remarks;
+                        if (remarks != null && remarks.Length > 0)
+                        {
+                            remarks = " - " + remarks;
+                        }
                     }
-                </ul>
-            </div>
-        </dd>
-    </dl>
+                    @Html.DisplayName(Model.Classroom.Name + " (" + Model.Classroom.Location + ")" + remarks)
+                </td>
+                <td>
+                    <table class="table-condensed">
+                        @foreach (LMS_Project.Models.LMS.User student in Model.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                        {
+                            <tr>
+                                <td>
+                                    @Html.ActionLink(student.ToString(), "Planning", "Students", new { studentId = student.Id }, null)
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <p>
     @{if (this.User.IsInRole(LMS_Project.Models.LMS.RoleConstants.Admin))
-    {
-        @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) <text>|</text>
+        {
+            @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) <text>|</text>
+        }
     }
-    }
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Schedules", "Index")
 </p>

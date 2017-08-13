@@ -4,18 +4,22 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete</h2>
+<h2>Are you sure you want to delete @Model.UserName?</h2>
+<hr />
 
-<h3>Are you sure you want to delete @Model.UserName?</h3>
 <div>
     @using (Html.BeginForm())
     {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <button type="submit" name="submitButton" value="yes">Delete</button>
-            <button type="submit" name="submitButton" value="no">Cancel</button>
+            <button type="submit" name="submitButton" value="yes" class="btn btn-default">Delete</button>
+            <button type="submit" name="submitButton" value="no" class="btn btn-default">Cancel</button>
             @Html.Hidden("id", Model.Id)
         </div>
     }
 </div>
+
+<p>
+    @Html.ActionLink("Back to Users", "Index")
+</p>

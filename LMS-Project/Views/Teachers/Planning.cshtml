@@ -48,7 +48,7 @@
             <td>
                 @if (Model.ShowCoursesLink)
                 {
-                @Html.ActionLink(item.Course.Subject.Name, "DetailedSchedule", "Teachers", new { scheduleId = item.ID }, null)
+                    @Html.ActionLink(item.Course.Subject.Name, "DetailedSchedule", "Teachers", new { scheduleId = item.ID }, null)
                 }
                 else
                 {
@@ -58,21 +58,28 @@
             <td>
                 @{string remarks = item.Classroom.Remarks;
                     if (remarks != null && remarks.Length > 0)
-                {
-                    remarks = " - " + remarks;
-                }
+                    {
+                        remarks = " - " + remarks;
+                    }
                 }
                 @Html.DisplayName(item.Classroom.Name + " (" + item.Classroom.Location + ")" + remarks)
             </td>
             @if (Model.ShowSchedulesLink)
             {
                 <td>
-                    @Html.ActionLink("Edit", "Edit", "Schedules", new { id = item.ID }, null) |
-                    @Html.ActionLink("Details", "Details", "Schedules", new { id = item.ID }, null) |
-                    @Html.ActionLink("Delete", "Delete", "Schedules", new { id = item.ID }, null)
+                    @if (item.Course.Documents.Count() == 0)
+                    {
+                        @Html.ActionLink("Edit", "Edit", "Schedules", new { id = item.ID }, null)
+                        <text> | </text>
+                    }
+                    @Html.ActionLink("Details", "Details", "Schedules", new { id = item.ID }, null)
+                    @if (item.Course.Documents.Count() == 0)
+                    {
+                        <text> | </text>
+                        @Html.ActionLink("Delete", "Delete", "Schedules", new { id = item.ID }, null)
+                    }
                 </td>
             }
         </tr>
     }
-
 </table>

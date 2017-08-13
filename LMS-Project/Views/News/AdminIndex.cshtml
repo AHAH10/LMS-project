@@ -1,0 +1,68 @@
+﻿@model IEnumerable<LMS_Project.Models.LMS.News>
+
+@{
+    ViewBag.Title = "News";
+}
+
+<p>
+    @Html.ActionLink("Create a News", "Create")
+</p>
+
+<table class="table table-hover">
+    <thead class="news-head">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Publisher.Email)
+            </th>
+            <th>
+                @Html.DisplayName("Publisher's name")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublishingDate)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+
+            <tr class="customSize">
+                <td>
+                    @Html.DisplayFor(modelItem => item.Publisher.Email)
+                </td>
+                <td>
+                    @if (!item.AnonymousPublisher)
+                {
+                        @Html.DisplayName(item.Publisher.ToString())
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublishingDate)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+                </td>
+            </tr>
+        }
+    </tbody>
+
+</table>

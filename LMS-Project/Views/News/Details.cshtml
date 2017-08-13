@@ -1,44 +1,55 @@
 ﻿@model LMS_Project.Models.LMS.News
 
+@{
+    ViewBag.Title = "News";
+}
+
+<h2>Details</h2>
+
 <div>
-    <h4>News</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Publisher.Email)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Publisher.Email)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.PublishingDate)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.PublishingDate)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Content)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Content)
-        </dd>
-
-    </dl>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PublishingDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Title)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Content)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Publisher)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Publisher.Email)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.PublishingDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Content)
+                </td>
+                <td>
+                    @Html.DisplayName(Model.Publisher.ToString())
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Publisher.Email)
+                </td>
+            </tr>
+        </tbody>
+        </table>
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to News", "AdminIndex")
 </p>

@@ -18,14 +18,7 @@ namespace LMS_Project.Controllers
         // GET: Users
         public ActionResult Index()
         {
-            List<ExtendedUserVM> viewModel = new List<ExtendedUserVM>();
-
-            foreach (User user in repository.Users().OrderBy(u => u.LastName))
-            {
-                viewModel.Add(new ExtendedUserVM { User = user, RoleName = new UsersRepository().GetUserRole(user.Id).Name });
-            }
-
-            return View(viewModel);
+            return View();
         }
 
         // GET: Users/Details/5
@@ -50,8 +43,7 @@ namespace LMS_Project.Controllers
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
                 Role = repository.GetUserRole(user.Id).Name,
-                Courses = user.Courses.Select(c => c.Subject.Name).ToList(),
-                IsEditable = user.Id != User.Identity.GetUserId()
+                Courses = user.Courses.Select(c => c.Subject.Name).ToList()
             });
         }
 
@@ -60,12 +52,12 @@ namespace LMS_Project.Controllers
         {
             if (id == null)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                return RedirectToAction("Index");
             }
             User user = repository.UserById(id);
             if (user == null)
             {
-                return HttpNotFound();
+                return RedirectToAction("Index");
             }
             return View(user);
         }

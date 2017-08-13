@@ -22,41 +22,29 @@ namespace LMS_Project.Controllers
             //On visual studio 2017, access violation might occur than we are sending the whole user through the api.
             //return new CoursesRepository().Courses() works fine on vs 13 with the api
             //Guess that microsoft want us to avoid sending security information.
-            List<PartialCoursesVM> _courses = new List<PartialCoursesVM>();
-            foreach (Course c in new CoursesRepository().Courses())
-            {
-                //Create new objects
-                Subject tempS = new Subject();
-                PartialUserVM tempT = new PartialUserVM
-                {
-                    //Set data that are needed
-                    Id = c.TeacherID,
-                    FirstName = c.Teacher.FirstName,
-                    LastName = c.Teacher.LastName,
-                    Email = c.Teacher.Email
-                };
 
-                tempS.ID = c.SubjectID;
-                tempS.Name = c.Subject.Name;
-
-                PartialCoursesVM tempC = new PartialCoursesVM
-                {
-                    ID = c.ID,
-                    IsDeletable = c.Documents.Count() + c.Schedules.Count() == 0,
-                //Binding data
-                    Subject = tempS,
-                    Teacher = tempT
-                };
-                //Add to course list
-                _courses.Add(tempC);
-                //Clear memory
-                tempC = null;
-                tempS = null;
-                tempT = null;
-
-            }
-
-            return _courses;
+            return new CoursesRepository().Courses()
+                                          .Select(c => new PartialCoursesVM
+                                          {
+                                              ID = c.ID,
+                                              IsDeletable = c.Documents.Count() + c.Schedules.Count() == 0,
+                                              //Binding data
+                                              Subject = new Subject
+                                              {
+                                                  ID = c.SubjectID,
+                                                  Name = c.Subject.Name
+                                              },
+                                              Teacher = new PartialUserVM
+                                              {
+                                                  //Set data that are needed
+                                                  Id = c.TeacherID,
+                                                  FirstName = c.Teacher.FirstName,
+                                                  LastName = c.Teacher.LastName,
+                                                  Email = c.Teacher.Email,
+                                                  HasSchedules = c.Schedules.Count > 0
+                                              }
+                                          })
+                                          .ToList();
         }
     }
 }

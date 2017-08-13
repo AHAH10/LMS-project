@@ -1,20 +1,53 @@
 ﻿@model LMS_Project.Models.LMS.Subject
 
+@{
+    ViewBag.Title = "Detailed Subject";
+}
+
+<h2>@Model.Name</h2>
+
 <div>
-    <h4>Subject</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-    </dl>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Name)
+                </th>
+                <th>
+                    @Html.DisplayName("Responsible Teachers")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.Name)
+                </td>
+                <td>
+                    <table class="table-condensed">
+                        @foreach (LMS_Project.Models.LMS.User teacher in Model.Courses
+                                                                              .Select(c => c.Teacher)
+                                                                              .OrderBy(t => t.LastName)
+                                                                              .ThenBy(t => t.FirstName))
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayName(teacher.ToString())
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (Model.Courses.Count() == 0)
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ID })<text> | </text>
+    }
+    @Html.ActionLink("Back to Subjects", "Index")
 </p>

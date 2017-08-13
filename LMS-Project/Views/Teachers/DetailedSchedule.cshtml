@@ -11,105 +11,104 @@
 
 <div>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Schedule.WeekDay)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Schedule.WeekDay)
-        </dd>
-
-        <dt>
-            @Html.DisplayName("Time")
-        </dt>
-
-        <dd>
-            @Html.DisplayName(Model.Schedule.BeginningTime + "-" + Model.Schedule.EndingTime)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Schedule.Course)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Schedule.Course.Subject.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Schedule.Classroom)
-        </dt>
-
-        <dd>
-            @{string remarks = Model.Schedule.Classroom.Remarks;
-            if (remarks != null && remarks.Length > 0)
-            {
-                remarks = " - " + remarks;
-            }
-            }
-            @Html.DisplayName(Model.Schedule.Classroom.Name + " (" + Model.Schedule.Classroom.Location + ")" + remarks)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Schedule.Students)
-        </dt>
-
-        <dd>
-            <div class="container" style="padding:0">
-                <ul class="list-group list-unstyled">
-                    @foreach (User student in Model.Schedule.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
-                    {
-                        <li>
-                            @Html.DisplayName(student.ToString())
-                        </li>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Schedule.WeekDay)
+                </th>
+                <th>
+                    @Html.DisplayName("Time")
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Schedule.Course)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Schedule.Classroom)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Schedule.Students)
+                </th>
+                <th>
+                    @Html.DisplayName("Related Documents")
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.Schedule.WeekDay)
+                </td>
+                <td>
+                    @Html.DisplayName(Model.Schedule.BeginningTime + "-" + Model.Schedule.EndingTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(model => model.Schedule.Course.Subject.Name)
+                </td>
+                <td>
+                    @{
+                        string remarks = Model.Schedule.Classroom.Remarks;
+                        if (remarks != null && remarks.Length > 0)
+                        {
+                            remarks = " - " + remarks;
+                        }
                     }
-                </ul>
-            </div>
-        </dd>
-
-        <dt>
-            @Html.DisplayName("Related Documents")
-        </dt>
-
-        <dd>
-            <div class="container" style="padding:0">
-                <table class="table table-condensed">
-                    <tr>
-                        <th style="border-top:none; padding-top:0">
-                            @Html.DisplayNameFor(model => model.Documents.First().DocumentName)
-                        </th>
-                        <th style="border-top:none; padding-top:0">
-                            @Html.DisplayNameFor(model => model.Documents.First().UploadingDate)
-                        </th>
-                        <th style="border-top:none; padding-top:0">
-                            @Html.DisplayNameFor(model => model.Documents.First().Uploader)
-                        </th>
-                        <th style="border-top:none; padding-top:0"></th>
-                    </tr>
-
-                    @foreach (Document document in Model.Documents)
+                    @Html.DisplayName(Model.Schedule.Classroom.Name + " (" + Model.Schedule.Classroom.Location + ")" + remarks)
+                </td>
+                <td>
+                    <table class="table-condensed">
+                        @foreach (User student in Model.Schedule.Students.OrderBy(s => s.LastName).ThenBy(s => s.FirstName))
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayName(student.ToString())
+                                </td>
+                            </tr>
+                        }
+                    </table>
+                </td>
+                <td>
+                    @if (Model.Documents.Count() > 0)
                     {
-                        <tr>
-                            <td>
-                                @Html.ActionLink(document.DocumentName, "Download", "Documents", new { id = document.ID }, null)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => document.UploadingDate)
-                            </td>
-                            <td>
-                                @Html.DisplayName(document.Uploader.ToString())
-                            </td>
-                            <td>
-                                @Html.ActionLink("Delete", "Delete", "Documents", new { id = document.ID }, null)
-                            </td>
-                        </tr>
-                    }
+                        <table class="table-condensed">
+                            <tr>
+                                <th style="border-top:none; padding-top:0">
+                                    @Html.DisplayNameFor(model => model.Documents.First().DocumentName)
+                                </th>
+                                <th style="border-top:none; padding-top:0">
+                                    @Html.DisplayNameFor(model => model.Documents.First().UploadingDate)
+                                </th>
+                                <th style="border-top:none; padding-top:0">
+                                    @Html.DisplayNameFor(model => model.Documents.First().Uploader)
+                                </th>
+                                <th style="border-top:none; padding-top:0"></th>
+                            </tr>
 
-                </table>
-            </div>
-        </dd>
-    </dl>
+                            @foreach (Document document in Model.Documents)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.ActionLink(document.DocumentName, "Download", "Documents", new { id = document.ID }, null)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => document.UploadingDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayName(document.Uploader.ToString())
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink("Delete", "Delete", "Documents", new { id = document.ID }, null)
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
+
 <p>
-    @Html.ActionLink("Back to List", "Planning")
+    @Html.ActionLink("Back to Planning", "Planning")
 </p>

@@ -37,7 +37,8 @@ namespace LMS_Project.Controllers
                             LastName = student.LastName
                         },
                         SubjectName = lastLesson.Course.Subject.Name,
-                        Classroom = lastLesson.Classroom,
+                        ClassroomName = lastLesson.Classroom.Name,
+                        ClassroomLocation = lastLesson.Classroom.Location,
                         EndingTime = lastLesson.EndingTime
                     });
             }

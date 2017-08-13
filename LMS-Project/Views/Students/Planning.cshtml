@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNet.Identity
 @using LMS_Project.Models
 @using LMS_Project.Models.LMS
+@using LMS_Project.Repositories
 @using Microsoft.AspNet.Identity.EntityFramework
 
 @model LMS_Project.ViewModels.UsersScheduleVM
@@ -49,7 +50,20 @@
                 @Html.DisplayFor(modelItem => item.EndingTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Course.Subject.Name)
+                @if (Model.ShowDocumentsLink &&
+                     item.Course
+                         .Documents
+                         .Where(d => d.RoleID == new RolesRepository()
+                                                     .RoleByName(RoleConstants.Student)
+                                                     .Id)
+                         .Count() > 0)
+                {
+                    @Html.ActionLink(item.Course.Subject.Name, "Documents", "Schedules", new { id = item.ID }, null)
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.Course.Subject.Name)
+                }
             </td>
             <td>
                 @Html.DisplayName(item.Course.Teacher.ToString())
@@ -63,12 +77,6 @@
                 }
                 @Html.DisplayName(item.Classroom.Name + " (" + item.Classroom.Location + ")" + remarks)
             </td>
-            @if (Model.ShowDocumentsLink)
-            {
-                <td>
-                    @Html.ActionLink("See related documents", "Documents", "Schedules", new { id = item.ID }, null)
-                </td>
-            }
             @if (Model.ShowSchedulesLink)
             {
                 <td>
@@ -78,6 +86,6 @@
                 </td>
             }
         </tr>
-    }
+                    }
 
 </table>

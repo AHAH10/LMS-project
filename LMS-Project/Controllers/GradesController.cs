@@ -81,28 +81,6 @@ namespace LMS_Project.Controllers
             }
         }
 
-        // GET: Grades/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View(gRepo.Grade(id));
-        }
-
-        // POST: Grades/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-                gRepo.Delete(id);
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
         protected override void Dispose(bool disposing)
         {
             if (disposing)

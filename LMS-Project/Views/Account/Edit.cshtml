@@ -73,7 +73,7 @@
                 @Html.DropDownListFor(m => m.RoleName,
                                       new SelectList(ViewBag.Roles, "Name", "Name"),
                                       "-- Please select a role --",
-                                      new { @class = "form-control" })
+                                      new { @class = "form-control", disabled = !Model.IsRoleEditable })
                 @Html.Hidden("roleName", Model.RoleName)
                 @Html.ValidationMessageFor(m => m.RoleName)
             </div>
@@ -88,7 +88,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index", "Users")
+    @Html.ActionLink("Back to Users", "Index", "Users")
 </div>
 
 @section Scripts {

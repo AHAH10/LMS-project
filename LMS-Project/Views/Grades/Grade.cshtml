@@ -1,12 +1,16 @@
 ﻿@model LMS_Project.Models.LMS.Grade
 
+@{
+    ViewBag.Title = "Set a Grade";
+}
 
-@using (Html.BeginForm()) 
+<h2>Set a Grade</h2>
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Grade</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(m=>m.ID)
@@ -36,7 +40,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Ungraded assignments", "UngradedAssignments", "Teachers", null, null)
 </div>
 
 @section Scripts {

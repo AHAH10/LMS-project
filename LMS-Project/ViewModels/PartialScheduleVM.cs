@@ -12,10 +12,14 @@ namespace LMS_Project.ViewModels
 
         [Display(Name="Subject")]
         public string SubjectName { get; set; }
+
+        public int ClassroomID { get; set; }
         public string Classroom { get; set; }
 
         [Display(Name="Teacher")]
         public string TeacherName { get; set; }
+        public string TeacherID { get; set; }
+
         public string WeekDay { get; set; }
         public string BeginningTime { get; set; }
         public string EndingTime { get; set; }

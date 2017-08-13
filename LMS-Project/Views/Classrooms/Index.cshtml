@@ -1,51 +1,69 @@
 ﻿@model IEnumerable<LMS_Project.Models.LMS.Classroom>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Classrooms";
 }
 
-<h2>Index</h2>
+<h2>Classrooms</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create a new Classroom", "Create")
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Location)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AmountStudentsMax)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Remarks)
-        </th>
-        <th></th>
-    </tr>
+<div class="form-horizontal"
+     ng-app="classroom"
+     ng-controller="classroomsController"
+     ng-init="getClassrooms()">
+    <table class="table" my-start-waiting>
+        <thead>
+            <tr>
+                <th>
+                    <p ng-click="orderBy('Name')">Name</p>
+                </th>
+                <th>
+                    <p ng-click="orderBy('Location')">Location</p>
+                </th>
+                <th>
+                    <p ng-click="orderBy('AmountStudentsMax')">Amount max of Students</p>
+                </th>
+                <th>
+                    <p ng-click="orderBy('Remarks')">Remarks</p>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Location)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AmountStudentsMax)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Remarks)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
+        <tbody>
+            <tr ng-repeat="classroom in classrooms | orderBy:propertyName:reverse"
+                my-test-end-waiting>
+                <td>
+                    {{classroom.Name}}
+                </td>
+                <td>
+                    {{classroom.Location}}
+                </td>
+                <td>
+                    {{classroom.AmountStudentsMax}}
+                </td>
+                <td>
+                    {{classroom.Remarks}}
+                </td>
+                <td>
+                    <span ng-show="classroom.Schedules.length == 0">
+                        <a data-ng-href="/Classrooms/Edit/{{classroom.ID}}">Edit</a> |
+                    </span>
+                    <a data-ng-href="/Classrooms/Details/{{classroom.ID}}">Details</a>
+                    <span ng-show="classroom.Schedules.length == 0">
+                        | <a data-ng-href="/Classrooms/Delete/{{classroom.ID}}">Delete</a>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/angular")
+    @Scripts.Render("~/bundles/angularclassrooms")
 }
-
-</table>

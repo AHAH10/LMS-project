@@ -9,30 +9,34 @@ namespace LMS_Project.Controllers
 {
     public class NewsController : Controller
     {
-        private NewsRepository nRepo = new NewsRepository(); 
+        private NewsRepository nRepo = new NewsRepository();
+
         // GET: News
         public ActionResult Index()
         {
-            if (User.IsInRole("Admin"))
-            {
-                return View(nRepo.News().ToList());
-            }
-
-            return RedirectToAction("PublicIndex");
-  
+            return View(nRepo.News().ToList());
         }
         // GET: Public News
-        public ActionResult PublicIndex()
+        public ActionResult AdminIndex()
         {
             return View(nRepo.News().ToList());
         }
+
         // GET: News/Details/5
         [Authorize(Roles = "Admin")]
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View(nRepo.GetSpecificNews(id));
+            if (id == null)
+                return RedirectToAction("AdminIndex");
+
+            News news = nRepo.GetSpecificNews(id);
+            if (news == null)
+                return RedirectToAction("AdminIndex");
+
+            return View(news);
         }
-        [Authorize(Roles="Admin")]
+
+        [Authorize(Roles = "Admin")]
         // GET: News/Create
         public ActionResult Create()
         {
@@ -50,7 +54,7 @@ namespace LMS_Project.Controllers
                 news.PublisherID = User.Identity.GetUserId();
                 news.PublishingDate = DateTime.Now;
                 nRepo.Add(news);
-                return RedirectToAction("Index");
+                return RedirectToAction("AdminIndex");
             }
             catch
             {
@@ -60,9 +64,16 @@ namespace LMS_Project.Controllers
 
         // GET: News/Edit/5
         [Authorize(Roles = "Admin")]
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View(nRepo.GetSpecificNews(id));
+            if (id == null)
+                return RedirectToAction("AdminIndex");
+
+            News news = nRepo.GetSpecificNews(id);
+            if (news == null)
+                return RedirectToAction("AdminIndex");
+
+            return View(news);
         }
 
         // POST: News/Edit/5
@@ -76,11 +87,11 @@ namespace LMS_Project.Controllers
                 news.EditedByID = User.Identity.GetUserId();
                 news.EditedDate = DateTime.Now;
                 nRepo.Edit(news);
-                return RedirectToAction("Index");
+                return RedirectToAction("AdminIndex");
             }
             catch
             {
-                return View();
+                return View(news);
             }
         }
 
@@ -100,7 +111,7 @@ namespace LMS_Project.Controllers
             {
                 // TODO: Add delete logic here
                 nRepo.Delete(id);
-                return RedirectToAction("Index");
+                return RedirectToAction("AdminIndex");
             }
             catch
             {

@@ -1,49 +1,44 @@
 ﻿@model LMS_Project.ViewModels.UploadDocumentVM
 
 @{
-    ViewBag.Title = "UploadDocument";
+    ViewBag.Title = "Upload a Document";
 }
 
-<h2>UploadDocument</h2>
+<div class="form-horizontal">
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-horizontal">
-        <h4>Document</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="alert-danger form-group">
+        <p style="margin:0">@ViewBag.ErrorMessage</p>
+    </div>
 
-        <div class="alert-danger form-group">
-            <p style="margin:0">@ViewBag.ErrorMessage</p>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.CourseID, "Course", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(m => m.CourseID,
+    <div class="form-group">
+        @Html.LabelFor(model => model.CourseID, "Course", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(m => m.CourseID,
                                      (IEnumerable<SelectListItem>)ViewBag.Courses,
                                       "-- Please select a course --",
                                       htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.CourseID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(m => m.File, new { type = "file" })
-                @Html.ValidationMessageFor(m => m.File)
-
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Upload" class="btn btn-default" />
-            </div>
+            @Html.ValidationMessageFor(model => model.CourseID, "", new { @class = "text-danger" })
         </div>
     </div>
-@*<div>
-    @Html.ActionLink(“LMS_Project.Models.LMS.Document”, “Downloads”)
-</div>*@
-    <div>
-        @Html.ActionLink("Back to List", "Index")
+    <div class="form-group">
+        @Html.LabelFor(model => model.File, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.File, new { type = "file" })
+            @Html.ValidationMessageFor(m => m.File)
+
+        </div>
     </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Upload" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+
+<div>
+    @Html.ActionLink("Back to Documents", "MyDocuments")
+</div>
 

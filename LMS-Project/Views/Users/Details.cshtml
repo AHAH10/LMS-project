@@ -77,9 +77,6 @@
 </div>
 
 <p>
-    @if (Model.IsEditable)
-    {
-        @Html.ActionLink("Edit", "Edit", "Account", new { id = Model.Id }, null)<text> | </text>
-    }
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Edit", "Edit", "Account", new { id = Model.Id }, null) |
+    @Html.ActionLink("Back to Users", "Index")
 </p>

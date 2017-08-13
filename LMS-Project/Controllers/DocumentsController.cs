@@ -164,7 +164,11 @@ namespace LMS_Project.Controllers
 
         public ActionResult MyDocuments()
         {
-            return View(repository.Documents(User.Identity.GetUserId()).ToList());
+            return View(new MyDocumentsVM
+            {
+                Documents = repository.Documents(User.Identity.GetUserId()),
+                ShowGrades = User.IsInRole(RoleConstants.Student)
+            });
         }
 
         // Download Document

@@ -1,8 +1,14 @@
 ﻿@model IEnumerable<LMS_Project.ViewModels.PartialCoursesVM>
 
+@{
+    ViewBag.Title = "Courses";
+}
+
+<h2>Courses</h2>
+
 <div ng-app="LMSApp" ng-controller="Course_Index_Ctrl" ng-init="getData()" ng-cloak>
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Create a new Course", "Create")
     </p>
     <div class="left">
         <form class="search glyphicon glyphicon-search" method="get">
@@ -31,7 +37,14 @@
         }
         <tr ng-repeat="course in courses | orderBy:myOrderBy:reverse | filter:searchTerm ">
             <td>{{course.Subject.Name}}</td>
-            <td>{{course.Teacher.FirstName}} {{course.Teacher.LastName}}</td>
+            <td ng-show="course.Teacher.HasSchedules">
+                <a data-ng-href="/Teachers/Planning?teacherId={{course.Teacher.Id}}">
+                    {{course.Teacher.FirstName}} {{course.Teacher.LastName}}
+                </a>
+            </td>
+            <td ng-hide="course.Teacher.HasSchedules">
+                {{course.Teacher.FirstName}} {{course.Teacher.LastName}}
+            </td>
             <td>
                 <span ng-show="course.IsDeletable">
                     <a data-ng-href="@url1">Edit</a> |

@@ -5,7 +5,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create a new Schedule", "Create")
 </p>
 
 <div class="form-horizontal"
@@ -22,7 +22,7 @@
                     <th ng-click="orderBy('Course')">
                         Course
                     </th>
-                    <th ng-click="orderBy('Teacher.LastName')">
+                    <th ng-click="orderBy('Teacher.LastName+Teacher.FirstName')">
                         Teacher
                     </th>
                     <th ng-click="orderBy('WeekDay')">
@@ -40,15 +40,17 @@
             <tbody>
                 <tr ng-repeat="schedule in schedules | orderBy:propertyName:reverse" my-test-end-waiting>
                     <td>
-                        {{schedule.Classroom}}
+                        <a href="/Classrooms/Details/{{schedule.ClassroomID}}">{{schedule.Classroom}}</a>
                     </td>
                     <td>{{schedule.SubjectName}}</td>
-                    <td>{{schedule.TeacherName}}</td>
+                    <td><a href="/Teachers/Planning?teacherId={{schedule.TeacherID}}">{{schedule.TeacherName}}</a></td>
                     <td>{{schedule.WeekDay}}</td>
                     <td>{{schedule.BeginningTime}}</td>
                     <td>{{schedule.EndingTime}}</td>
                     <td>
-                        <a href="/Schedules/Edit/{{schedule.ID}}">Edit</a> |
+                        <span ng-show="schedule.IsDeletable">
+                            <a href="/Schedules/Edit/{{schedule.ID}}">Edit</a> |
+                        </span>
                         <a href="/Schedules/Details/{{schedule.ID}}">Details</a>
                         <span ng-show="schedule.IsDeletable">
                             |

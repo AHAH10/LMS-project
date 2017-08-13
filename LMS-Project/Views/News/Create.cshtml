@@ -1,7 +1,12 @@
 ﻿@model LMS_Project.Models.LMS.News
 
+@{
+    ViewBag.Title = "Create a News";
+}
 
-@using (Html.BeginForm()) 
+<h2>Create a News</h2>
+
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
@@ -17,7 +22,7 @@
 
                      <div class="form-group ">
                          @Html.LabelFor(model => model.Title, "Title:")
-                         @Html.TextBoxFor(model => model.Title, htmlAttributes: new { @class = "form-control", @placeholder = " News Titel" })
+                         @Html.TextBoxFor(model => model.Title, htmlAttributes: new { @class = "form-control", @placeholder = " News Title" })
                          @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
                      </div>
 
@@ -54,7 +59,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to News", "AdminIndex")
 </div>
 
 @section Scripts {

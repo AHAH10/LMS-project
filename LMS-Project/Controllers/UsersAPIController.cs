@@ -15,6 +15,12 @@ namespace LMS_Project.Controllers
         // GET: Users
         public List<PartialUserVM> GetUsers()
         {
+            // The user can't be deleted if:
+            // - the edited user actually is the current user (can't delete oneself's account)
+            // - the user is responsible for some courses
+            // - the user takes part to any course
+            // - the user has uploaded some documents (whatever purpose they have)
+            // - the user has published some news
             return repository.Users().Select(u => new PartialUserVM
             {
                 Id = u.Id,
@@ -25,7 +31,11 @@ namespace LMS_Project.Controllers
                 Email = u.Email,
                 PhoneNumber = u.PhoneNumber,
                 Role = repository.GetUserRole(u.Id).Name,
-                IsEditable = u.Id != User.Identity.GetUserId()
+                IsDeletable = User.Identity.GetUserId() != u.Id &&
+                              u.Courses.Count == 0 &&
+                              u.Schedules.Count == 0 &&
+                              u.Documents.Count == 0 &&
+                              u.News.Count == 0
             }).ToList();
         }
 

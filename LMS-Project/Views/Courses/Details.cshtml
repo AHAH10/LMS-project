@@ -1,31 +1,47 @@
 ﻿@model LMS_Project.Models.LMS.Course
 
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details for @Model.Subject.Name</h2>
+
 <div>
-    <h4>CoursesVM</h4>
     <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Subject)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Subject.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Teacher)
-        </dt>
-
-        <dd>
-            @Html.DisplayName(Model.Teacher.ToString())
-        </dd>
-
-    </dl>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Subject)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Teacher)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    @Html.DisplayFor(model => model.Subject.Name)
+                </td>
+                <td>
+                    @if (Model.Schedules.Count == 0)
+                    {
+                        @Html.DisplayName(Model.Teacher.ToString())
+                    }
+                    else
+                    {
+                        @Html.ActionLink(Model.Teacher.ToString(), "Planning", "Teachers", new { teacherId = Model.TeacherID }, null)
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 <p>
     @if (Model.Documents.Count() + Model.Schedules.Count() == 0)
     {
         @Html.ActionLink("Edit", "Edit", new { id = Model.ID })<text> | </text>
     }
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Courses", "Index")
 </p>

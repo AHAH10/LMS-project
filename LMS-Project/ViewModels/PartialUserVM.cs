@@ -23,9 +23,11 @@ namespace LMS_Project.ViewModels
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
+        public bool HasSchedules { get; set; }
+
         // Used for the users management
         public string Role { get; set; }
-        public bool IsEditable { get; set; }
+        public bool IsDeletable { get; set; }
         public List<string> Courses { get; set; }
     }
 }

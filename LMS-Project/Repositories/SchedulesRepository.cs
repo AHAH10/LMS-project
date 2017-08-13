@@ -155,6 +155,13 @@ namespace LMS_Project.Repositories
                               .FirstOrDefault();
         }
 
+        public Schedule NextLecture(string teacherId)
+        {
+            return Schedules().FirstOrDefault(s => s.WeekDay == GetCurrentDay() &&
+                                                   string.Compare(s.BeginningTime, DateTime.Now.ToString("HH:mm")) == 1 &&
+                                                   s.Course.TeacherID == teacherId);
+        }
+
         public WeekDays GetCurrentDay()
         {
             WeekDays weekDay;

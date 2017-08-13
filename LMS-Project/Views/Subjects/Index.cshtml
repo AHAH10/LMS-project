@@ -1,4 +1,12 @@
 ﻿@model IEnumerable<LMS_Project.Models.LMS.Subject>
+
+@{
+    ViewBag.Title = "Subjects";
+}
+
+<h2>Subjects</h2>
+<hr />
+
 <div ng-app="LMSApp" ng-controller="Subject_Index_Ctrl" ng-init="getData()" ng-cloak>
     <p>
         @Html.ActionLink("Create a new Subject", "Create")
@@ -28,9 +36,9 @@
         <tr ng-repeat="subject in subjects | orderBy:myOrderBy:reverse | filter:searchTerm ">
             <td>{{subject.Name}}</td>
             <td>
-                <span ng-show="subject.Courses == null"><a data-ng-href="@url1">Edit</a> |</span>
+                <span ng-show="subject.Courses == null"><a data-ng-href="@url1">Edit</a> | </span>
                 <a data-ng-href="@url2">Details</a>
-                <span ng-show="subject.Courses==null"> | <a data-ng-href="@url3">Remove</a>                </span> 
+                <span ng-show="subject.Courses==null"> | <a data-ng-href="@url3">Remove</a></span> 
             </td>
         </tr>
 

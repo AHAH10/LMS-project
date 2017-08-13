@@ -1,38 +1,41 @@
 ﻿@using LMS_Project.Models.LMS;
 
-@model IEnumerable<Document>
+@model LMS_Project.ViewModels.MyDocumentsVM
 
 @{
     ViewBag.Title = "My Uploaded Documents";
 }
 
-<h2>My Uploaded Documents</h2>
+<h2>My uploaded Documents</h2>
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Course)
+            @Html.DisplayNameFor(model => model.Documents.First().Course)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DocumentName)
+            @Html.DisplayNameFor(model => model.Documents.First().DocumentName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.UploadingDate)
+            @Html.DisplayNameFor(model => model.Documents.First().UploadingDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.VisibleFor)
+            @Html.DisplayNameFor(model => model.Documents.First().VisibleFor)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Grade)
-        </th>
+        @if (Model.ShowGrades)
+        {
+            <th>
+                @Html.DisplayNameFor(model => model.Documents.First().Grade)
+            </th>
+        }
         <th></th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Documents)
     {
         <tr>
             <td>
-                @Html.ActionLink(item.Course.Subject.Name, "Download", "Documents", new { id = item.ID }, null)
+                @Html.ActionLink(item.Course.Subject.Name, "Documents", "Courses", new { id = item.CourseID }, null)
             </td>
             <td>
                 @Html.ActionLink(item.DocumentName, "Download", "Documents", new { id = item.ID }, null)
@@ -52,24 +55,27 @@
                     @* - The document is only visible for the teacher *@
 
                     @* Two cases: *@
-                    if (User.IsInRole(RoleConstants.Student))
-                    {
-                        @* -- The uploader is a student *@
-                        @Html.DisplayName("The teacher (" + item.Course.Teacher.ToString() + ")")
-                    }
-                    else
-                    {
-                        @* -- The uploader is a teacher *@
-                        @Html.DisplayName("Myself")
+                if (User.IsInRole(RoleConstants.Student))
+                {
+                    @* -- The uploader is a student *@
+                    @Html.DisplayName("The teacher (" + item.Course.Teacher.ToString() + ")")
+                }
+                else
+                {
+                    @* -- The uploader is a teacher *@
+                    @Html.DisplayName("Myself")
                     }
                 }
             </td>
-            <td>
+            @if (Model.ShowGrades)
+            {
+                <td>
                 @if (item.Grade != null)
                 {
                     @Html.DisplayFor(modeItem => item.Grade.AGrade)
                 }
             </td>
+            }
             <td>
                 @if (item.GradeID == null)
                 {
