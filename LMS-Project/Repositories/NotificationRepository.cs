@@ -28,13 +28,17 @@ namespace LMS_Project.Repositories
         }
 
         //Create
-        public void Create(int gID)
+        public int Create(int gID)
         {
-            Add(new Notification
+            Notification notification = new Notification
             {
                 Grade = db.Grades.FirstOrDefault(g => g.ID == gID),
                 SendingDate = DateTime.Now
-            });
+            };
+
+            Add(notification);
+
+            return notification.ID;
         }
 
         //Confirmation that Notification is read by student

@@ -1,4 +1,5 @@
 ﻿@using LMS_Project.Models.LMS
+@using LMS_Project.Repositories
 @using LMS_Project.ViewModels
 
 @model DetailedScheduleVM
@@ -35,9 +36,6 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Schedule.Students)
                     </th>
-                    <th>
-                        @Html.DisplayName("Related Documents")
-                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -53,11 +51,11 @@
                     </td>
                     <td>
                         @{
-                            string remarks = Model.Schedule.Classroom.Remarks;
-                            if (remarks != null && remarks.Length > 0)
-                            {
-                                remarks = " - " + remarks;
-                            }
+        string remarks = Model.Schedule.Classroom.Remarks;
+        if (remarks != null && remarks.Length > 0)
+        {
+            remarks = " - " + remarks;
+        }
                         }
                         @Html.DisplayName(Model.Schedule.Classroom.Name + " (" + Model.Schedule.Classroom.Location + ")" + remarks)
                     </td>
@@ -73,48 +71,65 @@
                             }
                         </table>
                     </td>
-                    <td>
-                        @if (Model.Documents.Count() > 0)
-                        {
-                            <table class="table-condensed">
-                                <tr>
-                                    <th style="border-top:none; padding-top:0">
-                                        @Html.DisplayNameFor(model => model.Documents.First().DocumentName)
-                                    </th>
-                                    <th style="border-top:none; padding-top:0">
-                                        @Html.DisplayNameFor(model => model.Documents.First().UploadingDate)
-                                    </th>
-                                    <th style="border-top:none; padding-top:0">
-                                        @Html.DisplayNameFor(model => model.Documents.First().Uploader)
-                                    </th>
-                                    <th style="border-top:none; padding-top:0"></th>
-                                </tr>
-
-                                @foreach (Document document in Model.Documents)
-                                {
-                                    <tr>
-                                        <td>
-                                            @Html.ActionLink(document.DocumentName, "Download", "Documents", new { id = document.ID }, null)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayFor(modelItem => document.UploadingDate)
-                                        </td>
-                                        <td>
-                                            @Html.DisplayName(document.Uploader.ToString())
-                                        </td>
-                                        <td>
-                                            @Html.ActionLink("Delete", "Delete", "Documents", new { id = document.ID }, null)
-                                        </td>
-                                    </tr>
-                                }
-                            </table>
-                        }
-                    </td>
                 </tr>
             </tbody>
         </table>
-                            }
+    }
 </div>
+
+@if (Model.Documents.Count() > 0)
+{
+    <h2>Related Documents</h2>
+    <hr />
+
+    <div>
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Documents.First().DocumentName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Documents.First().UploadingDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Documents.First().Uploader)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Documents.First().Grade)
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (Document document in Model.Documents)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(document.DocumentName, "Download", "Documents", new { id = document.ID }, null)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => document.UploadingDate)
+                    </td>
+                    <td>
+                        @Html.DisplayName(document.Uploader.ToString())
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => document.Grade.AGrade)
+                    </td>
+                    <td>
+                        @if (document.VisibleFor.Id == new RolesRepository().RoleByName(RoleConstants.Student).Id)
+                        {
+                            @Html.ActionLink("Delete", "Delete", "Documents", new { id = document.ID }, null)
+                        }
+                        else if (document.UploaderID != document.Course.TeacherID && document.GradeID == null)
+                        {
+                            @Html.ActionLink("Set a Grade", "Grade", "Grades", new { id = document.ID }, null)
+                        }
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+}
 
 <p>
     @Html.ActionLink("Back to Planning", "Planning")

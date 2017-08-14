@@ -8,12 +8,12 @@ using Microsoft.AspNet.Identity;
 
 namespace LMS_Project.Controllers
 {
-    [Authorize(Roles = "Student,Admin")]
     public class StudentsController : Controller
     {
         private SchedulesRepository schedRepo = new SchedulesRepository();
         private UsersRepository usersRepo = new UsersRepository();
 
+        [Authorize(Roles = "Student,Admin")]
         public ActionResult Planning(string studentId)
         {
             if (studentId == null || studentId.Length == 0)
@@ -44,6 +44,39 @@ namespace LMS_Project.Controllers
         {
             return View(new NotificationRepository().UnreadNotifications(User.Identity.GetUserId()).ToList());
         }
+
+        public ActionResult LastLesson(string studentName)
+        {
+            ViewBag.UsersName = studentName;
+            return View();
+        }
+
+        public ActionResult DetailedSchedule(string studentId)
+        {
+            if (studentId == null)
+                return RedirectToAction("Index", "Home");
+
+            User student = usersRepo.UserById(studentId);
+            if (student == null)
+                return RedirectToAction("Index", "Home");
+
+            WeekDays weekDay = schedRepo.GetCurrentDay();
+            ViewBag.StudentsName = student.ToString();
+
+            return View(schedRepo.StudentSchedules(studentId)
+                                 .Where(s => s.WeekDay == weekDay)
+                                 .Select(s => new PartialScheduleVM
+                                 {
+                                     SubjectName = s.Course.Subject.Name,
+                                     TeacherName = s.Course.Teacher.ToString(),
+                                     Classroom = s.Classroom.Name + " (" + s.Classroom.Location + ")",
+                                     WeekDay = weekDay.ToString() + "s",
+                                     BeginningTime = s.BeginningTime,
+                                     EndingTime = s.EndingTime
+                                 })
+                                 .ToList());
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

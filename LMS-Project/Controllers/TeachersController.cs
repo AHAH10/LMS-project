@@ -91,8 +91,8 @@ namespace LMS_Project.Controllers
             else
                 return schedule.Course
                                .Documents
-                               .Where(d => d.VisibleFor.Name == RoleConstants.Student ||
-                                           d.UploaderID == User.Identity.GetUserId())
+                               //.Where(d => d.VisibleFor.Name == RoleConstants.Student ||
+                               //            d.UploaderID == User.Identity.GetUserId())
                                .OrderBy(d => d.UploadingDate)
                                .ToList();
         }

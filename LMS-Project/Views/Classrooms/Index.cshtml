@@ -48,11 +48,11 @@
                     {{classroom.Remarks}}
                 </td>
                 <td>
-                    <span ng-show="classroom.Schedules.length == 0">
+                    <span ng-show="classroom.IsEditable">
                         <a data-ng-href="/Classrooms/Edit/{{classroom.ID}}">Edit</a> |
                     </span>
                     <a data-ng-href="/Classrooms/Details/{{classroom.ID}}">Details</a>
-                    <span ng-show="classroom.Schedules.length == 0">
+                    <span ng-show="classroom.IsEditable">
                         | <a data-ng-href="/Classrooms/Delete/{{classroom.ID}}">Delete</a>
                     </span>
                 </td>

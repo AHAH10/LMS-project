@@ -234,6 +234,7 @@
     <Compile Include="ViewModels\ExtendedUserVM.cs" />
     <Compile Include="ViewModels\LastLessonVM.cs" />
     <Compile Include="ViewModels\MyDocumentsVM.cs" />
+    <Compile Include="ViewModels\PartialClassroomVM.cs" />
     <Compile Include="ViewModels\PartialCoursesVM.cs" />
     <Compile Include="ViewModels\PartialNotificationVM.cs" />
     <Compile Include="ViewModels\PartialScheduleVM.cs" />
