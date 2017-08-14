@@ -2887,15 +2887,11 @@ table {
     }
 
 
-tr:first-child:active {
-    background-color:#000;
+thead tr:hover{
+    background: none;
 }
 
-tr td a{
-   margin:20px;
-   display:inline;
-    
-}
+
 
 caption {
     padding-top: 8px;
