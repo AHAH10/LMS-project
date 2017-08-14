@@ -2880,7 +2880,21 @@ pre {
 }
 
 table {
-    background-color: #2e3338;
+    background-color: rgba(30, 36, 41, 0.5);
+}
+     tr:hover {
+        background-color: rgba(30, 36, 41, 0.5);
+    }
+
+
+tr:first-child:active {
+    background-color:#000;
+}
+
+tr td a{
+   margin:20px;
+   display:inline;
+    
 }
 
 caption {
