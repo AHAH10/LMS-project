@@ -7,8 +7,6 @@ p {
     margin:20px;
 }
 
-
-
 /* Set padding to keep content from hitting the edges */
 .body-content {
     padding-left: 15px;
@@ -88,14 +86,11 @@ textarea {
 }
 .news-content a {
     float:right;
-    
-    
-    
 }
+
 .news-post:hover {
     background-color: rgba(30, 36, 41, 0.5);
 }
-
 
 .publisher {
     float:right;
@@ -107,8 +102,6 @@ textarea {
 .readMore{
     padding-bottom:70px;
 }
-
-
 
 body::after {
     background: url('img/learning.jpg') no-repeat;
@@ -146,7 +139,6 @@ body::after {
     margin-bottom:30px;
 }
 
-
 footer {
     position: fixed;
     right: 0;
@@ -157,6 +149,7 @@ footer {
     text-align: center;
     color:#000;
 }
+
 .editedBy{
     font-size:.8em;
     margin-top:40px;
