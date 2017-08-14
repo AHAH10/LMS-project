@@ -16,7 +16,8 @@ namespace LMS_Project.Repositories
             return db.Grades;
         }
 
-        public IEnumerable<Grade> GetStudentGrades(string studentID) {
+        public IEnumerable<Grade> GetStudentGrades(string studentID)
+        {
             return db.Grades.Where(g => g.Document.UploaderID == studentID);
         }
 
@@ -25,12 +26,21 @@ namespace LMS_Project.Repositories
             return Grades().FirstOrDefault(g => g.ID == id);
         }
 
-        public void Add(Grade grade,string teacherID)
+        public void Add(Grade grade, string teacherID)
         {
             grade.Date = DateTime.Now;
             db.Grades.Add(grade);
+
             SaveChanges();
-            new NotificationRepository().Create(grade.ID);           
+
+            Document document = db.Documents.FirstOrDefault(d => d.ID == grade.ID);
+            document.GradeID = grade.ID;
+            db.Entry(document).State = EntityState.Modified;
+
+            SaveChanges();
+
+            grade.ID = new NotificationRepository().Create(grade.ID);
+            Edit(grade);
         }
 
         public void Edit(Grade grade)

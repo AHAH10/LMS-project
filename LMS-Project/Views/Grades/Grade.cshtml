@@ -4,7 +4,7 @@
     ViewBag.Title = "Set a Grade";
 }
 
-<h2>Set a Grade</h2>
+<h2>Set a Grade for "@Model.Document.DocumentName" uploaded at @Model.Document.UploadingDate by @Model.Document.Uploader.ToString()</h2>
 
 @using (Html.BeginForm())
 {
@@ -26,7 +26,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.TextAreaFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Comment, "", new { @class = "text-danger" })
             </div>
         </div>

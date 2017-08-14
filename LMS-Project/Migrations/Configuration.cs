@@ -61,7 +61,14 @@ namespace LMS_Project.Migrations
             {
                 var store = new UserStore<User>(context);
                 var userManager = new UserManager<User>(store);
-                var newuser = new User { UserName = "Admin", Email = "admin@mail.nu", BirthDate = DateTime.Now.ToString("yyyy/MM/dd") };
+                var newuser = new User
+                {
+                    UserName = "Admin",
+                    Email = "admin@mail.nu",
+                    BirthDate = DateTime.Now.ToString("yyyy/MM/dd"),
+                    FirstName = "Admin",
+                    LastName = "Histrator"
+                };
 
                 userManager.Create(newuser, "Admin-Password1");
                 userManager.AddToRole(newuser.Id, RoleConstants.Admin);

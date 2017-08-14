@@ -26,6 +26,7 @@ namespace LMS_Project.Models.LMS
         public DateTime Date { get; set; }
         
         [Required]
+        [Display(Name="Grade")]
         public AssignmentGrade AGrade { get; set; }
         
         public string Comment { get; set; }
