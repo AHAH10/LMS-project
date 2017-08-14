@@ -350,15 +350,10 @@
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\Documents\MyDocuments.cshtml" />
     <Content Include="Views\Grades\Grade.cshtml" />
-    <Content Include="Views\Notifications\Create.cshtml" />
-    <Content Include="Views\Notifications\Delete.cshtml" />
-    <Content Include="Views\Notifications\Details.cshtml" />
-    <Content Include="Views\Notifications\Edit.cshtml" />
-    <Content Include="Views\Notifications\Index.cshtml" />
+    <Content Include="Views\Grades\Index.cshtml" />
     <Content Include="Views\Schedules\_CreateEdit.cshtml" />
     <Content Include="Views\Schedules\Documents.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
-    <Content Include="Views\Students\MyGrades.cshtml" />
     <Content Include="Views\Students\Planning.cshtml" />
     <Content Include="Views\Teachers\DetailedSchedule.cshtml" />
     <Content Include="Views\Teachers\Planning.cshtml" />
@@ -368,6 +363,7 @@
     <Content Include="Views\Courses\Documents.cshtml" />
     <Content Include="Views\Teachers\NextLecture.cshtml" />
     <Content Include="Views\Teachers\_DetailedSchedule.cshtml" />
+    <Content Include="Views\Students\MyGrades.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
