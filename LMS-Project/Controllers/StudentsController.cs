@@ -40,7 +40,7 @@ namespace LMS_Project.Controllers
         }
 
         [Authorize(Roles = "Student")]
-        public ActionResult Notifications()
+        public ActionResult MyGrades()
         {
             return View(new NotificationRepository().UnreadNotifications(User.Identity.GetUserId()).ToList());
         }
