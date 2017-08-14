@@ -4,7 +4,7 @@
     ViewBag.Title = "Set a Grade";
 }
 
-<h2>Set a Grade for "@Model.Document.DocumentName" uploaded at @Model.Document.UploadingDate by @Model.Document.Uploader.ToString()</h2>
+<h2>Set a Grade for "@Model.Document.DocumentName" uploaded @Model.Document.UploadingDate by @Model.Document.Uploader.ToString()</h2>
 
 @using (Html.BeginForm())
 {

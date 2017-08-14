@@ -17,27 +17,32 @@ namespace LMS_Project.Controllers
         {
             List<PartialNotificationVM> _notifications = new List<PartialNotificationVM>();
 
-            foreach(Notification n in new NotificationRepository().Notifications(userID))
+            foreach (Notification n in new NotificationRepository().Notifications(userID))
             {
-                PartialNotificationVM notification = new PartialNotificationVM {
-                    ID =n.ID,
-                    SendingDate =n.SendingDate,
-                    ReadingDate =n.ReadingDate,
-                    Course =new Course{
-                        Teacher = new User {
+                PartialNotificationVM notification = new PartialNotificationVM
+                {
+                    ID = n.ID,
+                    SendingDate = n.SendingDate.ToString(),
+                    ReadingDate = n.ReadingDate,
+                    Course = new Course
+                    {
+                        Teacher = new User
+                        {
                             FirstName = n.Grade.Document.Course.Teacher.FirstName,
                             LastName = n.Grade.Document.Course.Teacher.LastName
                         },
-                        Subject =new Subject {
-                            Name =n.Grade.Document.Course.Subject.Name
+                        Subject = new Subject
+                        {
+                            Name = n.Grade.Document.Course.Subject.Name
                         },
                     },
-                    Document=new Document{
-                        DocumentName=n.Grade.Document.DocumentName,
-                        ContentType=n.Grade.Document.ContentType
+                    Document = new Document
+                    {
+                        DocumentName = n.Grade.Document.DocumentName,
+                        ContentType = n.Grade.Document.ContentType
                     },
-                    Grade=Enum.GetName(typeof(AssignmentGrade),n.Grade.AGrade),
-                    Comment=n.Grade.Comment
+                    Grade = Enum.GetName(typeof(AssignmentGrade), n.Grade.AGrade),
+                    Comment = n.Grade.Comment
                 };
                 _notifications.Add(notification);
             }
@@ -52,7 +57,7 @@ namespace LMS_Project.Controllers
                 PartialNotificationVM notification = new PartialNotificationVM
                 {
                     ID = n.ID,
-                    SendingDate = n.SendingDate,
+                    SendingDate = n.SendingDate.ToString(),
                     ReadingDate = n.ReadingDate,
                     Course = new Course
                     {
@@ -86,7 +91,7 @@ namespace LMS_Project.Controllers
         [HttpPost]
         public void SetAllNotificationsAsReaded(string id)
         {
-            foreach(Notification n in new NotificationRepository().Notifications(id))
+            foreach (Notification n in new NotificationRepository().Notifications(id))
             {
                 new NotificationRepository().NotificationRead(n.ID);
             }
