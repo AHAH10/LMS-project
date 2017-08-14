@@ -84,17 +84,29 @@ namespace LMS_Project.Controllers
                                                  .ToList());
         }
 
-        private List<Document> AvailableDocuments(Schedule schedule)
+        private List<PartialDocumentVM> AvailableDocuments(Schedule schedule)
         {
             if (schedule == null)
-                return new List<Document>();
+                return new List<PartialDocumentVM>();
             else
+            {
+                RolesRepository rolesRepository = new RolesRepository();
+
                 return schedule.Course
                                .Documents
-                               //.Where(d => d.VisibleFor.Name == RoleConstants.Student ||
-                               //            d.UploaderID == User.Identity.GetUserId())
                                .OrderBy(d => d.UploadingDate)
+                               .Select(d => new PartialDocumentVM
+                               {
+                                   ID = d.ID,
+                                   DocumentName = d.DocumentName,
+                                   UploadingDate = d.UploadingDate,
+                                   Uploader = d.Uploader.ToString(),
+                                   Grade = d.Grade,
+                                   CanSetAGrade = (d.UploaderID != d.Course.TeacherID && d.Grade == null),
+                                   CanBeDeleted = (d.RoleID == rolesRepository.RoleByName(RoleConstants.Student).Id)
+                               })
                                .ToList();
+            }
         }
 
         protected override void Dispose(bool disposing)

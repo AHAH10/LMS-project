@@ -63,7 +63,27 @@ namespace LMS_Project.Repositories
 
         public IEnumerable<User> UsersByUsersname(string userName)
         {
-            return Users().Where(u => (u.FirstName + u.LastName).ToLower().Contains(userName.ToLower()));
+            string[] split = userName.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+
+            switch (split.Length)
+            {
+                case 0:
+                    // Empty string
+                    return new List<User>();
+                case 1:
+                    // Whole string without spaces
+                    return Users().Where(u => (u.FirstName + u.LastName).ToLower().Contains(userName.ToLower()));
+                default:
+                    // The string contains at least one space
+                    List<User> result = Users().ToList();
+                    foreach (string s in split)
+                    {
+                        string lowerS = s.ToLower();
+                        result = result.Intersect(Users().Where(u => (u.FirstName + u.LastName).ToLower().Contains(lowerS))).ToList();
+                    }
+
+                    return result;
+            }
         }
 
         /// <summary>

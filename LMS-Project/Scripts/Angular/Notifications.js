@@ -2,12 +2,15 @@
     var app = angular.module("LMSApp", []);
 
     app.controller('NotificationsController', ['$scope', '$http', function ($scope, $http) {
-        $scope.reverse = true;
+        $scope.reverse = false;
 
-        $scope.orderByMe = function (type) {
-            $scope.myOrderBy = type;
-            $scope.reverse = ($scope.myOrderBy === type) ? !$scope.reverse : false;
-        };        
+        $scope.OrderByType = function (type) {
+            Sort(type);
+        };
+        function Sort(type) {
+            $scope.OrderBy = type;
+            $scope.reverse = ($scope.OrderBy === type) ? !$scope.reverse : false;
+        }
         function getData() {
             $http.get('/api/NotificationsAPI/GetAllNotifications?userID='+$scope.user)
                 .then(function (response) {
@@ -21,6 +24,7 @@
         $scope.Initial = function (userID) {
             $scope.user = userID;
             getData();
+            Sort("ReadingDate");
         }
 
     }]);
