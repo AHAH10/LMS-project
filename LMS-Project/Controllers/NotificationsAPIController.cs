@@ -21,7 +21,7 @@ namespace LMS_Project.Controllers
             {
                 PartialNotificationVM notification = new PartialNotificationVM {
                     ID =n.ID,
-                    SendingDate =n.SendingDate,
+                    SendingDate =n.SendingDate.ToString(),
                     ReadingDate =n.ReadingDate,
                     Course =new Course{
                         Teacher = new User {
@@ -52,7 +52,7 @@ namespace LMS_Project.Controllers
                 PartialNotificationVM notification = new PartialNotificationVM
                 {
                     ID = n.ID,
-                    SendingDate = n.SendingDate,
+                    SendingDate = n.SendingDate.ToString(),
                     ReadingDate = n.ReadingDate,
                     Course = new Course
                     {

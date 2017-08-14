@@ -4,12 +4,12 @@
 <table class="table" ng-app="LMSApp" ng-controller="NotificationsController" ng-init="Initial('@User.Identity.GetUserId()')">
     <tr>
         <th></th>
-        <th ng-click="orderByMe('Course.Teacher.FirstName'+'Course.Teacher.LastName')">From</th>
-        <th ng-click="orderByMe('SendingDate')">Sent</th>
-        <th ng-click="orderByMe('Course.Subject.Name')">Subject</th>
-        <th ng-click="orderByMe('Document.DocumentName')">Document</th>
-        <th ng-click="orderByMe('Grade')">Grade</th>
-        <th ng-click="orderByMe('Comment')">Comment</th>
+        <th ng-click="OrderByType('Course.Teacher.FirstName'+'Course.Teacher.LastName')">From</th>
+        <th ng-click="OrderByType('SendingDate')">Sent</th>
+        <th ng-click="OrderByType('Course.Subject.Name')">Subject</th>
+        <th ng-click="OrderByType('Document.DocumentName')">Document</th>
+        <th ng-click="OrderByType('Grade')">Grade</th>
+        <th ng-click="OrderByType('Comment')">Comment</th>
     </tr>
     <tr ng-repeat="notification in notifications | orderBy:myOrderBy:reverse">
         <td><b ng-if="notification.ReadingDate==null">New!</b></td>
