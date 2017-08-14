@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNet.Identity;
+@using LMS_Project.Models.LMS;
+
+@{
+    ViewBag.Title = "My Grades";
+}
+
+<h2>My Grades</h2>
+
+<table class="table" ng-app="LMSApp" ng-controller="NotificationsController" ng-init="Initial('@User.Identity.GetUserId()')">
+    <tr>
+        <th></th>
+        <th ng-click="orderByMe('Course.Teacher.FirstName'+'Course.Teacher.LastName')">From</th>
+        <th ng-click="orderByMe('SendingDate')">Sent</th>
+        <th ng-click="orderByMe('Course.Subject.Name')">Subject</th>
+        <th ng-click="orderByMe('Document.DocumentName')">Document</th>
+        <th ng-click="orderByMe('Grade')">Grade</th>
+        <th ng-click="orderByMe('Comment')">Comment</th>
+    </tr>
+    <tr ng-repeat="notification in notifications | orderBy:myOrderBy:reverse">
+        <td><b ng-if="notification.ReadingDate==null">New!</b></td>
+        <td>{{notification.Course.Teacher.FirstName}} {{notification.Course.Teacher.LastName}}</td>
+        <td>{{notification.SendingDate}}</td>
+        <td>{{notification.Course.Subject.Name}}</td>
+        <td>{{notification.Document.DocumentName}}</td>
+        <td>{{notification.Grade}}</td>
+        <td>{{notification.Comment}}</td>
+    </tr>
+</table>
+@Scripts.Render("~/bundles/angular")
+@Scripts.Render("~/bundles/angularnotifications")

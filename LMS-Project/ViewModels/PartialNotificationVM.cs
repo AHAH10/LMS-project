@@ -16,7 +16,7 @@ namespace LMS_Project.ViewModels
         public Course Course { get; set; }
         public Document Document { get; set; }
 
-        public DateTime SendingDate { get; set; }
+        public string SendingDate { get; set; }
         public DateTime? ReadingDate { get; set; }
     }
 }

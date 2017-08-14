@@ -236,6 +236,7 @@
     <Compile Include="ViewModels\MyDocumentsVM.cs" />
     <Compile Include="ViewModels\PartialClassroomVM.cs" />
     <Compile Include="ViewModels\PartialCoursesVM.cs" />
+    <Compile Include="ViewModels\PartialDocumentVM.cs" />
     <Compile Include="ViewModels\PartialNotificationVM.cs" />
     <Compile Include="ViewModels\PartialScheduleVM.cs" />
     <Compile Include="ViewModels\PartialUserVM.cs" />
@@ -348,9 +349,7 @@
     <Content Include="Views\News\AdminIndex.cshtml" />
     <Content Include="Views\News\Index.cshtml" />
     <Content Include="Views\Documents\MyDocuments.cshtml" />
-    <Content Include="Views\Grades\Details.cshtml" />
     <Content Include="Views\Grades\Grade.cshtml" />
-    <Content Include="Views\Grades\Index.cshtml" />
     <Content Include="Views\Notifications\Create.cshtml" />
     <Content Include="Views\Notifications\Delete.cshtml" />
     <Content Include="Views\Notifications\Details.cshtml" />
@@ -359,7 +358,7 @@
     <Content Include="Views\Schedules\_CreateEdit.cshtml" />
     <Content Include="Views\Schedules\Documents.cshtml" />
     <Content Include="Views\Shared\_Footer.cshtml" />
-    <Content Include="Views\Students\Notifications.cshtml" />
+    <Content Include="Views\Students\MyGrades.cshtml" />
     <Content Include="Views\Students\Planning.cshtml" />
     <Content Include="Views\Teachers\DetailedSchedule.cshtml" />
     <Content Include="Views\Teachers\Planning.cshtml" />
@@ -368,6 +367,7 @@
     <Content Include="Views\Students\DetailedSchedule.cshtml" />
     <Content Include="Views\Courses\Documents.cshtml" />
     <Content Include="Views\Teachers\NextLecture.cshtml" />
+    <Content Include="Views\Teachers\_DetailedSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
