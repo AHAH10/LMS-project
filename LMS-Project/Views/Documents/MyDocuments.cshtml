@@ -58,7 +58,7 @@
                 if (User.IsInRole(RoleConstants.Student))
                 {
                     @* -- The uploader is a student *@
-                    @Html.DisplayName("The teacher (" + item.Course.Teacher.ToString() + ")")
+                    @Html.DisplayName(item.Course.Teacher.ToString())
                 }
                 else
                 {

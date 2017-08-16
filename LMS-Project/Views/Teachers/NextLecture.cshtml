@@ -10,4 +10,11 @@
 
 <h2>Next Lecture</h2>
 
-@Html.Partial("_DetailedSchedule")
+@if (Model.Schedule == null)
+{
+    <p class="alert-info">You don't have any more lectures for today.</p>
+}
+else
+{
+    @Html.Partial("_DetailedSchedule")
+}

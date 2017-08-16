@@ -2882,16 +2882,14 @@ pre {
 table {
     background-color: rgba(30, 36, 41, 0.5);
 }
-     tr:hover {
-        background-color: rgba(30, 36, 41, 0.5);
-    }
 
-
-thead tr:hover{
-    background: none;
+tr:hover {
+    background-color: rgba(30, 36, 41, 0.5);
 }
 
-
+thead tr:hover {
+    background: none;
+}
 
 caption {
     padding-top: 8px;

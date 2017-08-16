@@ -20,12 +20,17 @@
             <th>
                 @Html.DisplayNameFor(model => model.PublishingDate)
             </th>
-
             <th>
                 @Html.DisplayNameFor(model => model.Title)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Content)
+            </th>
+            <th>
+                @Html.DisplayName("Last Edited")
+            </th>
+            <th>
+                @Html.DisplayName("Edited by")
             </th>
             <th></th>
         </tr>
@@ -41,20 +46,28 @@
                     @Html.DisplayFor(modelItem => item.Publisher.Email)
                 </td>
                 <td>
-                    @if (!item.AnonymousPublisher)
-                {
-                        @Html.DisplayName(item.Publisher.ToString())
-                    }
+                    @Html.DisplayName(item.Publisher.ToString())
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.PublishingDate)
                 </td>
-
                 <td>
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Content)
+                </td>
+                <td>
+                    @if (item.EditedBy != null)
+                    {
+                        @Html.DisplayFor(modelItem => item.EditedDate)
+                    }
+                </td>
+                <td>
+                    @if (item.EditedBy != null)
+                    {
+                        @Html.DisplayName(item.EditedBy.ToString())
+                    }
                 </td>
                 <td>
                     @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
