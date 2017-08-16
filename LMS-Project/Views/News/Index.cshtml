@@ -5,7 +5,7 @@
 }
 
 <div class="container-fluid background-news ">
-    
+
     <div class="row">
         <div class="col-md-2 col-md-offset-5">
             <div class="news">
@@ -41,10 +41,25 @@
                                     <div class=" col-md-4 publisher">
                                         <span> Published by : </span>
                                         @Html.DisplayName(item.Publisher.ToString())
+                                        
+                                    </div>
+                                }
+
+
+                                
+                                @if (item.EditedBy != null)
+                                {
+                                    <div class="editedBy">
+                                        <label> Edited By :</label>
+                                       
+                                        @Html.DisplayName(item.EditedBy.ToString())
+                                        @Html.DisplayName(((DateTime)item.EditedDate).ToString("MMM, dd yyyy"))
                                     </div>
                                 }
                             </div>
                         </div>
+
+                        
 
                     </div>
 
@@ -52,7 +67,7 @@
             }
         </div>
     </div>
-    
+
 </div>
 
 

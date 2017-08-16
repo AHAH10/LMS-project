@@ -2880,8 +2880,18 @@ pre {
 }
 
 table {
-    background-color: #2e3338;
+    background-color: rgba(30, 36, 41, 0.5);
 }
+     tr:hover {
+        background-color: rgba(30, 36, 41, 0.5);
+    }
+
+
+thead tr:hover{
+    background: none;
+}
+
+
 
 caption {
     padding-top: 8px;
